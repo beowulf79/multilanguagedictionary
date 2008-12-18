@@ -4,7 +4,7 @@ public class OperatorException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Construct an OperatorException with the specified message.
+	 * Construct an OperatorException with the specified message
 	 * 
 	 * @param message
 	 *            The message
