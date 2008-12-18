@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ActivityDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="datastoreActivityDiagarm" metadata="uml2-1.0" tag="1000" key="3230303730363239204A444943542F63687269737469616E76657264656C6C69">
+  <children xsi:type="editmodel:ActivityActivityEditModel" itemName="Activity1" numberOfThread="1">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+  </children>
+  <diagramOptions xsi:type="options:ActivityDiagramOptions" level="0" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+</editmodel:ActivityDiagramEditModel>
