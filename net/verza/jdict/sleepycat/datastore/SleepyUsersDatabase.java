@@ -32,7 +32,7 @@ public class SleepyUsersDatabase {
 		
 		
 
-		users_table = sleepyEnv.getEnvironment().openDatabase(null,
+		users_table = sleepyEnv.getEnvironment("users").openDatabase(null,
 				USERS_STORE, dbConfig);
 
 	}

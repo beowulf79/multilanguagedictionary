@@ -36,7 +36,7 @@ public class SleepyClassCatalogDatabase {
 		dbConfig.setTransactional(true);
 		dbConfig.setAllowCreate(true);
 
-		catalogDb = sleepyEnv.getEnvironment().openDatabase(null,
+		catalogDb = sleepyEnv.getEnvironment("class_catalog").openDatabase(null,
 				CLASS_CATALOG, dbConfig);
 		javaCatalog = new StoredClassCatalog(catalogDb);
 

@@ -8,44 +8,43 @@ package net.verza.jdict.sleepycat.datastore;
 import java.util.List;
 import java.util.Vector;
 import java.io.IOException;
-
 import org.apache.log4j.Logger;
-
 import jxl.read.biff.BiffException;
 import net.verza.jdict.dataloaders.ExcelLoader;
+import net.verza.jdict.dataloaders.LoaderOptionsStore;
 import net.verza.jdict.exceptions.LabelNotFoundException;
 import net.verza.jdict.properties.PropertiesLoader;
-
 import com.sleepycat.je.DatabaseException;
+
 
 public final class SleepyCategoryDatabaseLoader {
 
-	private SleepyCategoryDatabase dbHandler;
-	private SleepyCategoryDatabaseWriter categoryWriter;
-	private String pathFile; 
+	private LoaderOptionsStore optionObj;
+	private SleepyCategoryDatabase sleepyCategoryDatabase;
+	private SleepyCategoryDatabaseWriter sleepyCategoryDatabaseWriter;
 	private List<Vector<String>> categoryTable;
 	private static Logger log;
 	
 	public SleepyCategoryDatabaseLoader(SleepyCategoryDatabase db) {
 		log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
 		log.trace("called class "+this.getClass().getName());
-		dbHandler = db;
-		categoryWriter = new SleepyCategoryDatabaseWriter(dbHandler
-				.getCategoryDatabase());
+		sleepyCategoryDatabase = db;
+		sleepyCategoryDatabaseWriter = new SleepyCategoryDatabaseWriter(sleepyCategoryDatabase);
 		categoryTable = new Vector<Vector<String>>();
 	}
 
-	
-	public void setFileName(String newPath) {
-		log.info("setting source file "+newPath);
-		pathFile = newPath;
-	}
 
-
-	public void loadDatabases() throws DatabaseException,
+	public int loadDatabases() throws DatabaseException,
 			LabelNotFoundException, BiffException, IOException {
-
-
+		int successfullImportedCounter = 0;
+		
+		if(this.optionObj.getTypeOfImport().equals("rebuild"))		{
+			log.info("flushing database ");
+			this.sleepyCategoryDatabase.close();
+			this.sleepyCategoryDatabase.flushDatabase();
+			this.sleepyCategoryDatabase.open();
+		}
+			
 		loadFile();
 
 		// loading category Class here
@@ -55,18 +54,24 @@ public final class SleepyCategoryDatabaseLoader {
 		for (int i = 0; i < keyColumnVector.size(); i++) {
 			// To be able later to search for either key&value objects
 			// are stored twice in the reverse order
-			categoryWriter.writeData((String) keyColumnVector.get(i),
-					(String) dataColumnVector.get(i));
+			if(-1 != sleepyCategoryDatabaseWriter.writeData((String) keyColumnVector.get(i),
+					(String) dataColumnVector.get(i)) )
+				successfullImportedCounter++;
 		}
 
+		return successfullImportedCounter;
 	}
 
+	
+	public void setOptionObject(LoaderOptionsStore _obj) {
+		this.optionObj = _obj;
+	}
 	
 	private int loadFile() throws LabelNotFoundException,
 			IOException, BiffException {
 
 		ExcelLoader dataloader;
-		dataloader = new ExcelLoader(this.pathFile);
+		dataloader = new ExcelLoader(this.optionObj.getInputFile());
 		dataloader.setSheetName(PropertiesLoader.getProperty("category.sheet_name"));
 		
 		/* load id field */

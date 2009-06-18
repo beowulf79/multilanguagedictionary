@@ -16,22 +16,22 @@ import java.util.Vector;
 public class QuizStats {
 	private static Logger log;
 	private Vector<QuizResult> data;
-	private Hashtable<String, Integer> wrongs, guessed;
+	private Hashtable<QuizResult, Integer> wrongs, guessed;
 
 	public QuizStats(Vector<QuizResult> quizResultVector) {
 		log = Logger.getLogger("net.verza.jdict.quiz");
 		log.trace("initializing class "+this.getClass().getName());
 		data = quizResultVector;
 		log.debug("found " + quizResultVector.size() + " questions to analize");
-		wrongs = new Hashtable<String, Integer>();
-		guessed = new Hashtable<String, Integer>();
+		wrongs = new Hashtable<QuizResult, Integer>();
+		guessed = new Hashtable<QuizResult, Integer>();
 	}
 
-	public Hashtable<String, Integer> getGuessedHash() {
+	public Hashtable<QuizResult, Integer> getGuessedHash() {
 		return guessed;
 	}
 
-	public Hashtable<String, Integer> getWrongHash() {
+	public Hashtable<QuizResult, Integer> getWrongHash() {
 		return wrongs;
 	}
 
@@ -51,9 +51,9 @@ public class QuizStats {
 					newcount++;
 					log.trace("incrementing correct counter for the word "
 							+ qr.getCorrectAnswer());
-					guessed.put(qr.getCorrectAnswer(), newcount);
+					guessed.put(qr, newcount);
 				} else
-					guessed.put(qr.getCorrectAnswer(), 1);
+					guessed.put(qr, 1);
 			} else if (qr.getQuizExitCode().equals(Configuration.WRONGANSWER)) {
 				if (wrongs.containsKey(qr.getCorrectAnswer())) {
 					Integer newcount = (Integer) wrongs.get(qr
@@ -61,9 +61,9 @@ public class QuizStats {
 					newcount++;
 					log.trace("incrementing wrongs counter for the word "
 							+ qr.getCorrectAnswer());
-					wrongs.put(qr.getCorrectAnswer(), newcount);
+					wrongs.put(qr, newcount);
 				} else
-					wrongs.put(qr.getCorrectAnswer(), 1);
+					wrongs.put(qr, 1);
 			}
 
 			counter++;

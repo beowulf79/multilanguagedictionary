@@ -53,10 +53,9 @@ public class Verb extends DictionaryObject implements Serializable, IVerb {
 	
 	public String toString() {
 
-		return " - ID: " + id + " - infinitive: " + infinitive + " - link ID: "
-				+ linkId.toString() + " - note: " + notes + " - section: "
-				+ section.toString() + " - audio size" + audio.length;
-
+		return	super.toString() +
+			"  - infinitive: " + infinitive ;
+		
 	}
 
 

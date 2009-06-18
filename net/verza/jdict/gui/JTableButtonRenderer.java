@@ -35,12 +35,12 @@ public class JTableButtonRenderer extends JButton implements TableCellRenderer {
 		}
 
 		if (value instanceof byte[]) {
-			System.out.println("instance of byte[]");
+			//System.out.println("instance of byte[]");
 			setText("Play Audio");
 		}
 
 		else if ((value instanceof String) && (!value.equals("label"))) {
-			System.out.println("instance of String");
+			//System.out.println("instance of String");
 			String s = (String)value;
 			try {
 				setText(new String(s.getBytes(), "UTF-8"));
@@ -50,7 +50,7 @@ public class JTableButtonRenderer extends JButton implements TableCellRenderer {
 		}
 
 		else {
-			System.out.println("instance of anything else");
+		//	System.out.println("instance of anything else");
 			setText("#");
 		}
 

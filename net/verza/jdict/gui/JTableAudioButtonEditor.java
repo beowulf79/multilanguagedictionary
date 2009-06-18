@@ -14,8 +14,9 @@ public class JTableAudioButtonEditor extends DefaultCellEditor {
 	protected JButton button;
 	private boolean isPushed;
 	private static Logger log;
-	private Object value;
-
+	private byte[] audio;
+	
+	
 	public JTableAudioButtonEditor(JCheckBox checkBox) {
 		super(checkBox);
 		log = Logger.getLogger("net.verza.jdict.gui");
@@ -38,8 +39,8 @@ public class JTableAudioButtonEditor extends DefaultCellEditor {
 			button.setForeground(table.getForeground());
 			button.setBackground(table.getBackground());
 		}
-
-		byte[] audio = (byte[]) value;
+		
+		audio = (byte[]) value;
 		log.trace("playing audio data (size: "+audio.length+" )");
 		try {
 			AudioPlayer player = new AudioPlayer((byte[]) value);
@@ -51,6 +52,7 @@ public class JTableAudioButtonEditor extends DefaultCellEditor {
 		}
 
 		isPushed = true;
+		button.setText("CHRIS");
 		return button;
 	}
 
@@ -58,7 +60,7 @@ public class JTableAudioButtonEditor extends DefaultCellEditor {
 		if (isPushed) {
 		}
 		isPushed = false;
-		return this.value;
+		return audio;
 	}
 
 	public boolean stopCellEditing() {

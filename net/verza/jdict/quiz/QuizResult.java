@@ -13,7 +13,7 @@ public class QuizResult implements Serializable {
 	static final long serialVersionUID = 5760620481868028259L;
 
 	private String date;
-	private String word_ID;
+	private String wordID;
 	private Object question;
 	private String quizExitCode;
 	private String quizType;
@@ -39,7 +39,7 @@ public class QuizResult implements Serializable {
 		date = day + "/" + month + "/" + year + " at the time " + hr + ":" + mn
 				+ ":" + sc;
 		log.trace("setting quiz date to \"" + date);
-		word_ID = null;
+		wordID = null;
 		question = null;
 		quizExitCode = "-1";
 		quizType = null;
@@ -52,7 +52,7 @@ public class QuizResult implements Serializable {
 	 * 
 	 */
 	public QuizResult(String q, String ec, String qt, String ua) {
-		word_ID = q;
+		wordID = q;
 		quizExitCode = ec;
 		quizType = qt;
 		userAnswer = ua;
@@ -65,19 +65,19 @@ public class QuizResult implements Serializable {
 	/*
 	 * 
 	 */
-	public String getWord_ID() {
-		return word_ID;
+	public String getWordID() {
+		return wordID;
 	}
 
 	/*
 	 * 
 	 */
-	public int setWord_IID(String newID) {
+	public int setWordID(String newID) {
 		if (newID.equals(null)) {
 			log.error("Error Setting Word_ID in the statistic Object");
 			return -1;
 		}
-		word_ID = newID;
+		wordID = newID;
 		return 0;
 	}
 
@@ -179,10 +179,27 @@ public class QuizResult implements Serializable {
 
 	public String toString() {
 
-		return " Quiz Run on Date " + date + " Word_ID " + word_ID
+		return " Quiz Run on Date " + date + " Word_ID " + wordID
 				+ " Question " + question + " quizExitCode " + quizExitCode
 				+ " quizType " + quizType + " correct answer " + correctAnswer
 				+ " user answer " + userAnswer;
 	}
+
+	public String export2csv() {
+		return date + "," + wordID + "," + question + "," + quizExitCode + ","
+				+ quizType + "," + userAnswer + "," + correctAnswer + "\n";
+
+	}
+	
+	public void csv2import(String csvString) {
+		String tmp[] = csvString.split(",");
+		date = tmp[0];
+		wordID = tmp[1];
+		question = tmp[2];
+		quizExitCode = tmp[3];
+		quizType = tmp[4];
+		userAnswer = tmp[5];
+		correctAnswer = tmp[6];
+	}	
 
 }

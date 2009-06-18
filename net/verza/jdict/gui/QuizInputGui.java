@@ -59,14 +59,6 @@ public class QuizInputGui extends JPanel {
 	}
 
 	
-	/*
-	 * Costruisce il menu JComboBox di scelta del quiz.
-	 * Ottiene i linguaggi definiti nell'oggetto LanguageConfiguration, e per ciascuno 
-	 * essi se abilitato, ottiene i quiz disponibili e classi che li gestiscono; per ogni quiz verifica
-	 * inoltre che il lingugaggio 'target' sia abilitata; 
-	 */
-	
-	
 	private void initComponents() {
 		
 		frame2 = new JFrame();
@@ -76,10 +68,10 @@ public class QuizInputGui extends JPanel {
 		jpnl2.setLayout(new GridBagLayout());
 		jpnl2.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5 pixels
 																	// gap to
-																	// the
-																	// borders
+		// the borders
 		frame2.getContentPane().add(BorderLayout.CENTER, jpnl2);
-
+		
+	
 		quiz_handler = new QuizInputHandler(); // Set the Action Listener
 
 		c = new GridBagConstraints();
@@ -100,7 +92,7 @@ public class QuizInputGui extends JPanel {
 		// question
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
-		if (this.quiztab.src_lang.equals("audio")) {
+		if (this.quiztab.dstLangCombo.getSelectedItem().toString().equals("audio")) {
 			// question as audio JButton
 			playAudioButton.addActionListener(quiz_handler);
 			playAudioButton.setIcon(new ImageIcon("../images/ascolta.gif"));

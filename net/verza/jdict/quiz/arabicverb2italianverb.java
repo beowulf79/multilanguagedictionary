@@ -3,6 +3,7 @@
  */
 package net.verza.jdict.quiz;
 
+import net.verza.jdict.exceptions.LinkIDException;
 import java.io.FileNotFoundException;
 import net.verza.jdict.exceptions.KeyNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author ChristianVerdelli
  * 
  */
-public class arabicverb2italianverb extends QuizInterface {
+public class arabicverb2italianverb extends QuizAbstract {
 
 	private static Logger log;
 	private Vector<ArabVerb> localKeyArray;
@@ -51,7 +52,7 @@ public class arabicverb2italianverb extends QuizInterface {
 	@SuppressWarnings(value = "unchecked")
 	public int load() throws UnsupportedEncodingException, DatabaseException,
 			FileNotFoundException, DynamicCursorException,
-			KeyNotFoundException, DataNotFoundException {
+			KeyNotFoundException, DataNotFoundException, LinkIDException {
 
 		int number;
 		int dbsize = 0;
@@ -60,9 +61,11 @@ public class arabicverb2italianverb extends QuizInterface {
 
 		localKeyArray = (Vector<ArabVerb>) dit.read("arabicverb").clone();
 		dbsize = localKeyArray.size();
+		//if db size is 0 let's throw an exception key not found
+		if(dbsize == 0) throw new KeyNotFoundException("No record found for the specified key");
 		log.trace("key vector size outside loop " + localKeyArray.size());
 
-		System.out.println("counter " + counter + " iterations " + iterations);
+
 		while (counter < iterations) {
 			quizResult = new QuizResult();
 			log.trace("iteration number " + counter);
@@ -73,8 +76,8 @@ public class arabicverb2italianverb extends QuizInterface {
 			log.trace("key vector size inside loop " + localKeyArray.size());
 			Verb key = localKeyArray.get(number);
 
-			quizResult.setQuizType(Configuration.ARABIC2ENGLISH);
-			quizResult.setWord_IID(key.getid().toString());
+			quizResult.setQuizType("ARABIC2ENGLISH");
+			quizResult.setWordID(key.getid().toString());
 			// The Question String is composed by the Singular plus the comment
 			// if present
 			quizResult.setQuestion((key.getnotes() == null) ? key.getinfinitive()

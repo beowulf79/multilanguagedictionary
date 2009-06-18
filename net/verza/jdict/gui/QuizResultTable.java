@@ -10,13 +10,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JCheckBox;
-
 import net.verza.jdict.quiz.QuizResult;
-
 import org.apache.log4j.Logger;
 import java.awt.GridLayout;
 import java.io.UnsupportedEncodingException;
 import java.util.Vector;
+
+
 
 public class QuizResultTable extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -32,6 +32,10 @@ public class QuizResultTable extends JPanel {
 	Boolean isByteArray; // When the Question is an Audio file this is set
 							// True
 
+	
+
+	
+	 
 	// Costruttore che riceve in ingresso un matrice di parole singolari
 	// plurali in base ottenute dalla ricerca
 	public QuizResultTable(Vector<QuizResult> data)
@@ -52,6 +56,7 @@ public class QuizResultTable extends JPanel {
 		DefaultTableModel dm = new DefaultTableModel();
 		dm.setDataVector(dataValues, headers);
 		table = new JTable(dm);
+
 		if (isByteArray) {
 			table.getColumn("Question").setCellRenderer(
 					new JTableButtonRenderer("Play Audio"));

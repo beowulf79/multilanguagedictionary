@@ -80,7 +80,7 @@ public class SleepyUsersDatabaseReader {
 		
 		while (cursor.getNext(foundKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
 			
-			 UserProfile up = (UserProfile) dataBinding.entryToObject(foundData);
+			UserProfile up = (UserProfile) dataBinding.entryToObject(foundData);
 			userlist[count] = up.getName();
 			log.debug("found user profile " + up.getName());
 			count++;

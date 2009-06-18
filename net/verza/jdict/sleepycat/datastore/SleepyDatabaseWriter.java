@@ -5,7 +5,7 @@ import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
-
+import net.verza.jdict.exceptions.DatabaseImportException;
 import net.verza.jdict.SearchableObject;
 import net.verza.jdict.utils.Utility;
 
@@ -23,7 +23,6 @@ public class SleepyDatabaseWriter {
 	private SleepyDatabase database;
 	private Logger log;
 	private EntryBinding dataBinding;
-
 	
 	public SleepyDatabaseWriter() {
 		log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
@@ -37,7 +36,7 @@ public class SleepyDatabaseWriter {
 		log.trace("called class " + this.getClass().getName() + "wth database "
 				+ db.getDatabase().getDatabaseName());
 		database = db;
-
+		
 	}
 
 	
@@ -76,13 +75,11 @@ public class SleepyDatabaseWriter {
 		OperationStatus op = database.getDatabase().get(null, keyEntry,
 				dataEntry, LockMode.DEFAULT);
 
-		System.out.println("Operation Status  " + op);
-
 		return 0;
 	}
 
 	
-	public int write(String key, SearchableObject data) throws DatabaseException {
+	public void write(String key, SearchableObject data) throws DatabaseException {
 
 		try {
 
@@ -100,40 +97,48 @@ public class SleepyDatabaseWriter {
 			else {
 				log.error("cannot write data into database "
 						+ this.database.getDatabase().getDatabaseName());
-				return -1;
+
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
-		return 0;
 	}
 
 	
-	public int write(String[] keys, SearchableObject[] data) throws DatabaseException {
+	public int write(String[] keys, SearchableObject[] data) throws DatabaseException,
+		DatabaseImportException {
+		
+		int successfullImportedCounter = 0;
 		log.trace("key array size "+keys.length
 						+ " values array size "+data.length);
 		if (keys.length != data.length) {
 			log
 					.error("cannot write into db; keys and values arrays are not of the same size");
-			return -1;
+			throw new DatabaseImportException(" keys and values arrays have different size");
 		}
 		for (int i = 0; i < keys.length; i++) {
+			//when a null key is found it means it has done with the writing.
 			if (keys[i] == null) {
 				log.info("null key found, stop writing");
-				return 0;
+				return -1;
 			}
 			log.debug("calling write method with key " + keys[i]
 					+ "and data size " + data[i].toString());
-			//when a null key is found it means it has done with the writing.
-			
-
 			this.write(keys[i], data[i]);
+			successfullImportedCounter++;
 		}
 		
 		log.info("successfully imported into database "+database.getDatabase().getDatabaseName()
 				+" entries "+keys.length);
-		return 0;
+		
+		return successfullImportedCounter;
+	}
+
+
+	
+	public SleepyDatabase getDatabase() {
+		return database;
 	}
 
 }

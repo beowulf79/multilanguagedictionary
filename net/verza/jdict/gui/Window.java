@@ -9,7 +9,6 @@ package net.verza.jdict.gui;
  *
  */
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,20 +18,24 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 
 import org.apache.log4j.Logger;
 
 
-public class Window extends JFrame {
+public class Window extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 
 	private JFrame frame;
-	private WindowAction handler;
 	private JMenuBar menuBar;
 	private JTabbedPane tabbedPane;
 
+	private final String CREATE_USERPROFILE_STRING = "Create User Profile";
+	private final String SHOW_USERPROFILE_STATISTICS = "Show User Quiz Statistics";
+	private final String IMPORT_STRING = "Import Data";
+	private final String USERPROFILE_IMPORT_STRING = "Import User Profile";
+	private final String USERPROFILE_EXPORT_STRING = "Export User Profile";
+	
 	public static final int FRAME_WIDTH = 400;
 	public static final int FRAME_HEIGHT = 420;
 	public static final int PANEL_WIDHT = 380;
@@ -105,27 +108,30 @@ public class Window extends JFrame {
 
 	public void showGui() {
 		// Display the window.
-		frame.pack();
+		pack();
 		frame.setVisible(true);
 	}
 
 	private JMenuBar createMenuBar() {
 
-		handler = new WindowAction();
-
 		JMenuBar mBar = new JMenuBar();
 
 		JMenu mFile = new JMenu("File");
-		JMenuItem mImport = new JMenuItem("Import");
+		JMenuItem mImport = new JMenuItem(this.IMPORT_STRING);
+		JMenuItem mImportUserProfile = new JMenuItem(this.USERPROFILE_IMPORT_STRING);
+		JMenuItem mExportUserProfile = new JMenuItem(this.USERPROFILE_EXPORT_STRING);
 		mFile.add(mImport);
+		mFile.add(mImportUserProfile);
+		mFile.add(mExportUserProfile);
+		mImport.addActionListener(this);
 
 		JMenu mUser = new JMenu("User");
-		JMenuItem mUserChoose = new JMenuItem("Load User Profile");
-		JMenuItem mUserStats = new JMenuItem("Show User Quiz Statistics");
+		JMenuItem mUserChoose = new JMenuItem(this.CREATE_USERPROFILE_STRING);
+		JMenuItem mUserStats = new JMenuItem(this.SHOW_USERPROFILE_STATISTICS);
 
-		mUserChoose.addActionListener(handler);
+		mUserChoose.addActionListener(this);
 		mUser.add(mUserChoose);
-		mUserStats.addActionListener(handler);
+		mUserStats.addActionListener(this);
 		mUser.add(mUserStats);
 
 		mBar.add(mFile);
@@ -143,32 +149,32 @@ public class Window extends JFrame {
 		return windowManager;
 	}
 
-	public class WindowAction implements ActionListener {
 
-		private String command;
-		JFileChooser fc;
-		File openFile;
-		File saveFile;
-		UserStatsGui statgui;
 
-		public WindowAction() {
+		
 
-			command = new String();
-		}
-
+		
 		public void actionPerformed(ActionEvent evt) {
-			command = evt.getActionCommand();
-
-			if (command.equals("Load User Profile")) {
-
+			String command = evt.getActionCommand();
+			
+			if (command.equals(this.CREATE_USERPROFILE_STRING)) {
 				UserChooseGui.getInstance();
 			}
-			if (command.equals("Show User Quiz Statistics")) {
+			else if (command.equals(this.SHOW_USERPROFILE_STATISTICS)) {
 				UserStatsGui.getInstance();
+			}
+			else if (command.equals(this.IMPORT_STRING)) {
+				DataLoaderGui.getInstance();
+			}
+			else if (command.equals(this.USERPROFILE_IMPORT_STRING)) {
+				DataLoaderGui.getInstance();
+			}
+			else if (command.equals(this.USERPROFILE_EXPORT_STRING)) {
+				DataLoaderGui.getInstance();
 			}
 
 		}
 
-	}
+	
 
 }

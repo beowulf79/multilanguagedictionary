@@ -32,7 +32,15 @@ public class JTableAudioButtonRenderer extends JButton implements
 			setForeground(table.getForeground());
 			setBackground(UIManager.getColor("Button.background"));
 		}
-		setText("Play Audio");
+		//if audio null set Play audio button disable
+		byte[] audio = (byte[]) value;
+		System.out.println("audio lenght "+audio.length);
+		if(audio.length == 0)  {
+			setText("-----");
+			setEnabled(false);
+		}
+		else setText("Play Audio");
+		
 		return this;
 	}
 }

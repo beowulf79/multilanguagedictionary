@@ -76,4 +76,9 @@ public class SleepyDatabaseSecondaryXCursor {
 		return -1;
 	}
 
+	
+	public void close()	throws DatabaseException {
+		this.SecCursor.close();
+	}
+	
 }

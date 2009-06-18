@@ -63,7 +63,7 @@ public class DatabaseReaderTestClass {
 		        wkey = reader.getData();
 
 		        
-		        linkidResolver = new SleepyLinkidResolver();
+		        linkidResolver = new SleepyLinkidResolver(reader);
 		        linkidResolver.setSearchableObject(wkey);
 		        linkidResolver.iterateLinkid();
 		        linkidResolver.toString();
@@ -120,7 +120,8 @@ public class DatabaseReaderTestClass {
 			try{
 				
 					DatabaseEntry theKey = null;
-				 	if(_index.equals("section"))	{
+				 	if(_index.equals("section") ||
+				 		_index.equals("category"))	{
 				 		theKey = new DatabaseEntry();
 				 		StringBinding.stringToEntry(_key,theKey);
 					}else {

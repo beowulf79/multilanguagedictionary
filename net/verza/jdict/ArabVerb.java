@@ -92,13 +92,13 @@ public class ArabVerb extends Verb  implements Serializable {
 	public String toString() {
 		
 
-		System.out.println("---------------------------------------------------------------------");
-		System.out.println("------------   PAST VERB CONJUGATION   -------------");
+		//System.out.println("---------------------------------------------------------------------");
+		//System.out.println("------------   PAST VERB CONJUGATION   -------------");
 		//if (this.past != null) this.pastToString();
 		
 		
-		System.out.println("---------------------------------------------------------------------");
-		System.out.println("------------   PRESENT VERB  CONJUGATION  -------------");
+		//System.out.println("---------------------------------------------------------------------");
+		//System.out.println("------------   PRESENT VERB  CONJUGATION  -------------");
 		//if (this.infinitive !=  null ) this.presentToString(); 
 
 		

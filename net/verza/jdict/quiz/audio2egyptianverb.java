@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * @author ChristianVerdelli
  * 
  */
-public class audio2egyptianverb extends QuizInterface {
+public class audio2egyptianverb extends QuizAbstract {
 
 	private static Logger log;
 	private Vector<ArabVerb> localKeyArray;
@@ -58,6 +58,8 @@ public class audio2egyptianverb extends QuizInterface {
 
 		localKeyArray  = (Vector<ArabVerb>) dit.read(this.language).clone();
 		dbsize = localKeyArray.size();
+		//if db size is 0 let's throw an exception key not found
+		if(dbsize == 0) throw new KeyNotFoundException("No record found for the specified key");
 		log.trace("key vector size outside loop " 
 				+ localKeyArray.size());
 
@@ -72,7 +74,7 @@ public class audio2egyptianverb extends QuizInterface {
 			ArabVerb key = localKeyArray.get(number);
 
 			quizResult.setQuizType(Configuration.AUDIO2EGYPTIAN);
-			quizResult.setWord_IID(key.getid().toString());
+			quizResult.setWordID(key.getid().toString());
 			
 			// The Question String is composed by the audio object
 			quizResult.setQuestion(key.getaudio());

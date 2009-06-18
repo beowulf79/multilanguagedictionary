@@ -8,10 +8,7 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Vector;
-import net.verza.jdict.properties.LanguageConfigurationClassDescriptor;
-import net.verza.jdict.properties.LanguagesConfiguration;
 import net.verza.jdict.dictionary.Dictionary;
 import net.verza.jdict.dictionary.Factory;
 import net.verza.jdict.exceptions.*;
@@ -25,122 +22,81 @@ import com.sleepycat.je.DatabaseException;
  * @author Christian Verdelli
  */
 
-public class DictTabGui extends JPanel {
-	
+public class DictTabGui extends JPanel implements ActionListener {
+
+	public static final String NOT_SELECTED_STRING = "---- Nothing Selected ----";
 	private static final long serialVersionUID = 1L;
 	private static Logger log;
 	private static DictTabGui instance = null;
 	private Dictionary dit;
-	private DictTabActions handler;
 	private GridBagConstraints c;
 	private JFrame frame;
-	private JComboBox languageSelection;
+	private JComboBox srcLangCombo, dstLangCombo;
 	private JTextField jtxf1;
 	private static String[] languagesArray;
-	Graphics g;
-	
+	private Graphics g;
+	private HashMap<String, String[]> translations;
+
 	public DictTabGui() {
 		super();
 
 		log = Logger.getLogger("net.verza.jdict.gui");
 		log.trace("called class " + this.getClass().getName());
-		
-		handler = new DictTabActions(); // initialize events handler for this class
-		buildLanguageMenu(); // builds the JComboBox 
+		translations = new HashMap<String, String[]>();
 		initComponents(); // initialize components graphics
 		PropertyConfigurator.configure(Configuration.LOG4JCONF);
-		
-    	
+
 	}
 
-	public void paintComponent(Graphics _g)
-    {
-	  g = _g;
-      super.paintComponent(g);
+	public void paintComponent(Graphics _g) {
+		g = _g;
+		super.paintComponent(g);
 
-    }
-	
+	}
+
 	/*
-	 * Costruisce il menu JComboBox di scelta dei linguaggi.
-	 * Ottiene i linguaggi definiti nell'oggetto LanguageConfiguration, e per ciascuno di 
-	 * essi se abilitato, ottiene le traduzioni disponibili;  per ogni traduzioni disponibile
-	 * controlla che sia abilitata; in caso positivo inserisce linguaggio-> traduzione nel
-	 * menu JComboBox di scelta. 
+	 * Costruisce la mappa con i linguaggi enabled a per ogni linguaggio la
+	 * lista dei linguaggi per i quali è disponibile la traduzioneJ.
+	 * 
 	 */
-	private void buildLanguageMenu()	{	
-		log.trace("inside function buildLanguageMenu");
-		String[] tmp = new String[30];
-		HashMap<String, LanguageConfigurationClassDescriptor> ldesc = LanguagesConfiguration
-															.getLanguageConfigurationBlock();
-		LanguageConfigurationClassDescriptor sub = null;
-		
-		int ext_counter=0;
-		for (Iterator<String> it = ldesc.keySet().iterator(); it.hasNext();) {
-			sub = (LanguageConfigurationClassDescriptor) ldesc.get(it
-					.next());
-		
-			String nickname = sub.getLanguageNickname();
-			String type = sub.getType();
-			log.debug("languge " + nickname + " type " + type);
-		
-			// check if the language is enabled , if not skip to the next
-			// language
-			if (!sub.getIsEnabled()) {
-				log.info("language " + nickname
-						+" type " + type
-						+ " not enabled, skipping to next language");
-				continue;
-			}
-			//read the property in the configuration file
-			String[] translation = sub.getTranslations();
-			// check if each  translation are enabled; if so add them to the JComboBox
-			for(int int_counter=0;int_counter<translation.length;int_counter++)	{
-				LanguageConfigurationClassDescriptor transl = 
-					LanguagesConfiguration.getLanguageMainConfigNode(translation[int_counter]+type);
-				log.debug("getting configuration of the language "+translation[int_counter]+type);
-				if(transl.getIsEnabled())	{
-					log.trace("adding to JcomboBox language "+translation[int_counter]
-				                                             + type);
-					tmp[ext_counter++] =  nickname 
-											+ type
-											+"->"
-											+ transl.getLanguageNickname() 
-											+ transl.getType();
-				}	
-			}
-		}
+	private void buildLanguageMenu() {
 
-		languagesArray = new String[ext_counter];
-        System.arraycopy(tmp, 0, languagesArray, 0,
-        		ext_counter);
-	}
-
-	
-	private void initComponents() {
-
-		setLayout(new GridBagLayout());
-		setBorder(new EmptyBorder(new Insets(5, 5, 5, 5))); // 5 pixels gap to
-															// the borders
-
-		c = new GridBagConstraints(); // add some space between components to
-										// avoid clutter
-		c.insets = new Insets(2, 2, 2, 2); // anchor all components WEST
-		c.anchor = GridBagConstraints.WEST;
-		c.weightx = 1.0;
-		c.weighty = 0.1;
+		translations = LanguageSelection.buildLanguageMenu();
 
 		// add JComboBox to choose the languages of the lookup
 		c.gridx = 0;
 		c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
-		c.gridwidth = 2;
-		languageSelection = new JComboBox(languagesArray);
-		languageSelection.setSelectedIndex(0);
-		add(languageSelection, c);
+		c.gridwidth = 1;
+		add(new JLabel("Select language to lookup"), c);
+		c.gridx = 1;
+		srcLangCombo = new JComboBox(translations.keySet().toArray());
+		srcLangCombo.setActionCommand("src_lang_selection_change");
+		srcLangCombo.addItem(NOT_SELECTED_STRING);
+		srcLangCombo.setSelectedIndex(srcLangCombo.getItemCount() - 1);
+		srcLangCombo.addActionListener(this);
+		add(srcLangCombo, c);
+
+	}
+
+	private void initComponents() {
+
+		setLayout(new GridBagLayout());
+		setBorder(new EmptyBorder(new Insets(5, 5, 5, 5))); // 5 pixels gap to
+		// the borders
+
+		c = new GridBagConstraints(); // add some space between components to
+		// avoid clutter
+		c.insets = new Insets(2, 2, 2, 2); // anchor all components WEST
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 1.0;
+		c.weighty = 0.1;
+
+		buildLanguageMenu(); // builds the JComboBox
 
 		// add JTextfield for the user input
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 2;
 		c.gridheight = 1;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -151,17 +107,16 @@ public class DictTabGui extends JPanel {
 		c.anchor = GridBagConstraints.EAST;
 		c.fill = GridBagConstraints.NONE;
 		c.gridx = 2;
-		c.gridy = 1;
+		c.gridy = 3;
 		c.gridwidth = 1;
 		JButton jbt1 = new JButton("search");
-		jbt1.addActionListener(handler);
+		jbt1.addActionListener(this);
 		add(jbt1, c);
 
 		setVisible(true);
 
 	}
 
-	
 	/*
 	 * Returns pointer to this instance; SingleTon Pattern
 	 */
@@ -172,81 +127,106 @@ public class DictTabGui extends JPanel {
 		return instance;
 	}
 
-	
-	public class DictTabActions implements ActionListener {
+	public void actionPerformed(ActionEvent evt) {
 
-		JPanel jpnl;
+		JPanel jpnl = new JPanel();
+		String command = evt.getActionCommand();
 
-		public DictTabActions() {
-			jpnl = new JPanel();
+		// add JComboBox to choose the languages of the lookup
+		if (command.equals("src_lang_selection_change")) {
+			JLabel dst = new JLabel("select translation to resolve");
+			if (this.srcLangCombo.getSelectedItem().equals(NOT_SELECTED_STRING))	{
+				remove(this.dstLangCombo);
+				remove(dst);	
+			}	else {
+				if(this.dstLangCombo != null)	remove(this.dstLangCombo);
+				c.gridx = 0;
+				c.gridy = 1;
+				c.fill = GridBagConstraints.BOTH;
+				c.gridwidth = 1;
+				add(dst, c);
+				c.gridx = 1;
+				this.dstLangCombo = new JComboBox(this.translations
+						.get(this.srcLangCombo.getSelectedItem()));
+				dstLangCombo.addItem(NOT_SELECTED_STRING);
+				dstLangCombo.setSelectedIndex(dstLangCombo.getItemCount() - 1);
+				add(this.dstLangCombo, c);
+			}
 		}
 
-		public void actionPerformed(ActionEvent evt) {
-			
+		else if (command.equals("search")) {
+			Vector<SearchableObject> objs = new Vector<SearchableObject>();
+
 			try {
-				
-				String[] tmp = new String((String)languageSelection.getSelectedItem()).split("->");
-				String src_lang = tmp[0];
-				String dst_lang = tmp[1];
 				dit = Factory.getDictionary();
-				Vector<SearchableObject> objs = dit.read(src_lang, 
-														new String(jtxf1.getText().getBytes("UTF-8")), // JText string to look for
-														dst_lang);
-				if(objs == null) {
-					JOptionPane.showMessageDialog(frame,"data not found in the dictionary");
+
+				if (this.dstLangCombo.getSelectedItem().toString().indexOf("audio") != -1)
+					objs.add(dit.read(this.srcLangCombo.getSelectedItem()
+							.toString(), jtxf1.getText().toString()));
+
+				else
+					objs = dit.read((String) srcLangCombo.getSelectedItem(),
+							new String(jtxf1.getText().getBytes("UTF-8")), 
+							(String) dstLangCombo.getSelectedItem());
+
+				if (objs == null) {
+					JOptionPane.showMessageDialog(frame,
+							"data not found in the dictionary");
 					return;
 				}
-				
+
 				if (jpnl != null) {
 					remove(jpnl);
 					jpnl = new JPanel();
 				}
 				int i;
-				for ( i = 0; i < objs.size(); i++) {
+				for (i = 0; i < objs.size(); i++) {
 					SearchableObject sObj = objs.get(i);
-					if(sObj == null) continue;
+					if (sObj == null)
+						continue;
 					jpnl.add(sObj.getTable());
 					jpnl.add(new JSeparator());
 				}
-				
+
 				// Add the JPanel into the Frame
 				c.gridx = 0;
-				c.gridy = 3;
+				c.gridy = 4;
 				c.weightx = 1.0;
 				c.weighty = 1.0;
+				c.gridwidth = 2;
 				c.fill = GridBagConstraints.BOTH;
-				add(jpnl,c);
-				
+				add(jpnl, c);
+
 			} catch (UnsupportedEncodingException e) {
 				log.error("UnsupportedEncodingException: " + e.getMessage());
+				JOptionPane.showMessageDialog(frame, e.getMessage());
 				return;
 			} catch (DatabaseException e) {
+				JOptionPane.showMessageDialog(frame, e.getMessage());
 				log.error("DatabaseException: " + e.getMessage());
 				return;
 			} catch (DataNotFoundException e) {
 				log.warn("not found in the directory");
-				JOptionPane.showMessageDialog(frame,
-						e.getMessage());
+				JOptionPane.showMessageDialog(frame, e.getMessage());
 				return;
 			} catch (DynamicCursorException e) {
+				JOptionPane.showMessageDialog(frame, e.getMessage());
 				log.error("DynamicCursorException: " + e.getMessage());
 				return;
 			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(frame, e.getMessage());
 				log.error("DynamicCursorException: " + e.getMessage());
 				return;
 			} catch (KeyNotFoundException e) {
+				JOptionPane.showMessageDialog(frame, e.getMessage());
 				log.error("DynamicCursorException: " + e.getMessage());
 				return;
+			} catch (LinkIDException e) {
+				JOptionPane.showMessageDialog(frame, e.getMessage());
+				log.error("LinkIDException: " + e.getMessage());
+				return;
 			}
-			
-			
+
+		}
 	}
-
-	}
-	
-
-
-	
-	
-
 }

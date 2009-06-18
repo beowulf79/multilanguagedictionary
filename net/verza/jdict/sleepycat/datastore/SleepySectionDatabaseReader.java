@@ -2,20 +2,18 @@ package net.verza.jdict.sleepycat.datastore;
 
 import com.sleepycat.je.Cursor;
 import com.sleepycat.je.CursorConfig;
-import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
-import com.sleepycat.je.SecondaryDatabase;
 import org.apache.log4j.Logger;
 import java.io.UnsupportedEncodingException;
 
 public class SleepySectionDatabaseReader {
 
 	private SleepySectionDatabase dbHandler;
-	private Database sectionDB;
-	private SecondaryDatabase sectionName_Secondary_index_DB;
+	//private Database database;
+	//private SecondaryDatabase sectionName_Secondary_index_Database;
 	private CursorConfig config;
 	private Cursor cursor;
 	private int cursorEntriesCounter;
@@ -29,12 +27,9 @@ public class SleepySectionDatabaseReader {
 		this.log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
 		this.log.trace("called class " + this.getClass().getName());
 		this.dbHandler = db;
-		this.sectionDB = dbHandler.getSectionDatabase();
-		this.sectionName_Secondary_index_DB = dbHandler
-				.getSectionName_SecondaryDatabase();
 		this.config = new CursorConfig();
 		this.config.setReadUncommitted(true);
-		this.cursor = sectionDB.openCursor(null, null);
+		this.openCursors();
 		this.countDatabaseEntry();
 		this.keys = new String[cursorEntriesCounter + 1];
 		this.data = new String[cursorEntriesCounter + 1];
@@ -57,7 +52,8 @@ public class SleepySectionDatabaseReader {
 
 		// looking for the key on the primary database (section ID)
 		log.trace("looking section database using key " + key);
-		if (sectionDB.get(null, searchKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+		if (this.dbHandler.getSectionDatabase().get(null, searchKey, foundData,
+				LockMode.DEFAULT) == OperationStatus.SUCCESS) {
 			log.info("found section by Index: "
 					+ new String(foundData.getData(), "UTF-8"));
 			return new String(foundData.getData(), "UTF-8");
@@ -65,8 +61,8 @@ public class SleepySectionDatabaseReader {
 
 		// looking for the key on the secondary database index (section Name)
 		log.trace("using section name as key");
-		if (sectionName_Secondary_index_DB.get(null, searchKey, foundKey,
-				foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+		if (this.dbHandler.getSectionName_SecondaryDatabase().get(null,
+				searchKey, foundKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
 			log.info("found section by Name: "
 					+ new String(foundKey.getData(), "UTF-8"));
 			return new String(foundKey.getData(), "UTF-8");
@@ -84,19 +80,11 @@ public class SleepySectionDatabaseReader {
 
 		// Position the cursor on the first entry
 		if ((cursor.getFirst(foundKey, foundData, LockMode.DEFAULT)) == OperationStatus.SUCCESS) {
-			// log.debug("foundData.getData()" +new String(foundData.getData(),
-			// "UTF-8"));
-			// log.debug("foundKey.getData()" +new String(foundKey.getData(),
-			// "UTF-8"));
 			keys[0] = (new String(foundKey.getData(), "UTF-8"));
 			data[0] = (new String(foundData.getData(), "UTF-8"));
 
 			int count = 1;
 			while ((cursor.getNext(foundKey, foundData, LockMode.DEFAULT)) == OperationStatus.SUCCESS) {
-				// log.debug("foundData.getData()" +new
-				// String(foundData.getData(), "UTF-8"));
-				// log.debug("foundKey.getData()" +new
-				// String(foundKey.getData(), "UTF-8"));
 				keys[count] = (new String(foundKey.getData(), "UTF-8"));
 				data[count] = (new String(foundData.getData(), "UTF-8"));
 				count++;
@@ -132,4 +120,13 @@ public class SleepySectionDatabaseReader {
 		return this.data;
 	}
 
+	public void closeCursors() throws DatabaseException {
+		this.cursor.close();
+
+	}
+
+	public void openCursors()	throws DatabaseException	{
+		this.cursor = this.dbHandler.getSectionDatabase().openCursor(null, null);
+	}
+	
 }

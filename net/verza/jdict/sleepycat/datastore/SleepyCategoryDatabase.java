@@ -6,35 +6,29 @@ package net.verza.jdict.sleepycat.datastore;
  */
 
 import java.io.FileNotFoundException;
-import com.sleepycat.bind.serial.StoredClassCatalog;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.SecondaryDatabase;
 import com.sleepycat.je.SecondaryConfig;
 import com.sleepycat.je.DatabaseException;
 import net.verza.jdict.sleepycat.datastore.indexes.SleepyCategoryDatabaseIndexKeyCreator;
+import org.apache.log4j.Logger;
 
 /**
- * SampleDatabase defines the storage containers, indices and foreign keys for
- * the sample database.
  * 
- * @author Mark Hayes
+ * 
+ * @author
  */
 public class SleepyCategoryDatabase {
 
 	// Primary Database
-	private static final String CLASS_CATALOG = "java_class_catalog";
 	private static final String CATEGORY_TABLE_STORE = "categoryTable";
-	private static final String CATEGORY_STRING = "category_string";
-
-	private StoredClassCatalog javaCatalog;
-
+	private static final String CATEGORY_SECONDARY_TABLE = "category_string";
 	private SleepyEnvironment env;
-
-	// This holds the serialized class
-	private Database catalogDb;
-
-	private Database categoryDB;
+	private Database categoryDatabase;
+	private DatabaseConfig dbConfig;
+	private SecondaryConfig SecConfig;
+	private Logger log;
 
 	// this Secondary database is used as index to perform
 	// lookup based on the Category String
@@ -43,65 +37,72 @@ public class SleepyCategoryDatabase {
 	/**
 	 * Open all storage containers, indices, and catalogs.
 	 */
-	public SleepyCategoryDatabase(SleepyEnvironment env)
-			throws DatabaseException, FileNotFoundException {
+	public SleepyCategoryDatabase() throws DatabaseException,
+			FileNotFoundException {
+
+		log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
+		log.trace("called class " + this.getClass().getName());
 
 		// Set the Berkeley DB config for opening all stores.
-		DatabaseConfig dbConfig = new DatabaseConfig();
+		dbConfig = new DatabaseConfig();
 		dbConfig.setTransactional(true);
 		dbConfig.setAllowCreate(true);
 
-		categoryDB = env.getEnvironment().openDatabase(null,
-				CATEGORY_TABLE_STORE, dbConfig);
-
-		SecondaryConfig SecConfig = new SecondaryConfig();
+		SecConfig = new SecondaryConfig();
 		SecConfig.setTransactional(true);
 		SecConfig.setAllowCreate(true); // Create the database if it does not
-										// already exist.
+		// already exist.
 		SecConfig.setAllowPopulate(true); // Allow autopopulate
 		SecConfig.setSortedDuplicates(true);
 
 		SleepyCategoryDatabaseIndexKeyCreator categoryName_Index = new SleepyCategoryDatabaseIndexKeyCreator(
 				this);
 		SecConfig.setKeyCreator(categoryName_Index);
-		categoryName_SecondaryDatabse = env.getEnvironment()
-				.openSecondaryDatabase(null, CATEGORY_STRING, categoryDB,
-						SecConfig);
-		/*
-		 * Create the Serial class catalog. This holds the serialized class
-		 * format for all database records of serial format.
-		 */
-		catalogDb = env.getEnvironment().openDatabase(null, CLASS_CATALOG,
-				dbConfig);
-		javaCatalog = new StoredClassCatalog(catalogDb);
 
-	}
+		this.open();
 
-	/**
-	 * Return the class catalog.
-	 */
-	public final StoredClassCatalog getClassCatalog() {
-
-		return javaCatalog;
 	}
 
 	/**
 	 * Return the part storage container.
 	 */
 	public final Database getCategoryDatabase() {
-		return this.categoryDB;
+		return this.categoryDatabase;
 	}
 
 	public final SecondaryDatabase getCategoryName_SecondaryDatabase() {
 		return this.categoryName_SecondaryDatabse;
 	}
 
-	/**
-	 * Close all databases and the environment.
-	 */
-	public void close() throws DatabaseException {
-		categoryDB.close();
-		javaCatalog.close();
-		env.close();
+	public void open() throws DatabaseException, FileNotFoundException {
+		log.debug("opening category database");
+
+		env = SleepyEnvironment.getInstance(); // Instance to the Singleton
+												// class the manage the
+												// environment
+
+		categoryDatabase = env.getEnvironment("default").openDatabase(null,
+				CATEGORY_TABLE_STORE, dbConfig);
+
+		categoryName_SecondaryDatabse = env.getEnvironment("default")
+				.openSecondaryDatabase(null, CATEGORY_SECONDARY_TABLE, categoryDatabase,
+						SecConfig);
+
+
 	}
+
+	public void close() throws DatabaseException {
+		this.categoryDatabase.close();
+		this.categoryName_SecondaryDatabse.close();
+	}
+
+	public long flushDatabase() throws DatabaseException {
+		log.info("flushing category database");
+		env.getEnvironment(CATEGORY_SECONDARY_TABLE).truncateDatabase(null,
+				CATEGORY_SECONDARY_TABLE, false);
+		return env.getEnvironment(CATEGORY_TABLE_STORE).truncateDatabase(null,
+				CATEGORY_TABLE_STORE, false);
+
+	}
+
 }

@@ -21,15 +21,18 @@ import net.verza.jdict.SearchableObject;
 import net.verza.jdict.dataloaders.ExcelLoader;
 import net.verza.jdict.exceptions.KeyNotFoundException;
 import net.verza.jdict.exceptions.LabelNotFoundException;
+import net.verza.jdict.exceptions.DatabaseImportException;
 import net.verza.jdict.properties.LanguageConfigurationClassDescriptor;
 import net.verza.jdict.properties.LanguageFieldConfigurationClassDescritor;
 import net.verza.jdict.properties.LanguagesConfiguration;
 import net.verza.jdict.properties.PropertiesLoader;
 import com.sleepycat.je.DatabaseException;
+import net.verza.jdict.dataloaders.LoaderOptionsStore;
+
 
 public final class SleepyDatabaseLoader {
 
-	private String pathFile;
+	private LoaderOptionsStore optionObj;
 	private static Logger log;
 	private AudioFileLoader audioLoader;
 	private Class<?> IClass;
@@ -45,7 +48,8 @@ public final class SleepyDatabaseLoader {
 	private Class<?>[] methodTypes;
 	private List<String> translations;
 	private String excel_sheet;
-
+	private HashMap<String,Integer> importInfo;
+	
 	
 	public SleepyDatabaseLoader() {
 		log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
@@ -54,82 +58,96 @@ public final class SleepyDatabaseLoader {
 		this.factory = SleepyFactory.getInstance();
 		this.translations = new Vector<String>();
 		this.rowsNumber = 0;
+		this.importInfo = new HashMap<String,Integer>();
 	}
 
-	public void setFileName(String newPath) {
-		pathFile = newPath;
-		dataloader = new ExcelLoader(this.pathFile);
+	public void setOptionObject(LoaderOptionsStore _obj) {
+		this.optionObj = _obj;
 	}
 
-	public void loadDatabases() throws DatabaseException,
+
+	public HashMap<String,Integer> loadDatabases() throws DatabaseException,
 			LabelNotFoundException, BiffException, IOException,
-			KeyNotFoundException {
+			KeyNotFoundException, DatabaseImportException {
 
+		dataloader = new ExcelLoader(this.optionObj.getInputFile());
 		this.iterateLanguages();
+		
+		return this.importInfo;
 
 	}
 
 	@SuppressWarnings("unchecked")
 	private void iterateLanguages() throws DatabaseException,
 			LabelNotFoundException, BiffException, IOException,
-			KeyNotFoundException {
+			KeyNotFoundException, DatabaseImportException {
 
 		try {
 
-			HashMap<String, LanguageConfigurationClassDescriptor> ldesc = LanguagesConfiguration
-					.getLanguageConfigurationBlock();
-			LanguageConfigurationClassDescriptor sub = null;
+			HashMap lang = this.optionObj.getLabels();
+			Iterator it = lang.keySet().iterator();
+			while (it.hasNext()) {
+				String key = (String) it.next();
 
-			for (Iterator<String> it = ldesc.keySet().iterator(); it.hasNext();) {
-				sub = (LanguageConfigurationClassDescriptor) ldesc.get(it
-						.next());
+				if ((Boolean) lang.get(key)) {
+					
+					log.info("importing language " + key);
+					LanguageConfigurationClassDescriptor ldesc = LanguagesConfiguration
+							.getLanguageMainConfigNode(key);
 
-				String nickname = sub.getLanguageNickname();
-				String type = sub.getType();
-				
-				log.debug("languge " + nickname 
-							+ " type " + type);
+					String nickname = ldesc.getLanguageNickname();
+					String type = ldesc.getType();
 
-				// check if the language is enabled , if not skip to the next
-				// language
-				if (!sub.getIsEnabled()) {
-					log.info("language " + nickname
-							+ " not enabled, skipping to next language");
-					continue;
+					log.debug("languge " + nickname + " type " + type);
+
+					// check if the language is enabled , if not skip to the next
+					// language
+					if (!ldesc.getIsEnabled()) {
+						log.info("language " + nickname
+								+ " not enabled, skipping to next language");
+						continue;
+					}
+
+					writer = new SleepyDatabaseWriter(factory	.getDatabase(nickname + type)					);
+					writer.setDataBinding(SleepyBinding.getDataBinding());
+					
+					// if rebuild option was selected let's flush the database
+					if(this.optionObj.getTypeOfImport().equals("rebuild"))	{
+						//before flushing the database it's required to close it
+						this.
+						factory.getDatabase(nickname + type).close();
+						factory.getDatabase(nickname + type).flushDatabase();
+						factory.getDatabase(nickname + type).open();
+
+					}
+					
+					String classname = ldesc.getClassQualifiedName();
+					log.debug("instantiating class: " + classname);
+					IClass = Class.forName(classname);
+					ClassConstructorTypes = new Class[] {};
+					IConstructor = IClass.getConstructor(ClassConstructorTypes);
+
+					rowsNumber = new Integer(PropertiesLoader
+							.getProperty("maxnumber"));
+					key_array = new String[rowsNumber];
+					class_array = (SearchableObject[]) Array.newInstance(
+							IClass, rowsNumber);
+
+					for (int i = 0; i < rowsNumber; i++) {
+						class_array[i] = (SearchableObject) IConstructor
+								.newInstance();
+					}
+
+					excel_sheet = ldesc.getExcelSheet();
+					log.trace("setting sheet name to " + excel_sheet);
+					dataloader.setSheetName(excel_sheet);
+
+					this.iterateLabels(nickname + type, type);
+
+					int count = writer.write(key_array, class_array);
+					this.importInfo.put(key, count);
+					
 				}
-
-				// translations = (List<String>) sub.getList("translation");
-				// log.info("available translations " + translations);
-
-				writer = new SleepyDatabaseWriter(factory.getDatabase(nickname
-						+ type));
-				writer.setDataBinding(SleepyBinding.getDataBinding());
-
-				String classname = sub.getClassQualifiedName();
-				log.debug("instantiating class: " + classname);
-				IClass = Class.forName(classname);
-				ClassConstructorTypes = new Class[] {};
-				IConstructor = IClass.getConstructor(ClassConstructorTypes);
-
-				rowsNumber = new Integer(PropertiesLoader
-						.getProperty("maxnumber"));
-				key_array = new String[rowsNumber];
-				class_array = (SearchableObject[]) Array.newInstance(IClass,
-						rowsNumber);
-
-				for (int i = 0; i < rowsNumber; i++) {
-					class_array[i] = (SearchableObject) IConstructor
-							.newInstance();
-				}
-
-				excel_sheet = sub.getExcelSheet();
-				log.trace("setting sheet name to " + excel_sheet);
-				dataloader.setSheetName(excel_sheet);
-				
-				
-				this.iterateLabels(nickname + type, type);
-
-				writer.write(key_array, class_array);
 
 			}
 
@@ -271,10 +289,11 @@ public final class SleepyDatabaseLoader {
 
 					// resizing keys and data arrays to the size of primary keys
 					// read
-					log.info("resizing keys and data arrays to the size of primary keys read");
+					log
+							.info("resizing keys and data arrays to the size of primary keys read");
 					int resizeLenght = data.size();
-					System.out.println("resizeLenght "+resizeLenght
-										+"this.key_array "+this.key_array.length);
+					System.out.println("resizeLenght " + resizeLenght
+							+ "this.key_array " + this.key_array.length);
 					String newKeysArray[] = new String[resizeLenght];
 					System.arraycopy(this.key_array, 0, newKeysArray, 0,
 							resizeLenght);
@@ -293,7 +312,8 @@ public final class SleepyDatabaseLoader {
 				// load the audio stream
 				if (loadaudio) {
 					String audiofile = value.concat(".mp3");
-					"/Users/ChristianVerdelli/documents/workspace/jdict/audio/italian/".concat(audiofile);
+					"/Users/ChristianVerdelli/documents/workspace/jdict/audio/italian/"
+							.concat(audiofile);
 					if (audioLoader.get(audiofile) != null) {
 						log.debug("setting audio stream with method "
 								+ audioMethod2Call.getName() + " with value  "

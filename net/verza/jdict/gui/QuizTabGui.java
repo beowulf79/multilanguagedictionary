@@ -7,38 +7,36 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import net.verza.jdict.UserProfile;
 import net.verza.jdict.dictionary.Dictionary;
 import net.verza.jdict.dictionary.Factory;
 import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
 import net.verza.jdict.exceptions.KeyNotFoundException;
-import net.verza.jdict.properties.LanguageConfigurationClassDescriptor;
-import net.verza.jdict.properties.LanguagesConfiguration;
-import net.verza.jdict.quiz.QuizInterface;
+import net.verza.jdict.exceptions.LinkIDException;
+import net.verza.jdict.quiz.QuizAbstract;
 import org.apache.log4j.Logger;
 import com.sleepycat.je.DatabaseException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * @author Christian Verdelli
  */
 
-public class QuizTabGui extends JPanel {
+public class QuizTabGui extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	public static final int DEFAULT_ARGUMENT_INDEX = 0;
 	public static final int DEFAULT_ITERATIONS = 10;
 	public static final String NOT_SELECTED_STRING = "---- Nothing Selected ----";
+	public static final String TYPE_SELECTION_COMBO_ACTION_STRING = "typesel";
 	public static Logger log;
 	public static String[] languageArray;
 
 	public static QuizTabGui instance = null;
-	public QuizTabActions handler;
+	public QuizTabGuiWordsCounter wcounter;
 
 	// Graphic COMPONENTS instance variable
 	public GridBagConstraints c;
@@ -53,10 +51,12 @@ public class QuizTabGui extends JPanel {
 	public JComboBox categorySelectionJComboBox;
 	public JComboBox sectionSelectionJComboBox;
 	public JSpinner iterationJSpinner;
-	public QuizInterface quiz;
+	public QuizAbstract quiz;
 	public Dictionary dit;
 	public int iterations;
-	public String src_lang,dst_lang;
+	public String src_lang, dst_lang;
+	private HashMap<String, String[]> translations;
+	public JComboBox srcLangCombo, dstLangCombo;
 
 	public QuizTabGui() {
 
@@ -65,9 +65,11 @@ public class QuizTabGui extends JPanel {
 		log.trace("called class " + this.getClass().getName());
 		quiz = null;
 		instance = this;
-		
+
 		try {
 			dit = Factory.getDictionary();
+			wcounter = new QuizTabGuiWordsCounter();
+
 		} catch (DatabaseException e) {
 			log.error(e.toString());
 		} catch (FileNotFoundException e) {
@@ -80,136 +82,54 @@ public class QuizTabGui extends JPanel {
 			e.printStackTrace();
 		}
 
-		handler = new QuizTabActions(); // initialize events handler for this class
-		buildQuizMenu(); // builds the JComboBox 						
 		initComponents(); // initialize components graphich
 
 	}
 
-	
 	/*
-	 * Costruisce il menu JComboBox di scelta del quiz.
-	 * Ottiene i linguaggi definiti nell'oggetto LanguageConfiguration, e per ciascuno 
-	 * essi se abilitato, ottiene i quiz disponibili e classi che li gestiscono; per ogni quiz verifica
-	 * inoltre che il lingugaggio 'target' sia abilitata; 
+	 * Costruisce il menu JComboBox di scelta del quiz. Ottiene i linguaggi
+	 * definiti nell'oggetto LanguageConfiguration, e per ciascuno essi se
+	 * abilitato, ottiene i quiz disponibili e classi che li gestiscono; per
+	 * ogni quiz verifica inoltre che il lingugaggio 'target' sia abilitata;
 	 */
-	private void buildQuizMenu()	{	
-		log.trace("inside function buildLanguageMenu");
-		String[] tmp = new String[40];
-		HashMap<String, LanguageConfigurationClassDescriptor> ldesc = LanguagesConfiguration
-															.getLanguageConfigurationBlock();
-		LanguageConfigurationClassDescriptor sub = null;
-		
-		int ext_counter=0;
-		for (Iterator<String> it = ldesc.keySet().iterator(); it.hasNext();) {
-			sub = (LanguageConfigurationClassDescriptor) ldesc.get(it
-					.next());
-		
-			String nickname = sub.getLanguageNickname();
-			String type = sub.getType();
-			log.debug("languge " + nickname + " type " + type);
-		
-			// check if the language is enabled , if not skip to the next
-			// language
-			if (!sub.getIsEnabled()) {
-				log.info("language " + nickname
-						+" type " + type
-						+ " not enabled, skipping to next language");
-				continue;
-			}
-			//if audio is enabled add "audio2language" quiz to the JComboBox
-			if(sub.getIsAudioEnabled())	{
-				log.info("audio enabled for the language, adding quiz audio2"
-							+nickname);
-				tmp[ext_counter++] = "audio" 
-									+"2"
-									+nickname
-									+""
-									+type;
-			}
-			
-			//read the property in the configuration file
-			String[] translation = sub.getTranslations();
-			// check if each  translation are enabled; if so add them to the JComboBox
-			for(int int_counter=0;int_counter<translation.length;int_counter++)	{
-				LanguageConfigurationClassDescriptor transl = 
-					LanguagesConfiguration.getLanguageMainConfigNode(translation[int_counter]+type);
-				log.debug("getting configuration of the language "+translation[int_counter]+type);
-				if(transl.getIsEnabled())	{
-					log.trace("adding to JcomboBox language "+translation[int_counter]
-				                                             + type);
-					tmp[ext_counter++] =  nickname 
-											+ type
-											+"2"
-											+ transl.getLanguageNickname() 
-											+ transl.getType();
-				}	
-			}
-		}
+	private void buildQuizMenu() {
 
-		languageArray = new String[ext_counter];
-        System.arraycopy(tmp, 0, languageArray, 0,
-        		ext_counter);
+		translations = LanguageSelection.buildLanguageMenu();
+
+		// add JComboBox to choose the languages of the lookup
+		c.gridx = 0;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.gridheight = 1;
+		c.gridwidth = 1;
+		add(new JLabel("select question's lookup language "), c);
+		c.gridx = 2;
+		srcLangCombo = new JComboBox(translations.keySet().toArray());
+		srcLangCombo.setActionCommand("src_lang_selection_change");
+		srcLangCombo.addItem(NOT_SELECTED_STRING);
+		srcLangCombo.setSelectedIndex(srcLangCombo.getItemCount() - 1);
+		srcLangCombo.addActionListener(this);
+		add(srcLangCombo, c);
 	}
-	
-	
+
 	private void initComponents() {
 
 		setLayout(new GridBagLayout());
 		setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5 pixels gap to
-															// the borders
+		// the borders
 
 		c = new GridBagConstraints();
 		c.insets = new Insets(2, 2, 2, 2); // add some space between components
-											// to avoid clutter
+		// to avoid clutter
 		c.anchor = GridBagConstraints.WEST; // anchor all components WEST
 		c.weightx = 0.1; // all components use vertical available space
 		c.weighty = 0.1; // all components use horizontal available space
 
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridheight = 1;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.NONE;
-		jlb1 = new JLabel("Type");
-		add(jlb1, c);
-
 		c.gridx = 2;
-		quizTypeSelectionJComboBox = new JComboBox(languageArray);
-		quizTypeSelectionJComboBox.addActionListener(handler);
-		quizTypeSelectionJComboBox.setSelectedIndex(DEFAULT_ARGUMENT_INDEX);
-		add(quizTypeSelectionJComboBox, c);
+		buildQuizMenu(); // builds the JComboBox
 
 		c.gridx = 0;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.NONE;
-		jlb2 = new JLabel("Argument/Category");
-		add(jlb2, c);
-
-		c.gridx = 2;
-		categorySelectionJComboBox = new JComboBox(readCategory());
-		categorySelectionJComboBox.addItem(NOT_SELECTED_STRING);
-		categorySelectionJComboBox.setSelectedIndex(categorySelectionJComboBox
-				.getItemCount() - 1);
-		categorySelectionJComboBox.addActionListener(handler);
-		add(categorySelectionJComboBox, c);
-
-		c.gridx = 0;
-		c.gridy = 2;
-		c.fill = GridBagConstraints.NONE;
-		jlb4 = new JLabel("Section");
-		add(jlb4, c);
-
-		c.gridx = 2;
-		sectionSelectionJComboBox = new JComboBox(readSection());
-		sectionSelectionJComboBox.addItem(NOT_SELECTED_STRING);
-		sectionSelectionJComboBox.setSelectedIndex(sectionSelectionJComboBox
-				.getItemCount() - 1);
-		sectionSelectionJComboBox.addActionListener(handler);
-		add(sectionSelectionJComboBox, c);
-
-		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 5;
 		c.fill = GridBagConstraints.NONE;
 		jlb3 = new JLabel("Iterations");
 		add(jlb3, c);
@@ -220,16 +140,15 @@ public class QuizTabGui extends JPanel {
 		add(iterationJSpinner, c);
 
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 6;
 		c.gridwidth = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		jbt1 = new JButton("Start");
-		jbt1.addActionListener(handler);
+		jbt1.addActionListener(this);
 		add(jbt1, c);
 
-		
 		c.gridx = 0;
-		c.gridy = 5;
+		c.gridy = 7;
 		c.gridheight = 5;
 		c.gridwidth = 4;
 		c.weightx = 1.0;
@@ -243,7 +162,6 @@ public class QuizTabGui extends JPanel {
 		jtxa1.setEditable(false);
 		scrlp1 = new JScrollPane(jtxa1);
 		add(scrlp1, c);
-
 	}
 
 	private String[] readCategory() {
@@ -259,12 +177,12 @@ public class QuizTabGui extends JPanel {
 		return dit.getSectionValue();
 	}
 
-	public void showResults()	{
-		try	{
-			
+	public void showResults() {
+		try {
+
 			QuizResultTable qzJTable = new QuizResultTable(quiz.getStats());
 			c.gridx = 0;
-			c.gridy = 5;
+			c.gridy = 7;
 			c.gridheight = 6;
 			c.gridwidth = 3;
 			c.fill = GridBagConstraints.BOTH;
@@ -273,88 +191,228 @@ public class QuizTabGui extends JPanel {
 			scrlp1 = new JScrollPane(qzJTable);
 			add(scrlp1, c);
 			Window.getInstance().repaint();
-		
+
 			// updating UserProfile object with generated QuizResult objecj
 			UserProfile up = dit.getUser();
 			up.addQuizStat(quiz.getStats());
 			log.debug("updating profile of user " + up.toString());
 			dit.writeUserDatabase(up);
 		} catch (UnsupportedEncodingException e) {
-			log.error("UnsupportedEncodingException "+e.getMessage());
+			log.error("UnsupportedEncodingException " + e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {
-			log.error("DatabaseException "+e.getMessage());
+			log.error("DatabaseException " + e.getMessage());
 			e.printStackTrace();
 		}
 
 	}
-	
-	
-	public class QuizTabActions implements ActionListener {
 
-		
-		public void actionPerformed(ActionEvent evt) {
+	public void actionPerformed(ActionEvent evt) {
 
-			if (evt.getActionCommand().equals("Start")) {
-				String quizString = new String((String)quizTypeSelectionJComboBox.getSelectedItem());
-				src_lang = quizString.split("2")[0];
-				log.trace("selected source language: "+src_lang);
-				dst_lang  = quizString.split("2")[1];
-				log.trace("selected destination language: "+dst_lang);
-				
-				try {	
-					//load the class that will handle the Quiz
-					Class<?> toRun = Class.forName("net.verza.jdict.quiz."+quizString);
-					log.debug("class going to be loaded: net.verza.jdict.quiz."+quizString);
-					Class<?>[] c_arr = new Class[] {  };
-					Constructor<?> constr = toRun.getConstructor(c_arr);
-					quiz = (QuizInterface) constr.newInstance();
-					iterations = new Integer((Integer) iterationJSpinner.getValue());
-					quiz.setIterations(iterations);
-					
-					//Category Combo Box
-					String category = (String)categorySelectionJComboBox.getSelectedItem();
-					if(!category.equals(NOT_SELECTED_STRING))
-						quiz.setSectionIndex(category, src_lang) ;
-					
-					//Section Combo Box
-					String section = (String)sectionSelectionJComboBox.getSelectedItem();
-					if(!section.equals(NOT_SELECTED_STRING))	
-						quiz.setSectionIndex(section, src_lang) ;
-					
-					if (quiz.load() == 0) {
-						new QuizInputGui(instance);
-					} else
-						JOptionPane.showInputDialog("Please input a value");
-					
-					
-				}catch (ClassNotFoundException e) {
-					System.out.println(e);
-				} catch (NoSuchMethodException e) {
-					System.out.println(e);
-				} catch (InstantiationException e) {
-					System.out.println(e);
-				} catch (IllegalAccessException e) {
-					System.out.println(e);
-				} catch (InvocationTargetException e) {
-					System.out.println(e);
-				} catch (FileNotFoundException e) {
-					System.out.println(e);
-				} catch (DynamicCursorException e) {
-					System.out.println(e);
-				} catch (DataNotFoundException e) {
-					System.out.println(e);
-				} catch (UnsupportedEncodingException e) {
-					System.out.println(e);
-				} catch (DatabaseException e) {
-					System.out.println(e);
-				} catch (KeyNotFoundException e) {
-					log.error("DynamicCursorException: " + e.getMessage());
-					return;
+		String command = evt.getActionCommand();
+		try {
+
+			// add JComboBox to choose the languages of the lookup
+			if (command.equals("src_lang_selection_change")) {
+
+				JLabel dst = new JLabel("select answer's lookup language");
+				if (this.srcLangCombo.getSelectedItem().equals(
+						NOT_SELECTED_STRING)) {
+					remove(this.dstLangCombo);
+					remove(dst);
+				} else {
+					if (this.dstLangCombo != null)
+						remove(this.dstLangCombo);
+					c.gridheight = 1;
+					c.gridwidth = 1;
+					c.gridx = 0;
+					c.gridy = 1;
+					c.fill = GridBagConstraints.NONE;
+					c.gridwidth = 1;
+					add(dst, c);
+					c.gridx = 2;
+					this.dstLangCombo = new JComboBox(this.translations
+							.get(this.srcLangCombo.getSelectedItem()));
+					dstLangCombo.addItem(NOT_SELECTED_STRING);
+					dstLangCombo.setActionCommand("dst_lang_selection_change");
+					dstLangCombo
+							.setSelectedIndex(dstLangCombo.getItemCount() - 1);
+					dstLangCombo.addActionListener(this);
+					add(this.dstLangCombo, c);
 				}
+			} else if (command.equals("dst_lang_selection_change")) {
+				if (this.dstLangCombo.getSelectedItem().toString().equals(
+						"audio"))
+					wcounter.setLanguage(this.srcLangCombo.getSelectedItem()
+							.toString());
+				else
+					wcounter.setLanguage(this.srcLangCombo.getSelectedItem()
+							.toString());
+
+				c.gridx = 0;
+				c.gridy = 2;
+				c.gridheight = 1;
+				c.gridwidth = 1;
+				c.fill = GridBagConstraints.NONE;
+				jlb4 = new JLabel("Section");
+				add(jlb4, c);
+				// get section values counter
+				wcounter.setIndex("section");
+				wcounter.setInputData(readSection());
+				if (sectionSelectionJComboBox != null)
+					remove(sectionSelectionJComboBox);
+				c.gridx = 2;
+				c.fill = GridBagConstraints.NONE;
+				sectionSelectionJComboBox = new JComboBox(wcounter
+						.search("section"));
+				sectionSelectionJComboBox.addItem(NOT_SELECTED_STRING);
+				sectionSelectionJComboBox
+						.setSelectedIndex(sectionSelectionJComboBox
+								.getItemCount() - 1);
+				add(sectionSelectionJComboBox, c);
+
+				// Verbs do not have category index
+				if ((this.srcLangCombo.getSelectedItem().toString().indexOf(
+						"verb") == -1)
+						&& (this.dstLangCombo.getSelectedItem().toString()
+								.indexOf("verb") == -1)) {
+					c.gridx = 0;
+					c.gridy = 3;
+					c.fill = GridBagConstraints.NONE;
+					jlb2 = new JLabel("Argument/Category");
+					add(jlb2, c);
+					// get section values counter
+					wcounter.setIndex("category");
+					wcounter.setInputData(readCategory());
+					if (categorySelectionJComboBox != null)
+						remove(categorySelectionJComboBox);
+					c.gridx = 2;
+					categorySelectionJComboBox = new JComboBox(wcounter
+							.search("category"));
+					categorySelectionJComboBox.addItem(NOT_SELECTED_STRING);
+					categorySelectionJComboBox
+							.setSelectedIndex(categorySelectionJComboBox
+									.getItemCount() - 1);
+					add(categorySelectionJComboBox, c);
+				}
+
+				this.revalidate();
+				setVisible(true);
+
+			} else if (command.equals("Start")) {
+
+				String quizStringClassToLoad;
+				if (this.dstLangCombo.getSelectedItem().toString().equals(
+						"audio")) {
+					quizStringClassToLoad = new String().concat("audio" + "2"
+							+ this.srcLangCombo.getSelectedItem().toString());
+					System.out.println("audio " + quizStringClassToLoad);
+				} else {
+					quizStringClassToLoad = new String()
+							.concat(this.srcLangCombo.getSelectedItem()
+									.toString()
+									+ "2"
+									+ this.dstLangCombo.getSelectedItem()
+											.toString());
+					System.out.println("else " + quizStringClassToLoad);
+				}
+
+				System.out
+						.println("class going to be loaded: net.verza.jdict.quiz."
+								+ quizStringClassToLoad);
+
+				// load the class that will handle the Quiz
+				Class<?> toRun = Class.forName("net.verza.jdict.quiz."
+						+ quizStringClassToLoad);
+				log.debug("class going to be loaded: net.verza.jdict.quiz."
+						+ quizStringClassToLoad);
+				Class<?>[] c_arr = new Class[] {};
+				Constructor<?> constr = toRun.getConstructor(c_arr);
+				quiz = (QuizAbstract) constr.newInstance();
+				iterations = new Integer((Integer) iterationJSpinner.getValue());
+				quiz.setIterations(iterations);
+
+				// Category Combo Box
+				if (categorySelectionJComboBox != null) {
+					String category = (String) categorySelectionJComboBox
+							.getSelectedItem();
+					if (!category.equals(NOT_SELECTED_STRING))
+						quiz.setCategoryIndex(category, this.srcLangCombo
+								.getSelectedItem().toString());
+				}
+
+				// Section Combo Box
+				String section = (String) sectionSelectionJComboBox
+						.getSelectedItem();
+				if (!section.equals(NOT_SELECTED_STRING)) {
+					quiz.setSectionIndex(section, this.srcLangCombo
+							.getSelectedItem().toString());
+				}
+				quiz.load();
+				new QuizInputGui(instance);
+
 			}
 
-	
+		} catch (ClassNotFoundException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A ClassNotFoundException has occurred, please check the logs");
+			log.error("ClassNotFoundException: " + e.getMessage());
+		} catch (NoSuchMethodException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A NoSuchMethodException has occurred, please check the logs");
+			log.error("NoSuchMethodException: " + e.getMessage());
+		} catch (InstantiationException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A InstantiationException has occurred, please check the logs");
+			log.error("InstantiationException: " + e.getMessage());
+		} catch (IllegalAccessException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A IllegalAccessException has occurred, please check the logs");
+			log.error("IllegalAccessException: " + e.getMessage());
+		} catch (InvocationTargetException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A InvocationTargetException has occurred, please check the logs");
+			log.error("InvocationTargetException: " + e.getMessage());
+		} catch (FileNotFoundException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A FileNotFoundException has occurred, please check the logs");
+			log.error("FileNotFoundException: " + e.getMessage());
+		} catch (DynamicCursorException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A DynamicCursorException has occurred, please check the logs");
+			log.error("DynamicCursorException: " + e.getMessage());
+		} catch (DataNotFoundException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A DataNotFoundException has occurred, please check the logs");
+			log.error("DataNotFoundException: " + e.getMessage());
+		} catch (UnsupportedEncodingException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A UnsupportedEncodingException has occurred, please check the logs");
+			log.error("UnsupportedEncodingException: " + e.getMessage());
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null,
+					"A DatabaseException has occurred, please check the logs");
+			log.error("DatabaseException: " + e.getMessage());
+		} catch (KeyNotFoundException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A KeyNotFoundException has occurred, please check the logs");
+			log.error("KeyNotFoundException: " + e.getMessage());
+			return;
+		} catch (LinkIDException e) {
+			JOptionPane.showMessageDialog(null,
+					"LinkIDException occurred, check the log files");
+			log.error("LinkIDException: " + e.getMessage());
+			return;
 		}
 
 	}

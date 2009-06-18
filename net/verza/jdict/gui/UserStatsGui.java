@@ -6,6 +6,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JPanel;
+import javax.swing.JComboBox;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import javax.swing.JFrame;
@@ -13,7 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import java.io.FileNotFoundException;
 import javax.swing.border.EmptyBorder;
-
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTextField;
 import net.verza.jdict.UserProfile;
 import net.verza.jdict.dictionary.Dictionary;
 import net.verza.jdict.dictionary.Factory;
@@ -28,14 +33,18 @@ import com.sleepycat.je.DatabaseException;
  * 
  */
 
-public class UserStatsGui {
+public class UserStatsGui implements ActionListener {
 
 	private static Logger log;
 	private JFrame frame;
 	private JScrollPane jsp1;
 	private static UserStatsGui singleton = null;
 	private Dictionary dit;
+	public JTextField textFilter;
+	public JComboBox typeComboFilter,resultComboFilter;
+	private UserStatsGuiJTable table;
 
+	
 	public UserStatsGui() {
 
 		super();
@@ -92,31 +101,84 @@ public class UserStatsGui {
 		c.gridheight = 1;
 		c.gridwidth = 1;
 
-		// question label
-		c.gridx = 0;
-		c.gridy = 0;
-		JLabel jlbl1 = new JLabel("GUESSED WORDS COUNTER");
-		jpnl2.add(jlbl1, c);
 
+
+		//JComboBox for Quiz Type Filtering
 		c.gridx = 0;
 		c.gridy = 1;
-
-		JPanel table_a = new UserStatsGuiJTable(qz.getGuessedHash(),
-				Color.GREEN);
-		JScrollPane jsp3 = new JScrollPane(table_a);
-		jpnl2.add(jsp3, c);
-
+		JLabel label = new JLabel("Filter Quiz Type");
+		jpnl2.add(label,c);
+		c.gridx = 1;
+		typeComboFilter = new JComboBox();
+		typeComboFilter.addItem("");
+		typeComboFilter.addItem("Italian->Egyptian");
+		typeComboFilter.addItem("Italian->English");
+		typeComboFilter.addItem("Italian->Arabic");
+		typeComboFilter.addItem("Arabic->Italian");
+		typeComboFilter.addItem("Arabic->Egyptian");
+		typeComboFilter.addItem("Arabic->English");
+		typeComboFilter.addItem("English->Italian");
+		typeComboFilter.addItem("English->Arabic");
+		typeComboFilter.addItem("English->Egyptian");
+		typeComboFilter.addItem("Egyptian->Italian");
+		typeComboFilter.addItem("Egyptian->Arabic");
+		typeComboFilter.addItem("Egyptian->English");
+		typeComboFilter.setSelectedIndex(0);
+		typeComboFilter.setActionCommand("typechanged");
+		typeComboFilter.addActionListener(this);
+		
+		jpnl2.add(typeComboFilter,c);
+		
+		
+		//JComboBox for Quiz Type Filtering
 		c.gridx = 0;
 		c.gridy = 2;
-		JLabel jlbl2 = new JLabel("FAILED WORDS COUNTER");
-		jpnl2.add(jlbl2, c);
-
+		JLabel label2 = new JLabel("Filter Quiz Results");
+		jpnl2.add(label2,c);
+		c.gridx = 1;
+		resultComboFilter = new JComboBox();
+		resultComboFilter.addItem("");
+		resultComboFilter.addItem("correct");
+		resultComboFilter.addItem("wrong");
+		resultComboFilter.setSelectedIndex(0);
+		resultComboFilter.setActionCommand("resultchanged");
+		resultComboFilter.addActionListener(this);
+		jpnl2.add(resultComboFilter,c);
+		
+		
+		//JTextField for Text Filtering
 		c.gridx = 0;
 		c.gridy = 3;
-		Color red = new Color(250, 60, 0);
-		JPanel table_b = new UserStatsGuiJTable(qz.getWrongHash(), red);
-		JScrollPane jsp2 = new JScrollPane(table_b);
-		jpnl2.add(jsp2, c);
+		textFilter = new JTextField(20);
+		//Whenever filterText changes, invoke newFilter.
+		textFilter.getDocument().addDocumentListener(
+				new javax.swing.event.DocumentListener() {
+					public void changedUpdate(javax.swing.event.DocumentEvent e) {
+						System.out.println("changedUpdate");
+						newFilter();
+					}
+
+					public void insertUpdate(javax.swing.event.DocumentEvent e) {
+						System.out.println("insertUpdate");
+						newFilter();
+					}
+
+					public void removeUpdate(javax.swing.event.DocumentEvent e) {
+						System.out.println("removeUpdate");
+						newFilter();
+					}
+				});
+		jpnl2.add(textFilter,c);
+		
+		//JTable for Quiz Results
+		c.gridx = 0;
+		c.gridy = 4;
+
+		table = new UserStatsGuiJTable(qz.getGuessedHash(),
+											qz.getWrongHash(),
+												Color.GREEN);
+		JScrollPane jsp3 = new JScrollPane(table);
+		jpnl2.add(jsp3, c);
 
 	}
 
@@ -164,4 +226,44 @@ public class UserStatsGui {
 		}
 	}
 
+	public void actionPerformed(ActionEvent evt) {
+		if ( (evt.getActionCommand().equals("typechanged")) ||
+				(evt.getActionCommand().equals("resultchanged")) )
+			newFilter();
+	}
+	
+	
+	/** 
+	 * Update the row filter regular expression from the expression in
+	 * the text box.
+	 */
+	public void newFilter() {
+		
+		javax.swing.RowFilter<DefaultTableModel, Object> rf = null;
+		javax.swing.RowFilter<DefaultTableModel, Object> rf1 = null;
+		javax.swing.RowFilter<DefaultTableModel, Object> rf2 = null;
+		javax.swing.RowFilter<DefaultTableModel, Object> rf3 = null;
+		//If current expression doesn't parse, don't update.
+		try {
+
+			rf1 = javax.swing.RowFilter.regexFilter(textFilter.getText(), 0);
+			rf2 = javax.swing.RowFilter.regexFilter((String)typeComboFilter.getSelectedItem(), 2);
+			rf3 = javax.swing.RowFilter.regexFilter((String)resultComboFilter.getSelectedItem(), 3);
+			
+			java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>> filters = 
+				new java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>>(2);
+			
+			filters.add(rf1);
+			filters.add(rf2);
+			filters.add(rf3);
+			rf = javax.swing.RowFilter.andFilter(filters);
+
+		} catch (java.util.regex.PatternSyntaxException e) {
+			return;
+		}
+		table.sorter.setRowFilter(rf);
+		
+	}
+	
+	
 }

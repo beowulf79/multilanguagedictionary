@@ -16,6 +16,7 @@ public class LanguagesConfiguration {
 	private static Logger log;
 	private static HashMap<String, LanguageConfigurationClassDescriptor> languageConfigurationBlock;
 
+	
 	public LanguagesConfiguration() {
 
 		log = Logger.getLogger("net.verza.jdict.properties");

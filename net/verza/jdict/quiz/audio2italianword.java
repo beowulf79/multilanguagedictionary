@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * @author ChristianVerdelli
  * 
  */
-public class audio2italianword extends QuizInterface {
+public class audio2italianword extends QuizAbstract {
 
 	private static Logger log;
 	private Vector<Word> localKeyArray;
@@ -58,10 +58,11 @@ public class audio2italianword extends QuizInterface {
 
 		localKeyArray  = (Vector<Word>) dit.read("italianword").clone();
 		dbsize = localKeyArray.size();
+		//if db size is 0 let's throw an exception key not found
+		if(dbsize == 0) throw new KeyNotFoundException("No record found for the specified key");
 		log.trace("key vector size outside loop " 
 				+ localKeyArray.size());
 
-		System.out.println("counter "+counter+ " iterations "+iterations);
 
 		while (counter < iterations) {
 			quizResult = new QuizResult();
@@ -74,7 +75,7 @@ public class audio2italianword extends QuizInterface {
 			Word key = localKeyArray.get(number);
 
 			quizResult.setQuizType(Configuration.ITALIAN2ARABIC);
-			quizResult.setWord_IID(key.getid().toString());
+			quizResult.setWordID(key.getid().toString());
 			
 			// The Question String is composed by the audio object
 			quizResult.setQuestion(key.getaudio());

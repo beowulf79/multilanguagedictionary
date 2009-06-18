@@ -1,65 +1,68 @@
 package net.verza.jdict.dictionary;
 
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Vector;
+import java.util.HashMap;
 import jxl.read.biff.BiffException;
 import net.verza.jdict.SearchableObject;
 import net.verza.jdict.UserProfile;
+import net.verza.jdict.dataloaders.LoaderOptionsStore;
+import net.verza.jdict.exceptions.LinkIDException;
 import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
 import net.verza.jdict.exceptions.LabelNotFoundException;
+import net.verza.jdict.exceptions.DatabaseImportException;
 import net.verza.jdict.exceptions.KeyNotFoundException;
 import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.DatabaseException;
 
-
 public interface Dictionary {
 
-
-	
-	public abstract void setSearchKey(String indexName,
-			DatabaseEntry db_entry, String lang) throws DatabaseException,
+	public abstract void setSearchKey(String indexName, DatabaseEntry db_entry,
+			String lang) throws DatabaseException,
 			UnsupportedEncodingException, DataNotFoundException;
 
-	
-	public abstract  Vector<SearchableObject> read(String _language) throws DatabaseException,
-		UnsupportedEncodingException, DynamicCursorException, DataNotFoundException, KeyNotFoundException;
-	
-	
-	public abstract  SearchableObject read(String _language, String _key ) throws DatabaseException,
-		UnsupportedEncodingException, DynamicCursorException, DataNotFoundException, KeyNotFoundException;
-	
-	
-	public abstract  Vector<SearchableObject> read(String _srcLang, String _key, String _dstLang) throws DatabaseException,
-		UnsupportedEncodingException, DynamicCursorException, DataNotFoundException, KeyNotFoundException;
-	
-	//public abstract Vector<SearchableObject> getKey() throws DataNotFoundException;
+	public abstract Vector<SearchableObject> read(String _language)
+			throws DatabaseException, UnsupportedEncodingException,
+			DynamicCursorException, DataNotFoundException, KeyNotFoundException;
 
-	//public abstract SearchableObject getKey(int index) throws DataNotFoundException;
+	public abstract SearchableObject read(String _language, String _key)
+			throws DatabaseException, UnsupportedEncodingException,
+			DynamicCursorException, DataNotFoundException, KeyNotFoundException;
 
-	public abstract Vector<SearchableObject> getData() throws DataNotFoundException;
+	public abstract Vector<SearchableObject> read(String _srcLang, String _key,
+			String _dstLang) throws DatabaseException,
+			UnsupportedEncodingException, DynamicCursorException,
+			DataNotFoundException, KeyNotFoundException, LinkIDException;
 
-	public abstract SearchableObject getData(int index) throws DataNotFoundException;
+	public abstract Vector<SearchableObject> getData()
+			throws DataNotFoundException;
 
-	public abstract int writeData(SearchableObject w, SearchableObject d) throws DatabaseException;
+	public abstract SearchableObject getData(int index)
+			throws DataNotFoundException;
+
+	public abstract int writeData(SearchableObject w, SearchableObject d)
+			throws DatabaseException;
 
 	public abstract int getSize() throws DatabaseException;
 
-	public abstract void loadDatabase(String path)
-			throws LabelNotFoundException, DatabaseException, IOException, BiffException, KeyNotFoundException;
+	public abstract HashMap<String,Integer> loadDatabase(LoaderOptionsStore optionsObj)
+			throws LabelNotFoundException, DatabaseException, IOException,
+			BiffException, KeyNotFoundException, DatabaseImportException ;
 
 	public abstract void printDatabase();
+	
+	public abstract long flushDatabase() throws DatabaseException;
 
 	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////////////////////////
 	// CATEGORY DATABASE
 	public abstract String readCategoryDatabase(String key)
 			throws DatabaseException, UnsupportedEncodingException;
 
-	public abstract void loadCategoryDatabase(String inputFilePath)
+	public abstract int loadCategoryDatabase(LoaderOptionsStore optionsObj)
 			throws LabelNotFoundException, DatabaseException, BiffException,
 			IOException;
 
@@ -69,17 +72,18 @@ public interface Dictionary {
 
 	public abstract int getCategoriesDatabaseSize();
 
+	public abstract long flushCategoryDatabase() throws DatabaseException;
+	
 	public abstract void writeCategoryDatabase(String key, String data)
 			throws DatabaseException, UnsupportedEncodingException;
 
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////
 	// SECTION DATABASE
 	public abstract String readSectionDatabase(String key)
 			throws DatabaseException, UnsupportedEncodingException;
 
-	public abstract void loadSectionDatabase(String inputFilePath)
+	public abstract int loadSectionDatabase(LoaderOptionsStore optionsObj)
 			throws LabelNotFoundException, DatabaseException, BiffException,
 			IOException;
 
@@ -89,13 +93,14 @@ public interface Dictionary {
 
 	public abstract int getSectionDatabaseSize();
 
+	public abstract long flushSectionDatabase() throws DatabaseException;
+	
 	public abstract void writeSectionDatabase(String key, String data)
 			throws DatabaseException, UnsupportedEncodingException;
 
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////
-	//USERS DATABASE
+	// ////////////////////////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////////////////////////
+	// USERS DATABASE
 	public abstract UserProfile readUsersDatabase(String key)
 			throws DatabaseException, UnsupportedEncodingException;
 

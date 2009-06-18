@@ -11,7 +11,6 @@ import com.sleepycat.je.JoinCursor;
 import com.sleepycat.je.SecondaryDatabase;
 import org.apache.log4j.Logger;
 import java.io.UnsupportedEncodingException;
-
 import net.verza.jdict.SearchableObject;
 import net.verza.jdict.exceptions.DynamicCursorException;
 import net.verza.jdict.exceptions.DataNotFoundException;
@@ -27,18 +26,20 @@ public class SleepyDatabaseReader {
 	private JoinCursor joinCursor;
 	private SecondaryCursor[] secondaryCursorArray;
 	private Logger log;
-	private int arrayPositionCounter; // array used to store secondary index to be used with joinCursor
+	private int arrayPositionCounter; // array used to store secondary index
+	// to be used with joinCursor
 	private Vector<SearchableObject> wdata;
 	private int databaseSize; // store the size of database
 	private EntryBinding dataBinding;
 
-	
 	public SleepyDatabaseReader() {
 		log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
 		log.trace("called class " + this.getClass().getName());
 		wdata = new Vector<SearchableObject>();
+		this.primaryCursor = null;
 		databaseSize = 0;
 		arrayPositionCounter = 0;
+		//this.secondaryCursorArray = new SecondaryCursor[0];
 	}
 
 	public SleepyDatabaseReader(SleepyDatabase _sleepydb)
@@ -105,20 +106,18 @@ public class SleepyDatabaseReader {
 
 	}
 
-
 	public void setSecondaryCursor(String _index, DatabaseEntry key)
-	throws DatabaseException, UnsupportedEncodingException,
-	DataNotFoundException {
+			throws DatabaseException, UnsupportedEncodingException,
+			DataNotFoundException {
 		this.setSecondaryCursor(db.getIndex(_index), key);
 	}
 
-		
-	
 	public void setSecondaryCursor(SecondaryDatabase secdb, DatabaseEntry key)
 			throws DatabaseException, UnsupportedEncodingException,
 			DataNotFoundException {
 
-		log.trace("setting Secondary Cursor to " + secdb.getDatabaseName());
+		log.trace("setting Secondary Cursor to (db+index)"
+				+ secdb.getDatabaseName());
 		SleepyDatabaseSecondaryXCursor Xcursor = new SleepyDatabaseSecondaryXCursor(
 				secdb);
 		this.addSecondaryCursor(Xcursor.getSecondaryCursor(key));
@@ -164,7 +163,7 @@ public class SleepyDatabaseReader {
 
 		log.trace("called method read");
 
-		//let's clear the array returned by any previous search
+		// let's clear the array returned by any previous search
 		this.wdata.clear();
 
 		if (this.arrayPositionCounter < 0) {
@@ -175,19 +174,23 @@ public class SleepyDatabaseReader {
 		else if (this.arrayPositionCounter > 0) {
 			log.warn("looking for data using JoinCursor");
 			wdata = this.readJoin();
+			
+			this.secondaryCursorArray = null; // clear the SecondaryDatabase Array
+												// for the
+			// next lookup
 
 		} else if (this.arrayPositionCounter == 0) {
 			log.warn("looking for data using Primary Cursor");
 			primaryCursor.setDataBinding(this.dataBinding);
 			primaryCursor.read();
-			//need this to avoid duplicate records
+			// need this to avoid duplicate records
 			wdata = primaryCursor.getData();
 		}
 
 		this.arrayPositionCounter = 0; // reset the counter of the
 		// SecondaryDatabase array
-		this.secondaryCursorArray = null; // clear the SecondaryDatabase Array for the
-		// next lookup
+		
+
 
 		log.trace("returning wdata vector size of " + this.wdata.size());
 		return this.wdata.size();
@@ -232,5 +235,9 @@ public class SleepyDatabaseReader {
 	public String toString() {
 		return "Data Vector Size " + this.wdata.size();
 	}
+
+
+
+	
 
 }

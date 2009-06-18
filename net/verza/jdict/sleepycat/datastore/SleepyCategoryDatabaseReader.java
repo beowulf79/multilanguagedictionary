@@ -2,20 +2,16 @@ package net.verza.jdict.sleepycat.datastore;
 
 import com.sleepycat.je.Cursor;
 import com.sleepycat.je.CursorConfig;
-import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
-import com.sleepycat.je.SecondaryDatabase;
 import org.apache.log4j.Logger;
 import java.io.UnsupportedEncodingException;
 
 public class SleepyCategoryDatabaseReader {
 
 	private SleepyCategoryDatabase dbHandler;
-	private Database categoryDB;
-	private SecondaryDatabase categoryName_Secondary_index_DB;
 	private CursorConfig config;
 	private Cursor cursor;
 	private int cursorEntriesCounter;
@@ -23,18 +19,15 @@ public class SleepyCategoryDatabaseReader {
 	private String[] data;
 	private Logger log;
 
-	public SleepyCategoryDatabaseReader(SleepyCategoryDatabase db)
+	public SleepyCategoryDatabaseReader(SleepyCategoryDatabase _db)
 			throws DatabaseException, UnsupportedEncodingException {
 
 		log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
 		log.trace("called class " + this.getClass().getName());
-		this.dbHandler = db;
-		this.categoryDB = dbHandler.getCategoryDatabase();
-		this.categoryName_Secondary_index_DB = dbHandler
-				.getCategoryName_SecondaryDatabase();
+		this.dbHandler = _db;
 		this.config = new CursorConfig();
 		this.config.setReadUncommitted(true);
-		this.cursor = categoryDB.openCursor(null, null);
+		this.cursor = this.dbHandler.getCategoryDatabase().openCursor(null, null);
 		this.countDatabaseEntry();
 		this.key = new String[cursorEntriesCounter + 1];
 		this.data = new String[cursorEntriesCounter + 1];
@@ -58,7 +51,8 @@ public class SleepyCategoryDatabaseReader {
 
 		// looking for the key on the primary database (category ID)
 		log.debug("using category index as key");
-		if (categoryDB.get(null, searchKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+		if (this.dbHandler.getCategoryDatabase().get(null, searchKey, foundData, LockMode.DEFAULT) 
+				== OperationStatus.SUCCESS) {
 			log.info("found category by Index: "
 					+ new String(foundData.getData(), "UTF-8"));
 			return new String(foundData.getData(), "UTF-8");
@@ -66,7 +60,7 @@ public class SleepyCategoryDatabaseReader {
 
 		// looking for the key on the secondary database index (category Name)
 		log.debug("using category name as key");
-		if (categoryName_Secondary_index_DB.get(null, searchKey, foundKey,
+		if (this.dbHandler.getCategoryName_SecondaryDatabase().get(null, searchKey, foundKey,
 				foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
 			log.info("found category by Name: "
 					+ new String(foundKey.getData(), "UTF-8"));
@@ -130,6 +124,15 @@ public class SleepyCategoryDatabaseReader {
 	public String[] getData() {
 		log.trace("retuning all the data");
 		return this.data;
+	}
+
+	public void closeCursors() throws DatabaseException {
+		this.cursor.close();
+
+	}
+
+	public void openCursors()	throws DatabaseException	{
+		this.cursor = this.dbHandler.getCategoryDatabase().openCursor(null, null);
 	}
 
 }
