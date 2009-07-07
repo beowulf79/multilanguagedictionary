@@ -15,27 +15,29 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import org.apache.log4j.Logger;
 
-
-public class Window extends JFrame implements ActionListener{
+public class Window extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	private JFrame frame;
 	private JMenuBar menuBar;
 	private JTabbedPane tabbedPane;
 
-	private final String CREATE_USERPROFILE_STRING = "Create User Profile";
-	private final String SHOW_USERPROFILE_STATISTICS = "Show User Quiz Statistics";
-	private final String IMPORT_STRING = "Import Data";
-	private final String USERPROFILE_IMPORT_STRING = "Import User Profile";
-	private final String USERPROFILE_EXPORT_STRING = "Export User Profile";
-	
+	private static final String CREATE_USERPROFILE = "Create User Profile";
+	private static final String LOAD_USERPROFILE = "Load User Profile";
+	private static final String MODIFY_USERPROFILE = "Modify User Profile";
+	private static final String DELETE_USERPROFILE = "Delete User Profile";
+	private static final String IMPORT_USERPROFILE_STATS = "Import User Profile Statistics";
+	private static final String EXPORT_USERPROFILE_STATS = "Export User Profile Statistics";
+	private static final String RESET_USERPROFILE_STATS = "Reset User Profile Statistics";
+	private static final String SHOW_USERPROFILE_STATISTICS = "Show User Quiz Statistics";
+	private static final String DATA_IMPORT = "Import Data";
+
+
 	public static final int FRAME_WIDTH = 400;
 	public static final int FRAME_HEIGHT = 420;
 	public static final int PANEL_WIDHT = 380;
@@ -50,16 +52,12 @@ public class Window extends JFrame implements ActionListener{
 		super("Grid Layout");
 		windowManager = this; // initialize single-ton object
 
-		
-		
 		log = Logger.getLogger("net.verza.jdict.gui");
 		log.trace("Window Constructor");
 
 		initComponents();
 		createShowGUI();
 
-		// Calling UserChooseGUI to load the User Profile
-		UserChooseGui.getInstance();
 
 	}
 
@@ -72,17 +70,15 @@ public class Window extends JFrame implements ActionListener{
 		 * Dictionary Tab
 		 */
 		JPanel dictTab = new DictTabGui();
-
-		dictTab.setBackground(Color.cyan);
+		dictTab.setBackground(GUIPreferences.backgroundColor);
 		dictTab.setSize(PANEL_WIDHT, 100);
 		tabbedPane.addTab("Dictionary Tab", null, dictTab, "Dictionary Tab");
 
 		/*
 		 * Quiz Tab
 		 */
-
 		JPanel quizTab = new QuizTabGui();
-		quizTab.setBackground(Color.cyan);
+		quizTab.setBackground(GUIPreferences.backgroundColor);
 		quizTab.setSize(PANEL_WIDHT, PANEL_HEIGHT);
 		tabbedPane.addTab("Quiz Tab", null, quizTab, "Quiz Tab");
 
@@ -90,9 +86,10 @@ public class Window extends JFrame implements ActionListener{
 		 * Verb Tab
 		 */
 		JPanel verbTab = new VerbTabGui();
-		verbTab.setBackground(Color.cyan);
+		verbTab.setBackground(GUIPreferences.backgroundColor);
 		verbTab.setSize(PANEL_WIDHT, PANEL_HEIGHT);
 		tabbedPane.addTab("Verb Tab", null, verbTab, "Verb Tab");
+		
 	}
 
 	private void createShowGUI() {
@@ -103,6 +100,8 @@ public class Window extends JFrame implements ActionListener{
 		frame.setSize(500, 500);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// Create and set up the content pane.
+		frame.setLocationRelativeTo(null);
+		//frame.setResizable(false);
 		frame.getContentPane().add(tabbedPane);
 	}
 
@@ -112,30 +111,59 @@ public class Window extends JFrame implements ActionListener{
 		frame.setVisible(true);
 	}
 
+	public void close()	{
+		frame.dispose();
+	}
+	
 	private JMenuBar createMenuBar() {
 
 		JMenuBar mBar = new JMenuBar();
 
 		JMenu mFile = new JMenu("File");
-		JMenuItem mImport = new JMenuItem(this.IMPORT_STRING);
-		JMenuItem mImportUserProfile = new JMenuItem(this.USERPROFILE_IMPORT_STRING);
-		JMenuItem mExportUserProfile = new JMenuItem(this.USERPROFILE_EXPORT_STRING);
+		JMenuItem mImport = new JMenuItem(DATA_IMPORT);
 		mFile.add(mImport);
-		mFile.add(mImportUserProfile);
-		mFile.add(mExportUserProfile);
 		mImport.addActionListener(this);
 
-		JMenu mUser = new JMenu("User");
-		JMenuItem mUserChoose = new JMenuItem(this.CREATE_USERPROFILE_STRING);
-		JMenuItem mUserStats = new JMenuItem(this.SHOW_USERPROFILE_STATISTICS);
+		
 
-		mUserChoose.addActionListener(this);
-		mUser.add(mUserChoose);
-		mUserStats.addActionListener(this);
-		mUser.add(mUserStats);
+		JMenu mUserProfileMenu = new JMenu("User");
+		JMenuItem mUserProfileCreate = new JMenuItem(CREATE_USERPROFILE);
+		mUserProfileCreate.addActionListener(this);
+		mUserProfileMenu.add(mUserProfileCreate);
+		
+		JMenuItem mUserProfileLoad = new JMenuItem(LOAD_USERPROFILE);
+		mUserProfileLoad.addActionListener(this);
+		mUserProfileMenu.add(mUserProfileLoad);
+		
+		JMenuItem mUserProfileModify = new JMenuItem(MODIFY_USERPROFILE);
+		mUserProfileModify.addActionListener(this);
+		mUserProfileMenu.add(mUserProfileModify);
+		
+		JMenuItem mUserProfileDelete = new JMenuItem(DELETE_USERPROFILE);
+		mUserProfileDelete.addActionListener(this);
+		mUserProfileMenu.add(mUserProfileDelete);
+		
+		JMenuItem mImportUserProfile = new JMenuItem(
+				IMPORT_USERPROFILE_STATS);
+		mUserProfileMenu.add(mImportUserProfile);
+		mImportUserProfile.addActionListener(this);
+		
+		JMenuItem mExportUserProfile = new JMenuItem(
+				EXPORT_USERPROFILE_STATS);
+		mUserProfileMenu.add(mExportUserProfile);
+		mExportUserProfile.addActionListener(this);
+		
+		JMenuItem mResetUserProfile = new JMenuItem(
+				RESET_USERPROFILE_STATS);
+		mUserProfileMenu.add(mResetUserProfile);
+		mResetUserProfile.addActionListener(this);
+		
+		JMenuItem mUserProfileShowStats = new JMenuItem(SHOW_USERPROFILE_STATISTICS);
+		mUserProfileShowStats.addActionListener(this);
+		mUserProfileMenu.add(mUserProfileShowStats);
 
 		mBar.add(mFile);
-		mBar.add(mUser);
+		mBar.add(mUserProfileMenu);
 
 		return mBar;
 	}
@@ -149,32 +177,29 @@ public class Window extends JFrame implements ActionListener{
 		return windowManager;
 	}
 
+	public void actionPerformed(ActionEvent evt) {
+		String command = evt.getActionCommand();
 
-
-		
-
-		
-		public void actionPerformed(ActionEvent evt) {
-			String command = evt.getActionCommand();
-			
-			if (command.equals(this.CREATE_USERPROFILE_STRING)) {
-				UserChooseGui.getInstance();
-			}
-			else if (command.equals(this.SHOW_USERPROFILE_STATISTICS)) {
-				UserStatsGui.getInstance();
-			}
-			else if (command.equals(this.IMPORT_STRING)) {
-				DataLoaderGui.getInstance();
-			}
-			else if (command.equals(this.USERPROFILE_IMPORT_STRING)) {
-				DataLoaderGui.getInstance();
-			}
-			else if (command.equals(this.USERPROFILE_EXPORT_STRING)) {
-				DataLoaderGui.getInstance();
-			}
-
+		if (command.equals(CREATE_USERPROFILE)) {
+			UserProfileCreateGui.getInstance();
+		} else if (command.equals(LOAD_USERPROFILE)) {
+			UserProfileLoaderGui.getInstance();
+		} else if (command.equals(MODIFY_USERPROFILE)) {
+			UserProfileModifyGui.getInstance();
+		} else if (command.equals(DELETE_USERPROFILE)) {
+			UserProfileDeleteGui.getInstance();
+		} else if (command.equals(IMPORT_USERPROFILE_STATS)) {
+			UserProfileStatsImporterGui.getInstance();
+		} else if (command.equals(EXPORT_USERPROFILE_STATS)) {
+			UserProfileStatsExporterGui.getInstance();
+		} else if (command.equals(RESET_USERPROFILE_STATS)) {
+			UserProfileStatsResetGui.getInstance();
+		} else if (command.equals(SHOW_USERPROFILE_STATISTICS)) {
+			UserStatsGui.getInstance();
+		} else if (command.equals(DATA_IMPORT)) {
+			DataLoaderGui.getInstance();
 		}
 
-	
+	}
 
 }

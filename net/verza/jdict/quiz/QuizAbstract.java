@@ -132,6 +132,10 @@ public abstract class QuizAbstract {
 		log.debug("returning question value " + st.getQuestion());
 		return st.getQuestion();
 	}
+	
+	public String getNotes(int index) {
+		return ((QuizResult) stats.get(index)).getNotes();
+	}
 
 	public abstract int userAnswer(int index, String userAnswer)
 			throws DatabaseException, FileNotFoundException,

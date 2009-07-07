@@ -1,82 +1,171 @@
 package net.verza.jdict.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JSeparator;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
+import net.verza.jdict.UserProfile;
+import net.verza.jdict.exceptions.*;
+import net.verza.jdict.dictionary.Factory;
 import org.apache.log4j.Logger;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import com.sleepycat.je.DatabaseException;
 
 /**
  * @author ChristianVerdelli
  * 
  */
 
-public class UserProfileCreateGui {
+public class UserProfileCreateGui extends JPanel implements ActionListener {
+	private static final long serialVersionUID = 1L;
+	private static final String FILE_CHOOSER_COMMAND_STRING = "Select file to Load";
+	private static final String CREATE_USERPROFILE_COMMAND_STRING = "Create User Profile";
 
 	private static Logger log;
-
 	private static UserProfileCreateGui singleton = null;
-	private Boolean isUserLoad;
+	private JTextField nameTextField, emailTextField;
+	private JPasswordField passwordField;
+	private JFileChooser fileChooser;
+	private JFrame frame;
+	private JButton create;
 
 	public UserProfileCreateGui() {
 		super();
 		singleton = this;
-		isUserLoad = false;
-
 		log = Logger.getLogger("net.verza.jdict.gui");
-		log.trace("Initialazing Load User Profile class");
-
+		log.trace("Initialazing class " + this.getClass().getCanonicalName());
 		initComponents();
-
-	}
-
-	public Boolean isUserLoad() {
-		return isUserLoad;
+		createShowGUI();
 	}
 
 	private void initComponents() {
 
-		JFrame frame = new JFrame();
-		frame.setBounds(5, 111, 252, 140);
-
-		JPanel jpnl = new JPanel(new BorderLayout());
-		JScrollPane jsp1 = new JScrollPane(jpnl);
-
-		jpnl.setBackground(Color.orange);
-		jpnl.setLayout(new GridBagLayout());
-		jpnl.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5 pixels gap
-																// to the
-																// borders
-		frame.getContentPane().add(BorderLayout.CENTER, jsp1);
+		setLayout(new GridBagLayout());
+		// setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5 pixels gap to
+		// the borders
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(2, 2, 2, 2);// add some space between components
-											// to avoid clutter
-		c.anchor = GridBagConstraints.WEST;// anchor all components WEST
-		c.weightx = 1.0;// all components use vertical available space
-		c.weighty = 1.0;// all components use horizontal available space
+		// to avoid clutter
+		c.anchor = GridBagConstraints.NORTHWEST;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
 		c.gridheight = 1;
 		c.gridwidth = 1;
-
-		// question label
 		c.gridx = 0;
 		c.gridy = 0;
-		JButton jbtn1 = new JButton("Lookup User");
-		jpnl.add(jbtn1, c);
-
+		JLabel nameJLabel = new JLabel("username");
+		nameJLabel.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		add(nameJLabel, c);
 		c.gridx = 1;
-		c.gridy = 0;
+		c.anchor = GridBagConstraints.NORTHEAST;
+		nameTextField = new JTextField(15);
+		add(nameTextField, c);
+		add(new JSeparator(), c);
 
-		frame.getContentPane().add(jsp1);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		JLabel passwordLabel = new JLabel("password");
+		passwordLabel.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		add(passwordLabel, c);
+		c.gridx = 1;
+		c.anchor = GridBagConstraints.NORTHEAST;
+		passwordField = new JPasswordField(15);
+		add(passwordField, c);
+		add(new JSeparator(), c);
+
+		c.gridx = 0;
+		c.gridy = 2;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		JLabel emailJLabel = new JLabel("email");
+		emailJLabel.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		add(emailJLabel, c);
+		c.gridx = 1;
+		c.anchor = GridBagConstraints.NORTHEAST;
+		add(emailTextField = new JTextField(15), c);
+		add(new JSeparator(), c);
+
+		c.gridx = 0;
+		c.gridy = 3;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		JLabel pictureJLabel = new JLabel("Picture");
+		pictureJLabel.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		add(pictureJLabel, c);
+		c.gridx = 1;
+		fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		JButton openButton = new JButton("Select file to Load", Commons
+				.createImageIcon("images/Open16.gif"));
+		openButton.addActionListener(this);
+		openButton.setActionCommand(FILE_CHOOSER_COMMAND_STRING);
+		add(openButton, c);
+		add(new JSeparator(), c);
+
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.NORTHEAST;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		create = new JButton("Create", Commons
+				.createImageIcon("images/Open16.gif"));
+		create.addActionListener(this);
+		create.setActionCommand(CREATE_USERPROFILE_COMMAND_STRING);
+		add(create, c);
+
+	}
+
+	private void createShowGUI() {
+		frame = new JFrame("UserProfileCreateGui");
+		frame.addWindowListener(new MainFrameCloser(this));
+		frame.setSize(300, 300);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().add(this);
+		frame.setBackground(GUIPreferences.backgroundColor);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setSize(300, 500);
+	}
 
+	private void destroyInstance() {
+		if (singleton != null)
+			singleton = null;
+	}
+
+	public class MainFrameCloser extends java.awt.event.WindowAdapter {
+		protected UserProfileCreateGui frame = null;
+
+		public MainFrameCloser(UserProfileCreateGui frame) {
+			super();
+			log.trace("inside MainFrameCloser");
+			this.frame = frame;
+		}
+
+		public void windowClosing(WindowEvent e) {
+			log.trace("destroying instance and close the frame");
+			frame.destroyInstance();
+			frame.getJFrame().dispose();
+		}
+	}
+
+	private JFrame getJFrame() {
+		return frame;
 	}
 
 	public static UserProfileCreateGui getInstance() {
@@ -85,4 +174,39 @@ public class UserProfileCreateGui {
 		return singleton;
 	}
 
+	public void actionPerformed(ActionEvent e) {
+
+		String command = e.getActionCommand();
+		log.trace("command received " + command);
+		if (command.equals(FILE_CHOOSER_COMMAND_STRING)) {
+			if (fileChooser.showOpenDialog(UserProfileCreateGui.this) == JFileChooser.APPROVE_OPTION) {
+
+			}
+		} else if (command.equals(CREATE_USERPROFILE_COMMAND_STRING)) {
+
+			try {
+				UserProfile userProfile = new UserProfile();
+				userProfile.setName(nameTextField.getText());
+				userProfile.setPassword(new String((char[]) passwordField
+						.getPassword()));
+				userProfile.setEmail(emailTextField.getText());
+				userProfile.setPicture(fileChooser.getSelectedFile());
+				Factory.getDictionary().writeUserProfile(userProfile);
+
+				this.frame.dispose();
+
+			} catch (DatabaseException ex) {
+				System.err.println();
+			} catch (UnsupportedEncodingException ex) {
+				System.err.println();
+			} catch (DataNotFoundException ex) {
+				System.err.println();
+			} catch (DynamicCursorException ex) {
+				System.err.println();
+			} catch (FileNotFoundException ex) {
+				System.err.println();
+			}
+
+		}
+	}
 }

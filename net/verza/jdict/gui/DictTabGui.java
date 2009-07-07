@@ -33,9 +33,8 @@ public class DictTabGui extends JPanel implements ActionListener {
 	private JFrame frame;
 	private JComboBox srcLangCombo, dstLangCombo;
 	private JTextField jtxf1;
-	private static String[] languagesArray;
-	private Graphics g;
 	private HashMap<String, String[]> translations;
+	private JTextArea jtxa1;
 
 	public DictTabGui() {
 		super();
@@ -45,12 +44,6 @@ public class DictTabGui extends JPanel implements ActionListener {
 		translations = new HashMap<String, String[]>();
 		initComponents(); // initialize components graphics
 		PropertyConfigurator.configure(Configuration.LOG4JCONF);
-
-	}
-
-	public void paintComponent(Graphics _g) {
-		g = _g;
-		super.paintComponent(g);
 
 	}
 
@@ -66,9 +59,11 @@ public class DictTabGui extends JPanel implements ActionListener {
 		// add JComboBox to choose the languages of the lookup
 		c.gridx = 0;
 		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridwidth = 1;
-		add(new JLabel("Select language to lookup"), c);
+		JLabel srcLangJLabel = new JLabel("Select language to lookup");
+		srcLangJLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		add(srcLangJLabel, c);
 		c.gridx = 1;
 		srcLangCombo = new JComboBox(translations.keySet().toArray());
 		srcLangCombo.setActionCommand("src_lang_selection_change");
@@ -86,32 +81,46 @@ public class DictTabGui extends JPanel implements ActionListener {
 		// the borders
 
 		c = new GridBagConstraints(); // add some space between components to
-		// avoid clutter
-		c.insets = new Insets(2, 2, 2, 2); // anchor all components WEST
-		c.anchor = GridBagConstraints.WEST;
-		c.weightx = 1.0;
-		c.weighty = 0.1;
+
+		c.insets = new Insets(2, 2, 2, 2); // avoid clutter
+		c.anchor = GridBagConstraints.NORTHEAST;// anchor all components WEST
+		c.weightx = 0.1;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
 
 		buildLanguageMenu(); // builds the JComboBox
 
-		// add JTextfield for the user input
+		// add JLabel and JTextfield for the user input
 		c.gridx = 0;
 		c.gridy = 2;
-		c.gridheight = 1;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		jtxf1 = new JTextField("happy");
+		JLabel lookupTextJLabel = new JLabel("enter the word to lookup");
+		lookupTextJLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		add(lookupTextJLabel, c);
+		c.gridx = 1;
+		jtxf1 = new JTextField("felice");
 		add(jtxf1, c);
 
 		// add JButton to send the search
-		c.anchor = GridBagConstraints.EAST;
-		c.fill = GridBagConstraints.NONE;
-		c.gridx = 2;
+		c.gridx = 0;
 		c.gridy = 3;
-		c.gridwidth = 1;
+		c.gridwidth = 2;
 		JButton jbt1 = new JButton("search");
 		jbt1.addActionListener(this);
 		add(jbt1, c);
+
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 2;
+		c.gridheight = 3;
+		c.weighty = 0.1;
+		c.fill = GridBagConstraints.BOTH;
+		jtxa1 = new JTextArea();
+		jtxa1.setColumns(5);
+		jtxa1.setLineWrap(true);
+		jtxa1.setRows(10);
+		jtxa1.setWrapStyleWord(true);
+		jtxa1.setEditable(false);
+		add(jtxa1, c);
 
 		setVisible(true);
 
@@ -129,21 +138,26 @@ public class DictTabGui extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 
-		JPanel jpnl = new JPanel();
 		String command = evt.getActionCommand();
 
 		// add JComboBox to choose the languages of the lookup
 		if (command.equals("src_lang_selection_change")) {
 			JLabel dst = new JLabel("select translation to resolve");
-			if (this.srcLangCombo.getSelectedItem().equals(NOT_SELECTED_STRING))	{
+			dst.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
+			if (this.srcLangCombo.getSelectedItem().equals(NOT_SELECTED_STRING)) {
 				remove(this.dstLangCombo);
-				remove(dst);	
-			}	else {
-				if(this.dstLangCombo != null)	remove(this.dstLangCombo);
+				remove(dst);
+			} else {
+				if (this.dstLangCombo != null)
+					remove(this.dstLangCombo);
+
+				c.fill = GridBagConstraints.HORIZONTAL;
 				c.gridx = 0;
 				c.gridy = 1;
-				c.fill = GridBagConstraints.BOTH;
+				c.gridheight = 1;
 				c.gridwidth = 1;
+				c.weightx = 0.1;
+				c.weighty = 0;
 				add(dst, c);
 				c.gridx = 1;
 				this.dstLangCombo = new JComboBox(this.translations
@@ -151,22 +165,26 @@ public class DictTabGui extends JPanel implements ActionListener {
 				dstLangCombo.addItem(NOT_SELECTED_STRING);
 				dstLangCombo.setSelectedIndex(dstLangCombo.getItemCount() - 1);
 				add(this.dstLangCombo, c);
+				this.revalidate();
+				setVisible(true);
 			}
 		}
 
 		else if (command.equals("search")) {
+
 			Vector<SearchableObject> objs = new Vector<SearchableObject>();
 
 			try {
 				dit = Factory.getDictionary();
 
-				if (this.dstLangCombo.getSelectedItem().toString().indexOf("audio") != -1)
+				if (this.dstLangCombo.getSelectedItem().toString().indexOf(
+						"audio") != -1)
 					objs.add(dit.read(this.srcLangCombo.getSelectedItem()
 							.toString(), jtxf1.getText().toString()));
 
 				else
 					objs = dit.read((String) srcLangCombo.getSelectedItem(),
-							new String(jtxf1.getText().getBytes("UTF-8")), 
+							new String(jtxf1.getText().getBytes("UTF-8")),
 							(String) dstLangCombo.getSelectedItem());
 
 				if (objs == null) {
@@ -175,27 +193,43 @@ public class DictTabGui extends JPanel implements ActionListener {
 					return;
 				}
 
-				if (jpnl != null) {
-					remove(jpnl);
-					jpnl = new JPanel();
-				}
-				int i;
-				for (i = 0; i < objs.size(); i++) {
+				JPanel internal = new JPanel();
+				internal.setBackground(new Color(0.0f, 1.0f, 0.0f, 0.35f));
+				internal.setLayout(new GridBagLayout());
+				GridBagConstraints d = new GridBagConstraints();
+				d.insets = new Insets(2, 2, 2, 2); // avoid clutter
+				d.anchor = GridBagConstraints.NORTH;// anchor all components WEST
+				d.fill = GridBagConstraints.HORIZONTAL;
+				d.weightx = 1.0;
+				d.weighty = 1.0;
+				d.gridx = 0;
+				d.gridy = 0;
+				int y = 0;
+
+				for (int i = 0; i < objs.size(); i++) {
 					SearchableObject sObj = objs.get(i);
 					if (sObj == null)
 						continue;
-					jpnl.add(sObj.getTable());
-					jpnl.add(new JSeparator());
+					d.gridy = y++;
+					JTable table = sObj.getTable();
+					table.setRowHeight(30);
+					internal.add(table, d);
+					internal.add(new JSeparator(), d);
 				}
 
 				// Add the JPanel into the Frame
 				c.gridx = 0;
 				c.gridy = 4;
-				c.weightx = 1.0;
-				c.weighty = 1.0;
 				c.gridwidth = 2;
+				c.gridheight = 3;
+				c.ipadx = 150;c.ipady = 150;	
 				c.fill = GridBagConstraints.BOTH;
-				add(jpnl, c);
+
+				remove(jtxa1);
+				remove(internal);
+				internal.revalidate();
+				internal.setVisible(true);
+				add(internal, c);
 
 			} catch (UnsupportedEncodingException e) {
 				log.error("UnsupportedEncodingException: " + e.getMessage());

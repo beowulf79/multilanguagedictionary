@@ -28,9 +28,9 @@ public class ColorRenderer extends JLabel implements TableCellRenderer {
 		} else {
 			setBackground(table.getBackground());
 			setForeground(table.getForeground());
-			if (columnValue.equals("correct"))
+			if ( (columnValue.equals("correct")) ||  (columnValue.equals("1")) )
 				setBackground(java.awt.Color.green);
-			if (columnValue.equals("wrong"))
+			else if ( (columnValue.equals("wrong")) ||  (columnValue.equals("-1")) )
 				setBackground(java.awt.Color.pink);
 
 

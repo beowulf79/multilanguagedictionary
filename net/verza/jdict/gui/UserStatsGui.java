@@ -1,17 +1,17 @@
 package net.verza.jdict.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -41,10 +41,9 @@ public class UserStatsGui implements ActionListener {
 	private static UserStatsGui singleton = null;
 	private Dictionary dit;
 	public JTextField textFilter;
-	public JComboBox typeComboFilter,resultComboFilter;
-	private UserStatsGuiJTable table;
+	public JComboBox typeComboFilter, resultComboFilter;
+	private UserStatsGuiTable table;
 
-	
 	public UserStatsGui() {
 
 		super();
@@ -72,7 +71,6 @@ public class UserStatsGui implements ActionListener {
 
 		QuizStats qz = new QuizStats(up.getQuizStat());
 		qz.computeStats();
-
 		initComponents(qz);
 		createAndShowGUI();
 
@@ -80,35 +78,29 @@ public class UserStatsGui implements ActionListener {
 
 	private void initComponents(QuizStats qz) {
 
-		frame = new JFrame();
-
-		JPanel jpnl2 = new JPanel(new BorderLayout());
-		jsp1 = new JScrollPane(jpnl2);
-
-		jpnl2.setBackground(Color.orange);
-		jpnl2.setLayout(new GridBagLayout());
-		jpnl2.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5 pixels
-																	// gap to
-																	// the
-																	// borders
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		jsp1 = new JScrollPane(mainPanel);
+		mainPanel.setLayout(new GridBagLayout());
+		mainPanel.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(2, 2, 2, 2);// add some space between components
-											// to avoid clutter
-		c.anchor = GridBagConstraints.WEST;// anchor all components WEST
-		c.weightx = 1.0;// all components use vertical available space
-		c.weighty = 1.0;// all components use horizontal available space
+		c.insets = new Insets(2, 2, 2, 2);
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 
-
-
-		//JComboBox for Quiz Type Filtering
+		// JLabel Quiz Type Filtering
 		c.gridx = 0;
 		c.gridy = 1;
-		JLabel label = new JLabel("Filter Quiz Type");
-		jpnl2.add(label,c);
+		JLabel quizTypeFilterJLabel = new JLabel("Show ony Quiz Type");
+		quizTypeFilterJLabel.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		mainPanel.add(quizTypeFilterJLabel, c);
+		// JComboBox for Quiz Type Filtering
 		c.gridx = 1;
+		c.anchor = GridBagConstraints.EAST;
 		typeComboFilter = new JComboBox();
 		typeComboFilter.addItem("");
 		typeComboFilter.addItem("Italian->Egyptian");
@@ -126,16 +118,19 @@ public class UserStatsGui implements ActionListener {
 		typeComboFilter.setSelectedIndex(0);
 		typeComboFilter.setActionCommand("typechanged");
 		typeComboFilter.addActionListener(this);
-		
-		jpnl2.add(typeComboFilter,c);
-		
-		
-		//JComboBox for Quiz Type Filtering
+		mainPanel.add(typeComboFilter, c);
+
+		// JLabel Quiz Result Filtering
 		c.gridx = 0;
 		c.gridy = 2;
-		JLabel label2 = new JLabel("Filter Quiz Results");
-		jpnl2.add(label2,c);
+		c.anchor = GridBagConstraints.WEST;
+		JLabel quizResultFilterJLabel = new JLabel("Show only Results");
+		quizResultFilterJLabel.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		mainPanel.add(quizResultFilterJLabel, c);
+		// JComboBox Quiz Result Filtering
 		c.gridx = 1;
+		c.anchor = GridBagConstraints.EAST;
 		resultComboFilter = new JComboBox();
 		resultComboFilter.addItem("");
 		resultComboFilter.addItem("correct");
@@ -143,14 +138,22 @@ public class UserStatsGui implements ActionListener {
 		resultComboFilter.setSelectedIndex(0);
 		resultComboFilter.setActionCommand("resultchanged");
 		resultComboFilter.addActionListener(this);
-		jpnl2.add(resultComboFilter,c);
-		
-		
-		//JTextField for Text Filtering
+		mainPanel.add(resultComboFilter, c);
+
+		// JLabel for Text Filtering
 		c.gridx = 0;
 		c.gridy = 3;
-		textFilter = new JTextField(20);
-		//Whenever filterText changes, invoke newFilter.
+		c.anchor = GridBagConstraints.WEST;
+		JLabel quizQuestionTextFilterJLabel = new JLabel(
+				"Show only results containg the word");
+		quizQuestionTextFilterJLabel.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		mainPanel.add(quizQuestionTextFilterJLabel, c);
+		// JTextField for Text Filtering
+		c.anchor = GridBagConstraints.EAST;
+		c.gridx = 1;
+		textFilter = new JTextField(10);
+		// Whenever filterText changes, invoke newFilter.
 		textFilter.getDocument().addDocumentListener(
 				new javax.swing.event.DocumentListener() {
 					public void changedUpdate(javax.swing.event.DocumentEvent e) {
@@ -168,31 +171,29 @@ public class UserStatsGui implements ActionListener {
 						newFilter();
 					}
 				});
-		jpnl2.add(textFilter,c);
-		
-		//JTable for Quiz Results
+		mainPanel.add(textFilter, c);
+
 		c.gridx = 0;
 		c.gridy = 4;
-
-		table = new UserStatsGuiJTable(qz.getGuessedHash(),
-											qz.getWrongHash(),
-												Color.GREEN);
+		c.gridwidth = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		table = new UserStatsGuiTable(qz.getResultStatsMap());
 		JScrollPane jsp3 = new JScrollPane(table);
-		jpnl2.add(jsp3, c);
+		mainPanel.add(jsp3, c);
 
 	}
 
 	private void createAndShowGUI() {
-		// Create and set up the window.
 		frame = new JFrame("UserStatsGui");
 		frame.addWindowListener(new MainFrameCloser(this));
+		frame.setSize(500, 620);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		// Create and set up the content pane.
 		frame.getContentPane().add(jsp1);
-		// Display the window.
-		frame.pack();
+		frame.setBackground(GUIPreferences.backgroundColor);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setSize(600, 900);
+
 	}
 
 	private void destroyInstance() {
@@ -227,32 +228,33 @@ public class UserStatsGui implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		if ( (evt.getActionCommand().equals("typechanged")) ||
-				(evt.getActionCommand().equals("resultchanged")) )
+		if ((evt.getActionCommand().equals("typechanged"))
+				|| (evt.getActionCommand().equals("resultchanged")))
 			newFilter();
 	}
-	
-	
-	/** 
-	 * Update the row filter regular expression from the expression in
-	 * the text box.
+
+	/**
+	 * Update the row filter regular expression from the expression in the text
+	 * box.
 	 */
 	public void newFilter() {
-		
+
 		javax.swing.RowFilter<DefaultTableModel, Object> rf = null;
 		javax.swing.RowFilter<DefaultTableModel, Object> rf1 = null;
 		javax.swing.RowFilter<DefaultTableModel, Object> rf2 = null;
 		javax.swing.RowFilter<DefaultTableModel, Object> rf3 = null;
-		//If current expression doesn't parse, don't update.
+		// If current expression doesn't parse, don't update.
 		try {
 
 			rf1 = javax.swing.RowFilter.regexFilter(textFilter.getText(), 0);
-			rf2 = javax.swing.RowFilter.regexFilter((String)typeComboFilter.getSelectedItem(), 2);
-			rf3 = javax.swing.RowFilter.regexFilter((String)resultComboFilter.getSelectedItem(), 3);
-			
-			java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>> filters = 
-				new java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>>(2);
-			
+			rf2 = javax.swing.RowFilter.regexFilter((String) typeComboFilter
+					.getSelectedItem(), 2);
+			rf3 = javax.swing.RowFilter.regexFilter((String) resultComboFilter
+					.getSelectedItem(), 3);
+
+			java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>> filters = new java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>>(
+					2);
+
 			filters.add(rf1);
 			filters.add(rf2);
 			filters.add(rf3);
@@ -262,8 +264,7 @@ public class UserStatsGui implements ActionListener {
 			return;
 		}
 		table.sorter.setRowFilter(rf);
-		
+
 	}
-	
-	
+
 }

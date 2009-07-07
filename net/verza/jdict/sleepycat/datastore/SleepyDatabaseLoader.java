@@ -111,15 +111,15 @@ public final class SleepyDatabaseLoader {
 					writer = new SleepyDatabaseWriter(factory	.getDatabase(nickname + type)					);
 					writer.setDataBinding(SleepyBinding.getDataBinding());
 					
-					// if rebuild option was selected let's flush the database
-					if(this.optionObj.getTypeOfImport().equals("rebuild"))	{
-						//before flushing the database it's required to close it
-						this.
-						factory.getDatabase(nickname + type).close();
-						factory.getDatabase(nickname + type).flushDatabase();
-						factory.getDatabase(nickname + type).open();
+					factory.getDatabase(nickname + type).close();
 
+					// close the database to avoid lock problems
+					if(this.optionObj.getTypeOfImport().equals("rebuild"))	{
+						// flushing the database if rebuild option has been selected
+						factory.getDatabase(nickname + type).flushDatabase();
 					}
+					//to write is available to a closed database
+					factory.getDatabase(nickname + type).open();
 					
 					String classname = ldesc.getClassQualifiedName();
 					log.debug("instantiating class: " + classname);

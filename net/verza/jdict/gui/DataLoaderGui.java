@@ -21,6 +21,7 @@ import net.verza.jdict.exceptions.LabelNotFoundException;
 import net.verza.jdict.properties.LanguageConfigurationClassDescriptor;
 import net.verza.jdict.properties.LanguagesConfiguration;
 import net.verza.jdict.dataloaders.LoaderOptionsStore;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,8 +35,8 @@ import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
-
 import javax.swing.border.EmptyBorder;
+
 
 public class DataLoaderGui extends JPanel implements ActionListener {
 
@@ -44,8 +45,6 @@ public class DataLoaderGui extends JPanel implements ActionListener {
 	private static DataLoaderGui singleton = null;
 	private Dictionary dit;
 	private LoaderOptionsStore optionsObj;
-
-	// swing objects
 	private JFrame frame;
 	private JFileChooser fileChooser;
 	private GridBagConstraints c;
@@ -111,6 +110,7 @@ public class DataLoaderGui extends JPanel implements ActionListener {
 		c.fill = GridBagConstraints.WEST;
 		c.gridy = ++this.y_coordinate;
 		JLabel buildTypeLabel = new JLabel("Select type of import");
+		buildTypeLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		add(buildTypeLabel, c);
 		c.gridx = 1;
 		String[] types = { "rebuild", "update" };
@@ -131,6 +131,7 @@ public class DataLoaderGui extends JPanel implements ActionListener {
 		c.gridx = 0;
 		c.gridy = ++this.y_coordinate;
 		JLabel categoryImportLabel = new JLabel("Import category Table");
+		categoryImportLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		add(categoryImportLabel, c);
 		c.gridx = 1;
 		categoryImportCheckBox = new JCheckBox();
@@ -142,6 +143,7 @@ public class DataLoaderGui extends JPanel implements ActionListener {
 		c.gridx = 0;
 		c.gridy = ++this.y_coordinate;
 		JLabel selectionImportLabel = new JLabel("Import Section Table");
+		selectionImportLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		add(selectionImportLabel, c);
 		c.gridx = 1;
 		sectionImportCheckBox = new JCheckBox();
@@ -182,11 +184,12 @@ public class DataLoaderGui extends JPanel implements ActionListener {
 		frame = new JFrame("Window");
 		frame.addWindowListener(new MainFrameCloser(this));
 		frame.setTitle("Import Options Chooser Window");
-		frame.setSize(850, 750);
+		frame.setSize(350, 550);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
-		// Display the window.
-		frame.pack();
+		frame.setBackground(GUIPreferences.backgroundColor);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
 	}
@@ -235,6 +238,7 @@ public class DataLoaderGui extends JPanel implements ActionListener {
 				String lang = new String(sub.getLanguageNickname()
 						+ sub.getType());
 				JLabel languageLabel = new JLabel(lang);
+				languageLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor));
 				add(languageLabel, c);
 				this.optionsObj.getLabels().put(lang, false);
 				c.gridx = 1;

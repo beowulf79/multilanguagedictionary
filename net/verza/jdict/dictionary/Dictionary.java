@@ -47,15 +47,15 @@ public interface Dictionary {
 
 	public abstract int getSize() throws DatabaseException;
 
-	public abstract HashMap<String,Integer> loadDatabase(LoaderOptionsStore optionsObj)
-			throws LabelNotFoundException, DatabaseException, IOException,
-			BiffException, KeyNotFoundException, DatabaseImportException ;
+	public abstract HashMap<String, Integer> loadDatabase(
+			LoaderOptionsStore optionsObj) throws LabelNotFoundException,
+			DatabaseException, IOException, BiffException,
+			KeyNotFoundException, DatabaseImportException;
 
 	public abstract void printDatabase();
-	
+
 	public abstract long flushDatabase() throws DatabaseException;
 
-	
 	// ////////////////////////////////////////////////////////////////////////////////////////
 	// ////////////////////////////////////////////////////////////////////////////////////////
 	// CATEGORY DATABASE
@@ -73,7 +73,7 @@ public interface Dictionary {
 	public abstract int getCategoriesDatabaseSize();
 
 	public abstract long flushCategoryDatabase() throws DatabaseException;
-	
+
 	public abstract void writeCategoryDatabase(String key, String data)
 			throws DatabaseException, UnsupportedEncodingException;
 
@@ -94,17 +94,20 @@ public interface Dictionary {
 	public abstract int getSectionDatabaseSize();
 
 	public abstract long flushSectionDatabase() throws DatabaseException;
-	
+
 	public abstract void writeSectionDatabase(String key, String data)
 			throws DatabaseException, UnsupportedEncodingException;
 
 	// ////////////////////////////////////////////////////////////////////////////////////////
 	// ////////////////////////////////////////////////////////////////////////////////////////
 	// USERS DATABASE
-	public abstract UserProfile readUsersDatabase(String key)
+	public abstract UserProfile readUserProfile(String key)
 			throws DatabaseException, UnsupportedEncodingException;
 
-	public abstract void writeUserDatabase(UserProfile up)
+	public abstract void writeUserProfile(UserProfile up)
+			throws DatabaseException, UnsupportedEncodingException;
+
+	public abstract void deleteUserProfile(UserProfile up)
 			throws DatabaseException, UnsupportedEncodingException;
 
 	public abstract String[] getUserList();

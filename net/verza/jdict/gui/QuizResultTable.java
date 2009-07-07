@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JCheckBox;
 import net.verza.jdict.quiz.QuizResult;
 import org.apache.log4j.Logger;
+
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.UnsupportedEncodingException;
 import java.util.Vector;
@@ -27,7 +29,7 @@ public class QuizResultTable extends JPanel {
 	private JTable table;
 	private JScrollPane scroll;
 	private Object dataValues[][];
-	static String headers[] = { "Question", "Quiz ExitCode", "User Answer",
+	static String headers[] = { "Question", "Result", "User Answer",
 			"Correct Answer" };
 	Boolean isByteArray; // When the Question is an Audio file this is set
 							// True
@@ -56,7 +58,15 @@ public class QuizResultTable extends JPanel {
 		DefaultTableModel dm = new DefaultTableModel();
 		dm.setDataVector(dataValues, headers);
 		table = new JTable(dm);
-
+		ColorRenderer cr = new ColorRenderer("Result");
+		// color the first column only
+		table.getColumnModel().getColumn(1).setCellRenderer(cr);
+		table.setBackground(Color.PINK);
+		table.getColumnModel().getColumn(0).setPreferredWidth(150);
+		table.getColumnModel().getColumn(1).setPreferredWidth(90);
+		table.getColumnModel().getColumn(2).setPreferredWidth(120);
+		table.getColumnModel().getColumn(3).setPreferredWidth(200);
+		
 		if (isByteArray) {
 			table.getColumn("Question").setCellRenderer(
 					new JTableButtonRenderer("Play Audio"));

@@ -9,7 +9,6 @@ import net.verza.jdict.exceptions.KeyNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import java.util.Vector;
-import net.verza.jdict.Configuration;
 import net.verza.jdict.SearchableObject;
 import net.verza.jdict.Word;
 import net.verza.jdict.exceptions.DataNotFoundException;
@@ -76,13 +75,13 @@ public class italianword2englishword extends QuizAbstract {
 			log.trace("key vector size inside loop " + localKeyArray.size());			
 			Word key = localKeyArray.get(number);
 
-			quizResult.setQuizType("ITALIAN2ENGLISH");
+			quizResult.setQuizType("Italian->English");
 			quizResult.setWordID(key.getid().toString());
 			// The Question String is composed by the Singular plus the notes if present
 			quizResult.setQuestion((key.getnotes() == null) ? key
-					.getsingular() : key.getsingular() + " ("
-					+ key.getnotes() + ")");
+					.getsingular() : key.getsingular() );
 
+			quizResult.setNotes(key.getnotes());
 			
 			// Save in localDataArray the word connected to this 
 			localDataArray =  (Vector<Word>) dit.read("italianword",
@@ -92,7 +91,7 @@ public class italianword2englishword extends QuizAbstract {
 			localDataArray.iterator();
 			String answer = new String();
 			for (int i = 0; i < localDataArray.size(); i++) {
-				answer = answer.concat(localDataArray.get(i).getsingular()+ ",");
+				answer = answer.concat(localDataArray.get(i).getsingular()+ " / ");
 			}
 			log.info("setting correct answer into stats object as " + answer.substring(0, answer.length()-1) );
 			quizResult.setCorrectAnswer(answer.substring(0, answer.length()-1));

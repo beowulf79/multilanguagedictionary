@@ -7,10 +7,8 @@ import net.verza.jdict.exceptions.LinkIDException;
 import java.io.FileNotFoundException;
 import net.verza.jdict.exceptions.KeyNotFoundException;
 import java.io.UnsupportedEncodingException;
-
 import java.util.Random;
 import java.util.Vector;
-import net.verza.jdict.Configuration;
 import net.verza.jdict.SearchableObject;
 import net.verza.jdict.Verb;
 import net.verza.jdict.ArabVerb;
@@ -81,7 +79,9 @@ public class arabicverb2englishverb extends QuizAbstract {
 			// The Question String is composed by the Singular plus the comment
 			// if present
 			quizResult.setQuestion((key.getnotes() == null) ? key.getinfinitive()
-					: key.getinfinitive() + " (" + key.getnotes() + ")");
+					: key.getinfinitive());
+			
+			quizResult.setNotes(key.getnotes());
 
 			// Save in localDataArray the word connected to this 
 			localDataArray = (Vector<Verb>) dit.read("arabicverb",
@@ -90,7 +90,7 @@ public class arabicverb2englishverb extends QuizAbstract {
 			localDataArray.iterator();
 			String answer = new String();
 			for (int i = 0; i < localDataArray.size(); i++) {
-				answer = answer.concat(localDataArray.get(i).getinfinitive()+ ",");
+				answer = answer.concat(localDataArray.get(i).getinfinitive()+ " / ");
 			}
 			log.info("setting correct answer into stats object as " + answer.substring(0, answer.length()-1));
 			quizResult.setCorrectAnswer(answer.substring(0, answer.length()-1));

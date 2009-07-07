@@ -22,7 +22,7 @@ public class SleepyUsersDatabaseReader {
 	private Database user_db;
 	private CursorConfig config;
 	private Cursor cursor;
-	private String[] userlist;
+	private String[] userList;
 	private Logger log;
 	private EntryBinding dataBinding;
 	
@@ -67,13 +67,13 @@ public class SleepyUsersDatabaseReader {
 
 	public String[] getUserList() {
 
-		return userlist;
+		return userList;
 	}
 
 	private void buildUsersList() throws DatabaseException {
 
 		log.debug("building user list");
-		userlist = new String[Configuration.MAX_USERS_PROFILES];
+		String[] tmpUserList = new String[Configuration.MAX_USERS_PROFILES];
 		DatabaseEntry foundKey = new DatabaseEntry();
 		DatabaseEntry foundData = new DatabaseEntry();
 		int count = 0;
@@ -81,11 +81,14 @@ public class SleepyUsersDatabaseReader {
 		while (cursor.getNext(foundKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
 			
 			UserProfile up = (UserProfile) dataBinding.entryToObject(foundData);
-			userlist[count] = up.getName();
+			tmpUserList[count] = up.getName();
 			log.debug("found user profile " + up.getName());
 			count++;
 		}
 		log.trace("found "+count+" users profiles");
+		userList = new String[count];
+		System.arraycopy(tmpUserList,0, userList, 0, count);
+
 		
 	}
 

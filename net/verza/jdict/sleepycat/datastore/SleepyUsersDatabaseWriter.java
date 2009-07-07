@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.OperationStatus;
 
-
 public class SleepyUsersDatabaseWriter {
 
 	private Database user_db;
@@ -22,14 +21,15 @@ public class SleepyUsersDatabaseWriter {
 		user_db = db;
 	}
 
-	public int writeUser(UserProfile up) throws DatabaseException,
+	public void writeUser(UserProfile up) throws DatabaseException,
 			UnsupportedEncodingException, FileNotFoundException {
 
 		DatabaseEntry keyEntry = new DatabaseEntry(up.getName().getBytes(
 				"UTF-8"));
 		DatabaseEntry dataEntry = new DatabaseEntry();
 
-		EntryBinding dataBinding = new com.sleepycat.bind.serial.SerialBinding(SleepyClassCatalogDatabase.getInstance().getClassCatalog(),
+		EntryBinding dataBinding = new com.sleepycat.bind.serial.SerialBinding(
+				SleepyClassCatalogDatabase.getInstance().getClassCatalog(),
 				UserProfile.class);
 
 		dataBinding.objectToEntry(up, dataEntry);
@@ -43,10 +43,29 @@ public class SleepyUsersDatabaseWriter {
 		else {
 			log.error("couldn't write user profile into the db "
 					+ user_db.getDatabaseName());
-			return -1;
+
 		}
 
-		return 0;
+
+	}
+
+	public void deleteUser(UserProfile up) throws DatabaseException,
+			UnsupportedEncodingException, FileNotFoundException {
+
+		DatabaseEntry keyEntry = new DatabaseEntry(up.getName().getBytes(
+				"UTF-8"));
+
+		if (user_db.delete(null, keyEntry) == OperationStatus.SUCCESS)
+
+			log.info("successFully delete "
+					+ " UserProfile having " + up.getName() );
+
+		else {
+			log.error("failed delete user profile "
+					+ user_db.getDatabaseName());
+			
+		}
+
 	}
 
 }

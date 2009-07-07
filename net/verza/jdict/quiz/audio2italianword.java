@@ -16,7 +16,6 @@ import net.verza.jdict.exceptions.KeyNotFoundException;
 import com.sleepycat.je.DatabaseException;
 import org.apache.log4j.Logger;
 
-
 /**
  * @author ChristianVerdelli
  * 
@@ -26,7 +25,7 @@ public class audio2italianword extends QuizAbstract {
 	private static Logger log;
 	private Vector<Word> localKeyArray;
 	public String language;
-	
+
 	/**
 	 * @throws DatabaseException
 	 * @throws FileNotFoundException
@@ -42,27 +41,25 @@ public class audio2italianword extends QuizAbstract {
 		log.trace("called class " + this.getClass().getName());
 		this.language = "italianword";
 
-
 	}
-	
 
 	@SuppressWarnings(value = "unchecked")
 	public int load() throws UnsupportedEncodingException, DatabaseException,
-			FileNotFoundException, DynamicCursorException, KeyNotFoundException,
-			DataNotFoundException {
+			FileNotFoundException, DynamicCursorException,
+			KeyNotFoundException, DataNotFoundException {
 
 		int number;
 		int dbsize = 0;
 		int counter = 0;
 		Random generator = new Random();
 
-		localKeyArray  = (Vector<Word>) dit.read("italianword").clone();
+		localKeyArray = (Vector<Word>) dit.read("italianword").clone();
 		dbsize = localKeyArray.size();
 		//if db size is 0 let's throw an exception key not found
-		if(dbsize == 0) throw new KeyNotFoundException("No record found for the specified key");
-		log.trace("key vector size outside loop " 
-				+ localKeyArray.size());
-
+		if (dbsize == 0)
+			throw new KeyNotFoundException(
+					"No record found for the specified key");
+		log.trace("key vector size outside loop " + localKeyArray.size());
 
 		while (counter < iterations) {
 			quizResult = new QuizResult();
@@ -76,9 +73,10 @@ public class audio2italianword extends QuizAbstract {
 
 			quizResult.setQuizType(Configuration.ITALIAN2ARABIC);
 			quizResult.setWordID(key.getid().toString());
-			
+
 			// The Question String is composed by the audio object
 			quizResult.setQuestion(key.getaudio());
+			quizResult.setNotes(key.getnotes());
 
 			// The correct Answer is the singular of the word asked 
 			String answer = key.getsingular();
@@ -96,7 +94,6 @@ public class audio2italianword extends QuizAbstract {
 		return 0;
 	}
 
-	
 	public int userAnswer(int index, String userAnswer)
 			throws DatabaseException, FileNotFoundException,
 			UnsupportedEncodingException, DynamicCursorException,
@@ -108,8 +105,8 @@ public class audio2italianword extends QuizAbstract {
 		QuizResult stObj = (QuizResult) stats.get(index);
 		SearchableObject srcObj = questions.get(index);
 		SearchableObject trgObj = dit.read(this.language, userAnswer);
-		if(trgObj != null)
-			if (srcObj.getid().equals(trgObj.getid()) ) {
+		if (trgObj != null)
+			if (srcObj.getid().equals(trgObj.getid())) {
 				stObj.setQuizExitCode("1");
 				System.out.println("compared is ok");
 			}

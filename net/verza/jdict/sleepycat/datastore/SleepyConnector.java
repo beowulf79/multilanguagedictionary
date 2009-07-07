@@ -83,7 +83,7 @@ public final class SleepyConnector implements Dictionary {
 		sectionReader = new SleepySectionDatabaseReader(section_database);
 		sectionLoader = new SleepySectionDatabaseLoader(section_database);
 
-		//Initialize UserProfile class
+		// Initialize UserProfile class
 		this.user = new UserProfile();
 	}
 
@@ -104,9 +104,10 @@ public final class SleepyConnector implements Dictionary {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see net.verza.jdict.dictionary.Dictionary#read(java.lang.String)
 	 * 
-	 * Returns all the entries in a database 
+	 * Returns all the entries in a database
 	 */
 	public Vector<SearchableObject> read(String language)
 			throws DatabaseException, UnsupportedEncodingException,
@@ -123,7 +124,8 @@ public final class SleepyConnector implements Dictionary {
 
 		reader.setDatabase(SleepyFactory.getInstance().getDatabase(_language));
 
-		// look in the language configuration for all the subindex and try searching 
+		// look in the language configuration for all the subindex and try
+		// searching
 		// with that subindex until the search returns any result
 		LanguageConfigurationClassDescriptor languageConf = LanguagesConfiguration
 				.getLanguageMainConfigNode(_language);
@@ -166,10 +168,12 @@ public final class SleepyConnector implements Dictionary {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.verza.jdict.dictionary.Dictionary#read(java.lang.String, java.lang.String, java.lang.String)
 	 * 
-	 * Lookup the given _key in the _srcLang database and returns all the SearchableObject connected to
-	 * this using the language _dstLang
+	 * @see net.verza.jdict.dictionary.Dictionary#read(java.lang.String,
+	 *      java.lang.String, java.lang.String)
+	 * 
+	 * Lookup the given _key in the _srcLang database and returns all the
+	 * SearchableObject connected to this using the language _dstLang
 	 */
 	public Vector<SearchableObject> read(String _srcLang, String _key,
 			String _dstLang) throws DatabaseException,
@@ -181,8 +185,8 @@ public final class SleepyConnector implements Dictionary {
 		if ((obj = read(_srcLang, _key)) == null)
 			return null;
 
-		
-		SleepyLinkidResolver linkidResolver = new SleepyLinkidResolver(this.reader);
+		SleepyLinkidResolver linkidResolver = new SleepyLinkidResolver(
+				this.reader);
 		linkidResolver.setSearchableObject(obj);
 		linkidResolver.addLanguage(_dstLang);
 		linkidResolver.iterateLinkid();
@@ -213,10 +217,10 @@ public final class SleepyConnector implements Dictionary {
 		return reader.getSize();
 	}
 
-	public HashMap<String,Integer> loadDatabase(LoaderOptionsStore optionsObj)
+	public HashMap<String, Integer> loadDatabase(LoaderOptionsStore optionsObj)
 			throws LabelNotFoundException, DatabaseException, IOException,
-			BiffException, KeyNotFoundException, DatabaseImportException  {
-		
+			BiffException, KeyNotFoundException, DatabaseImportException {
+
 		loader.setOptionObject(optionsObj);
 		return loader.loadDatabases();
 	}
@@ -290,7 +294,7 @@ public final class SleepyConnector implements Dictionary {
 		sectionReader.closeCursors();
 		int count = sectionLoader.loadDatabases();
 		sectionReader.openCursors();
-		
+
 		return count;
 	}
 
@@ -319,20 +323,34 @@ public final class SleepyConnector implements Dictionary {
 	// ////////////////////////////////////////////////////////////////////////////////////////
 	// ////////////////////////////////////////////////////////////////////////////////////////
 	// USERS DATABASE
-	public UserProfile readUsersDatabase(String key) throws DatabaseException,
+	public UserProfile readUserProfile(String key) throws DatabaseException,
 			UnsupportedEncodingException {
 
 		log.trace("called method readUsersDatabase with argument/s " + key);
 		return userReader.readUser(key);
 	}
 
-	public void writeUserDatabase(UserProfile up) throws DatabaseException,
+	public void writeUserProfile(UserProfile up) throws DatabaseException,
 			UnsupportedEncodingException {
 
 		try {
 			log.trace("called method writeUserDatabase with argument/s "
 					+ up.toString());
 			userWriter.writeUser(up);
+
+		} catch (FileNotFoundException e) {
+
+		}
+
+	}
+
+	public void deleteUserProfile(UserProfile up) throws DatabaseException,
+			UnsupportedEncodingException {
+
+		try {
+			log.trace("called method writeUserDatabase with argument/s "
+					+ up.toString());
+			userWriter.deleteUser(up);
 
 		} catch (FileNotFoundException e) {
 
@@ -363,7 +381,7 @@ public final class SleepyConnector implements Dictionary {
 			UnsupportedEncodingException {
 		log.trace("called methid setUser with argument/s " + s);
 		log.debug("setting session user " + s);
-		this.user = readUsersDatabase(s);
+		this.user = readUserProfile(s);
 	}
 
 }

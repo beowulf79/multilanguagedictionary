@@ -29,7 +29,7 @@ public class egyptianword2arabicword extends QuizAbstract {
 	private Vector<ArabWord> localDataArray;
 	public String sourceLanguage;
 	public String targetLanguage;
-	
+
 	/**
 	 * @throws DatabaseException
 	 * @throws FileNotFoundException
@@ -60,8 +60,10 @@ public class egyptianword2arabicword extends QuizAbstract {
 
 		localKeyArray = (Vector<ArabWord>) dit.read("egyptianword").clone();
 		dbsize = localKeyArray.size();
-		//if db size is 0 let's throw an exception key not found
-		if(dbsize == 0) throw new KeyNotFoundException("No record found for the specified key");
+		// if db size is 0 let's throw an exception key not found
+		if (dbsize == 0)
+			throw new KeyNotFoundException(
+					"No record found for the specified key");
 		log.trace("key vector size outside loop " + localKeyArray.size());
 
 		while (counter < iterations) {
@@ -79,19 +81,23 @@ public class egyptianword2arabicword extends QuizAbstract {
 			// The Question String is composed by the Singular plus the comment
 			// if present
 			quizResult.setQuestion((key.getnotes() == null) ? key.getsingular()
-					: key.getsingular() + " (" + key.getnotes() + ")");
+					: key.getsingular());
+			quizResult.setNotes(key.getnotes());
 
-			// Save in localDataArray the word connected to this 
+			// Save in localDataArray the word connected to this
 			localDataArray = (Vector<ArabWord>) dit.read("egyptianword",
 					key.getid().toString(), "arabicword").clone();
 
 			localDataArray.iterator();
 			String answer = new String();
 			for (int i = 0; i < localDataArray.size(); i++) {
-				answer = answer.concat( localDataArray.get(i).getsingular() + ",");
+				answer = answer.concat(localDataArray.get(i).getsingular()
+						+ " / ");
 			}
-			log.info("setting correct answer into stats object as " + answer.substring(0, answer.length()-1));
-			quizResult.setCorrectAnswer(answer.substring(0, answer.length()-1));
+			log.info("setting correct answer into stats object as "
+					+ answer.substring(0, answer.length() - 1));
+			quizResult.setCorrectAnswer(answer
+					.substring(0, answer.length() - 1));
 
 			questions.add(counter, key);
 			log.trace("Writing statistic Object to Array index " + counter);
@@ -117,7 +123,7 @@ public class egyptianword2arabicword extends QuizAbstract {
 
 		SearchableObject srcObj = questions.get(index);
 		SearchableObject trgObj = dit.read(this.targetLanguage, userAnswer);
-		if(trgObj != null)
+		if (trgObj != null)
 			if (srcObj.equals(trgObj, this.sourceLanguage)) {
 				stObj.setQuizExitCode("1");
 				System.out.println("compared is ok");

@@ -27,18 +27,16 @@ import java.util.HashMap;
 
 public class QuizTabGui extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-
+	private static final String questionLanguageLabel = "question language";
+	private static final String answerLanguageLabel = " answer language";	
 	public static final int DEFAULT_ARGUMENT_INDEX = 0;
 	public static final int DEFAULT_ITERATIONS = 10;
 	public static final String NOT_SELECTED_STRING = "---- Nothing Selected ----";
 	public static final String TYPE_SELECTION_COMBO_ACTION_STRING = "typesel";
 	public static Logger log;
 	public static String[] languageArray;
-
 	public static QuizTabGui instance = null;
 	public QuizTabGuiWordsCounter wcounter;
-
-	// Graphic COMPONENTS instance variable
 	public GridBagConstraints c;
 	public JTextArea jtxa1;
 	public JLabel jlb1;
@@ -96,13 +94,19 @@ public class QuizTabGui extends JPanel implements ActionListener {
 
 		translations = LanguageSelection.buildLanguageMenu();
 
-		// add JComboBox to choose the languages of the lookup
+		//JLabel
 		c.gridx = 0;
 		c.gridy = 0;
 		c.fill = GridBagConstraints.NONE;
 		c.gridheight = 1;
 		c.gridwidth = 1;
-		add(new JLabel("select question's lookup language "), c);
+		c.anchor = GridBagConstraints.NORTHWEST;
+		JLabel questionLanguageJLabel = new JLabel(questionLanguageLabel);
+		questionLanguageJLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor));
+		add(questionLanguageJLabel, c);
+		
+		//  JComboBox to choose the languages of the lookup
+		c.anchor = GridBagConstraints.NORTHEAST;
 		c.gridx = 2;
 		srcLangCombo = new JComboBox(translations.keySet().toArray());
 		srcLangCombo.setActionCommand("src_lang_selection_change");
@@ -121,19 +125,20 @@ public class QuizTabGui extends JPanel implements ActionListener {
 		c = new GridBagConstraints();
 		c.insets = new Insets(2, 2, 2, 2); // add some space between components
 		// to avoid clutter
-		c.anchor = GridBagConstraints.WEST; // anchor all components WEST
 		c.weightx = 0.1; // all components use vertical available space
-		c.weighty = 0.1; // all components use horizontal available space
+		c.weighty = 0; // the components WILL NOT use horizontal available space
 
-		c.gridx = 2;
 		buildQuizMenu(); // builds the JComboBox
 
 		c.gridx = 0;
 		c.gridy = 5;
+		c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.NONE;
 		jlb3 = new JLabel("Iterations");
+		jlb3.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		add(jlb3, c);
 
+		c.anchor = GridBagConstraints.NORTHEAST;
 		c.gridx = 2;
 		iterationJSpinner = new JSpinner();
 		iterationJSpinner.setValue(DEFAULT_ITERATIONS);
@@ -153,6 +158,7 @@ public class QuizTabGui extends JPanel implements ActionListener {
 		c.gridwidth = 4;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
+		c.weighty = 1; // this component will use horizontal available space
 		c.fill = GridBagConstraints.BOTH;
 		jtxa1 = new JTextArea();
 		jtxa1.setColumns(20);
@@ -180,15 +186,17 @@ public class QuizTabGui extends JPanel implements ActionListener {
 	public void showResults() {
 		try {
 
-			QuizResultTable qzJTable = new QuizResultTable(quiz.getStats());
+			QuizResultTable resultTable = new QuizResultTable(quiz.getStats());
 			c.gridx = 0;
 			c.gridy = 7;
 			c.gridheight = 6;
 			c.gridwidth = 3;
+			c.weighty = 0.1; // all components use horizontal available space
 			c.fill = GridBagConstraints.BOTH;
 			scrlp1.remove(jtxa1);
 			remove(scrlp1);
-			scrlp1 = new JScrollPane(qzJTable);
+			scrlp1 = new JScrollPane(resultTable);
+			scrlp1.getViewport().setBackground(Color.RED);
 			add(scrlp1, c);
 			Window.getInstance().repaint();
 
@@ -196,7 +204,7 @@ public class QuizTabGui extends JPanel implements ActionListener {
 			UserProfile up = dit.getUser();
 			up.addQuizStat(quiz.getStats());
 			log.debug("updating profile of user " + up.toString());
-			dit.writeUserDatabase(up);
+			dit.writeUserProfile(up);
 		} catch (UnsupportedEncodingException e) {
 			log.error("UnsupportedEncodingException " + e.getMessage());
 			e.printStackTrace();
@@ -214,8 +222,9 @@ public class QuizTabGui extends JPanel implements ActionListener {
 
 			// add JComboBox to choose the languages of the lookup
 			if (command.equals("src_lang_selection_change")) {
-
-				JLabel dst = new JLabel("select answer's lookup language");
+				
+				JLabel dst = new JLabel(answerLanguageLabel);
+				dst.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
 				if (this.srcLangCombo.getSelectedItem().equals(
 						NOT_SELECTED_STRING)) {
 					remove(this.dstLangCombo);
@@ -223,14 +232,18 @@ public class QuizTabGui extends JPanel implements ActionListener {
 				} else {
 					if (this.dstLangCombo != null)
 						remove(this.dstLangCombo);
+					c.weighty = 0; // all components use horizontal available space
 					c.gridheight = 1;
 					c.gridwidth = 1;
 					c.gridx = 0;
 					c.gridy = 1;
+					c.anchor = GridBagConstraints.NORTHWEST;
 					c.fill = GridBagConstraints.NONE;
 					c.gridwidth = 1;
-					add(dst, c);
+					add(dst, c);						//JLabel
+					
 					c.gridx = 2;
+					c.anchor = GridBagConstraints.NORTHEAST;
 					this.dstLangCombo = new JComboBox(this.translations
 							.get(this.srcLangCombo.getSelectedItem()));
 					dstLangCombo.addItem(NOT_SELECTED_STRING);
@@ -238,7 +251,10 @@ public class QuizTabGui extends JPanel implements ActionListener {
 					dstLangCombo
 							.setSelectedIndex(dstLangCombo.getItemCount() - 1);
 					dstLangCombo.addActionListener(this);
-					add(this.dstLangCombo, c);
+					add(this.dstLangCombo, c);						// JComboBox
+						
+					this.revalidate();
+					setVisible(true);
 				}
 			} else if (command.equals("dst_lang_selection_change")) {
 				if (this.dstLangCombo.getSelectedItem().toString().equals(
@@ -249,20 +265,18 @@ public class QuizTabGui extends JPanel implements ActionListener {
 					wcounter.setLanguage(this.srcLangCombo.getSelectedItem()
 							.toString());
 
-				c.gridx = 0;
-				c.gridy = 2;
-				c.gridheight = 1;
-				c.gridwidth = 1;
-				c.fill = GridBagConstraints.NONE;
+				c.gridx = 0;	c.gridy = 2;	c.gridheight = 1;	c.gridwidth = 1; c.weighty = 0;
+				c.fill = GridBagConstraints.NONE; 	c.anchor = GridBagConstraints.NORTHWEST;
 				jlb4 = new JLabel("Section");
+				jlb4.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
 				add(jlb4, c);
 				// get section values counter
 				wcounter.setIndex("section");
 				wcounter.setInputData(readSection());
 				if (sectionSelectionJComboBox != null)
 					remove(sectionSelectionJComboBox);
-				c.gridx = 2;
-				c.fill = GridBagConstraints.NONE;
+				
+				c.gridx = 2; 	c.fill = GridBagConstraints.NONE; c.anchor = GridBagConstraints.NORTHEAST;
 				sectionSelectionJComboBox = new JComboBox(wcounter
 						.search("section"));
 				sectionSelectionJComboBox.addItem(NOT_SELECTED_STRING);
@@ -276,10 +290,10 @@ public class QuizTabGui extends JPanel implements ActionListener {
 						"verb") == -1)
 						&& (this.dstLangCombo.getSelectedItem().toString()
 								.indexOf("verb") == -1)) {
-					c.gridx = 0;
-					c.gridy = 3;
-					c.fill = GridBagConstraints.NONE;
+					
+					c.gridx = 0; 	c.gridy = 3; 	c.weighty = 0;	c.fill = GridBagConstraints.NONE;		c.anchor = GridBagConstraints.NORTHWEST;
 					jlb2 = new JLabel("Argument/Category");
+					jlb2.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
 					add(jlb2, c);
 					// get section values counter
 					wcounter.setIndex("category");
@@ -287,6 +301,7 @@ public class QuizTabGui extends JPanel implements ActionListener {
 					if (categorySelectionJComboBox != null)
 						remove(categorySelectionJComboBox);
 					c.gridx = 2;
+					c.anchor = GridBagConstraints.NORTHEAST;
 					categorySelectionJComboBox = new JComboBox(wcounter
 							.search("category"));
 					categorySelectionJComboBox.addItem(NOT_SELECTED_STRING);

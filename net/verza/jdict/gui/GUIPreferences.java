@@ -1,11 +1,17 @@
 package net.verza.jdict.gui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.util.Enumeration;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 public class GUIPreferences {
+	
+	public static final Color borderColor = Color.GRAY;
+	public static final int borderThickness = 1;
+	public static final Color backgroundColor = Color.CYAN;
+	
 	
 	public GUIPreferences() {
 		
