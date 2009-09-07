@@ -16,9 +16,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
 import jxl.read.biff.BiffException;
-import net.verza.jdict.AudioFileLoader;
 import net.verza.jdict.SearchableObject;
 import net.verza.jdict.dataloaders.ExcelLoader;
+import net.verza.jdict.dataloaders.IAudioFileLoader;
 import net.verza.jdict.exceptions.KeyNotFoundException;
 import net.verza.jdict.exceptions.LabelNotFoundException;
 import net.verza.jdict.exceptions.DatabaseImportException;
@@ -29,12 +29,11 @@ import net.verza.jdict.properties.PropertiesLoader;
 import com.sleepycat.je.DatabaseException;
 import net.verza.jdict.dataloaders.LoaderOptionsStore;
 
-
 public final class SleepyDatabaseLoader {
 
 	private LoaderOptionsStore optionObj;
 	private static Logger log;
-	private AudioFileLoader audioLoader;
+	private IAudioFileLoader audioLoader;
 	private Class<?> IClass;
 	private Class<?>[] ClassConstructorTypes;
 	private Constructor<?> IConstructor;
@@ -48,31 +47,28 @@ public final class SleepyDatabaseLoader {
 	private Class<?>[] methodTypes;
 	private List<String> translations;
 	private String excel_sheet;
-	private HashMap<String,Integer> importInfo;
-	
-	
+	private HashMap<String, Integer> importInfo;
+
 	public SleepyDatabaseLoader() {
 		log = Logger.getLogger("net.verza.jdict.sleepycat.datastore");
 		log.trace("called class " + this.getClass().getName());
-		this.audioLoader = new AudioFileLoader();
 		this.factory = SleepyFactory.getInstance();
 		this.translations = new Vector<String>();
 		this.rowsNumber = 0;
-		this.importInfo = new HashMap<String,Integer>();
+		this.importInfo = new HashMap<String, Integer>();
 	}
 
 	public void setOptionObject(LoaderOptionsStore _obj) {
 		this.optionObj = _obj;
 	}
 
-
-	public HashMap<String,Integer> loadDatabases() throws DatabaseException,
+	public HashMap<String, Integer> loadDatabases() throws DatabaseException,
 			LabelNotFoundException, BiffException, IOException,
 			KeyNotFoundException, DatabaseImportException {
 
 		dataloader = new ExcelLoader(this.optionObj.getInputFile());
 		this.iterateLanguages();
-		
+
 		return this.importInfo;
 
 	}
@@ -90,7 +86,7 @@ public final class SleepyDatabaseLoader {
 				String key = (String) it.next();
 
 				if ((Boolean) lang.get(key)) {
-					
+
 					log.info("importing language " + key);
 					LanguageConfigurationClassDescriptor ldesc = LanguagesConfiguration
 							.getLanguageMainConfigNode(key);
@@ -108,19 +104,20 @@ public final class SleepyDatabaseLoader {
 						continue;
 					}
 
-					writer = new SleepyDatabaseWriter(factory	.getDatabase(nickname + type)					);
+					writer = new SleepyDatabaseWriter(factory
+							.getDatabase(nickname + type));
 					writer.setDataBinding(SleepyBinding.getDataBinding());
-					
+
 					factory.getDatabase(nickname + type).close();
 
 					// close the database to avoid lock problems
-					if(this.optionObj.getTypeOfImport().equals("rebuild"))	{
+					if (this.optionObj.getTypeOfImport().equals("rebuild")) {
 						// flushing the database if rebuild option has been selected
 						factory.getDatabase(nickname + type).flushDatabase();
 					}
 					//to write is available to a closed database
 					factory.getDatabase(nickname + type).open();
-					
+
 					String classname = ldesc.getClassQualifiedName();
 					log.debug("instantiating class: " + classname);
 					IClass = Class.forName(classname);
@@ -146,7 +143,7 @@ public final class SleepyDatabaseLoader {
 
 					int count = writer.write(key_array, class_array);
 					this.importInfo.put(key, count);
-					
+
 				}
 
 			}
@@ -173,7 +170,9 @@ public final class SleepyDatabaseLoader {
 
 	private void iterateLabels(String _language, String _type)
 			throws LabelNotFoundException, BiffException, IOException,
-			KeyNotFoundException {
+			KeyNotFoundException, ClassNotFoundException,
+			InvocationTargetException, IllegalAccessException,
+			InstantiationException {
 
 		try {
 
@@ -237,8 +236,15 @@ public final class SleepyDatabaseLoader {
 
 					audioMethod2Call = IClass.getMethod(audio_method,
 							byte[].class);
-					audioLoader.setAudioFilesPath(audio_directory);
-					audioLoader.loadAudioFiles();
+
+					String PP = sub.getAudioLoaderClass();
+					log.debug("instantiating class: " + PP);
+					Class<?> AClass = Class.forName(PP);
+					ClassConstructorTypes = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+					IConstructor = AClass.getConstructor(ClassConstructorTypes);
+					audioLoader = (IAudioFileLoader) IConstructor
+							.newInstance(sub);
+
 					methodTypes = new Class[] { java.lang.String.class };
 					Method2Call = IClass.getMethod(attribute_method,
 							methodTypes);
@@ -311,16 +317,13 @@ public final class SleepyDatabaseLoader {
 
 				// load the audio stream
 				if (loadaudio) {
-					String audiofile = value.concat(".mp3");
-					"/Users/ChristianVerdelli/documents/workspace/jdict/audio/italian/"
-							.concat(audiofile);
-					if (audioLoader.get(audiofile) != null) {
-						log.debug("setting audio stream with method "
-								+ audioMethod2Call.getName() + " with value  "
-								+ audiofile);
-						audioMethod2Call.invoke(class_array[counter],
-								(Object) audioLoader.get(audiofile));
-					}
+					String audiofile = (value);
+					log.debug("setting audio stream with method "
+							+ audioMethod2Call.getName() + " with value  "
+							+ audiofile);
+					audioMethod2Call.invoke(class_array[counter],
+							(Object) audioLoader.get(audiofile));
+
 				}
 
 				// if the attribute is multi value

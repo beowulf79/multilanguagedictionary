@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +23,6 @@ import net.verza.jdict.dictionary.Dictionary;
 import net.verza.jdict.dictionary.Factory;
 import net.verza.jdict.exceptions.*;
 import net.verza.jdict.quiz.QuizStats;
-
 import org.apache.log4j.Logger;
 import com.sleepycat.je.DatabaseException;
 
@@ -69,6 +67,7 @@ public class UserStatsGui implements ActionListener {
 			System.err.println(e.getMessage());
 		}
 
+		
 		QuizStats qz = new QuizStats(up.getQuizStat());
 		qz.computeStats();
 		initComponents(qz);
@@ -177,6 +176,7 @@ public class UserStatsGui implements ActionListener {
 		c.gridy = 4;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
+
 		table = new UserStatsGuiTable(qz.getResultStatsMap());
 		JScrollPane jsp3 = new JScrollPane(table);
 		mainPanel.add(jsp3, c);

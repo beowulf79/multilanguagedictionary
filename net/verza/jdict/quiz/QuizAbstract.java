@@ -143,8 +143,8 @@ public abstract class QuizAbstract {
 			DataNotFoundException, KeyNotFoundException;
 
 	
-	public abstract int load() throws UnsupportedEncodingException,
+	public abstract void load() throws UnsupportedEncodingException,
 			DatabaseException, FileNotFoundException, DynamicCursorException,
-			DataNotFoundException, KeyNotFoundException, LinkIDException;
+			DataNotFoundException, KeyNotFoundException, LinkIDException, QuizLoadException;
 
 }

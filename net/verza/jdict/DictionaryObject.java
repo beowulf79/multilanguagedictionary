@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import net.verza.jdict.gui.GUIPreferences;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.BorderFactory;
 import javax.swing.border.EmptyBorder;
@@ -129,9 +131,16 @@ public class DictionaryObject implements Serializable, SearchableObject {
 		return audio;
 	}
 
+	public byte[] getaudiobyte()	{
+			return this.audio;
+	}
+	
+	
 	public void setaudio(byte[] newvalue) throws NullPointerException {
-		if (newvalue == null)
-			throw new NullPointerException("setting audio with a null string");
+		if (newvalue == null)	{
+			log.warn("setting audio with a null string");
+			return;
+		}
 		log.trace("setting audio having size " + newvalue.length);
 		System.out.println("called method setaudio with byte size of "
 				+ newvalue.length);
@@ -159,6 +168,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	}
 
 	public void toGraphich() {
+		System.out.println("to Graphic called");
 		jFrame = new JFrame();
 		
 		jpnl = new JPanel(new BorderLayout());
@@ -191,22 +201,25 @@ public class DictionaryObject implements Serializable, SearchableObject {
 		jtxf1.setEditable(false);
 		jtxf1.setColumns(10);
 		jpnl.add(jtxf1, c);
-
+		
 		// Display LinkID
 		c.gridx = 0;
 		c.gridy = 1;
+		this.linkIdToString();
 		JLabel linkedIdJLabel = new JLabel("Linked IDs");
 		linkedIdJLabel.setBorder(BorderFactory.createLineBorder(
 				GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		jpnl.add(linkedIdJLabel, c);
 		c.gridx = 1;
-		JTextField jtxf2 = new JTextField("0 bytes");
+		JTextArea linkidTextArea = new JTextArea();
 		if (this.getlinkid() != null) {
-			jtxf2.setText(this.getlinkid().toString());
+			linkidTextArea.setRows(linkId.keySet().size());
+			linkidTextArea.setText(linkIdToString());
 		}
-		jtxf2.setEditable(false);
-		jtxf2.setColumns(10);
-		jpnl.add(jtxf2, c);
+		linkidTextArea.setEditable(false);
+		linkidTextArea.setColumns(10);
+		jpnl.add(linkidTextArea, c);
+
 
 		// Display Section 
 		c.gridx = 0;
@@ -216,13 +229,14 @@ public class DictionaryObject implements Serializable, SearchableObject {
 				GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		jpnl.add(sectionJLabel, c);
 		c.gridx = 1;
-		JTextField jtxf3 = new JTextField("not defined for this word");
-		jtxf3.setColumns(12);
+		JTextField jtxf3 = new JTextField("");
+		jtxf3.setColumns(10);
 		jtxf3.setEditable(false);
 		if (this.getsection().size() > 0) {
 			jtxf3.setText(this.getsection().toString());
 		}
 		jpnl.add(jtxf3, c);
+
 
 		// Display Notes
 		c.gridx = 0;
@@ -245,7 +259,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 		jFrame.getContentPane().add(jpnl);
 		jFrame.pack();
 		jFrame.setVisible(false);
-		jFrame.setSize(500, 350);
+		jFrame.setSize(500, 400);
 
 	}
 
@@ -275,4 +289,22 @@ public class DictionaryObject implements Serializable, SearchableObject {
 				+ this.section.toString() + " - audio size" + this.audio.length;
 	}
 
+	public String linkIdToString()	{
+		String linkIdToString = new String();
+		Iterator<String> it = this.linkId.keySet().iterator();
+		while(it.hasNext())	{
+			String key = it.next();
+			Integer[] values = this.linkId.get(key);
+			String value = new String();
+			for(int i=0;i<values.length;i++)	{
+				System.out.println("values[i] "+ values[i].toString());
+				value = value.concat(values[i].toString()+",");
+			}
+			value = value.substring(0, (value.length())-1);	// removes comma in the end
+			linkIdToString= linkIdToString.concat(key +"["+ value +"]"+  "\n");
+		}
+		
+		System.out.println("linkIdToString "+linkIdToString);
+		return linkIdToString;
+	}
 }

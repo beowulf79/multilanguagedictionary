@@ -8,7 +8,7 @@ import org.apache.commons.configuration.ConfigurationException;
 @SuppressWarnings( { "unchecked" })
 public class PropertiesLoader {
 
-	private static String propertyFilename = "/Users/ChristianVerdelli/documents/workspace/jdict/conf/properties.xml";
+	private static String propertyFilename = "conf/properties.xml";
 
 	private static Logger log = null;
 	private static XMLConfiguration config = null;
@@ -44,6 +44,7 @@ public class PropertiesLoader {
 
 		log.debug("getProperty(" + prop_name + ")=" + return_value);
 		return return_value;
+		
 	}
 
 	public static List<org.apache.commons.configuration.SubnodeConfiguration> getHierarchicalProperty(
@@ -54,7 +55,13 @@ public class PropertiesLoader {
 
 	public static String getProperty(String prop_name) {
 		log.trace("asked for property " + prop_name);
-		return getProperty(prop_name, "");
+		return getProperty(prop_name, "");	
+	}
+	
+	public static Boolean getBoolean(String prop_name)	{
+		log.trace("asked for Boolean property " + prop_name);
+		return config.getBoolean(prop_name);
 	}
 
+	
 }

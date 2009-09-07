@@ -16,7 +16,7 @@ public class Configuration {
 	/*
 	 * Log4J
 	 */
-	public static final String LOG4JCONF = "../conf/log4j.properties";
+	public static final String LOG4JCONF = "conf/log4j.properties";
 
 	/*
 	 * Quiz type
@@ -25,27 +25,24 @@ public class Configuration {
 	public static final String AUDIO2ARABIC = "Audio->Arabic";
 	public static final String AUDIO2ENGLISH = "Audio->English";
 	public static final String AUDIO2EGYPTIAN = "Audio->Egyptian";
-	
-	
 	public static final String ITALIAN2ARABIC = "Italian->Arabic";
 	public static final String ITALIAN2EGYPTIAN = "Italian->Egyptian";
 	public static final String ITALIAN2ENGLISH = "Italian->English";
-	
 	public static final String ARABIC2ITALIAN = "Arabic->Italian";
 	public static final String ARABIC2ENGLISH = "Arabic->English";
 	public static final String ARABIC2EGYPTIAN = "Arabic->Egyptian";
-	
 	public static final String ENGLISH2ARABIC = "English->Arabic";
 	public static final String ENGLISH2EGYPTIAN = "English->Egyptian";
 	public static final String ENGLISH2ITALIAN = "English->Italian";
-	
 	public static final String EGYPTIAN2ITALIAN = "Egyptian->Italian";
 	public static final String EGYPTIAN2ENGLISH = "Egyptian->English";
 	public static final String EGYPTIAN2ARABIC = "Egyptian->Arabic";
 	
+	public static final int QUIZMAXLOOPS = 10;
 	/*
 	 * Quiz answers code
 	 */
+	
 	public static final String CORRECTANSWER = "1";
 	public static final String WRONGANSWER = "-1";
 
@@ -59,8 +56,8 @@ public class Configuration {
 	 * Stored in the User Profile In a future release the GUI will allow Admin
 	 * User to Edit the database
 	 */
-	public static final int USER_ROLE = 0;
-	public static final int ADMIN_ROLE = 1;
+	public static final int USER_ROLE = 1;
+	public static final int ADMIN_ROLE = 0;
 
 	public static final String ENVIROMENT_HOME = "../data/";
 
@@ -85,4 +82,5 @@ public class Configuration {
 	
 	public static final int MAX_USERS_PROFILES = 1000;
 
+	
 }

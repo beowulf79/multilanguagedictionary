@@ -1,10 +1,6 @@
 package net.verza.jdict.quiz;
 
 import org.apache.log4j.Logger;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -12,7 +8,7 @@ import java.util.Calendar;
  * @author ChristianVerdelli
  * 
  */
-public class QuizResult implements Serializable, Comparable {
+public class QuizResult implements Serializable {
 
 	static final long serialVersionUID = 5760620481868028259L;
 
@@ -200,16 +196,18 @@ public class QuizResult implements Serializable, Comparable {
 	public int compareTo(Object _object) {
 		QuizResult qr = (QuizResult) _object;
 
+		System.out.println("THIS OBJECT DATA " + this.getCorrectAnswer()
+				+ this.getQuizExitCode());
+
+		System.out.println("ARGUMENT OBJECT DATA " + qr.getCorrectAnswer()
+				+ qr.getQuizExitCode());
+
 		if (qr.correctAnswer.equals(this.getCorrectAnswer())
-				&& (qr.quizExitCode == this.quizExitCode)) {
-			//System.out.println("qr.correctAnswer " + qr.correctAnswer
-			//		+ " this.getCorrectAnswer " + this.getCorrectAnswer());
-			//System.out
-			//		.println("correct answer is the same, compareTo will return 0");
+				&& (qr.quizExitCode.equals(this.quizExitCode))) {
+			System.out.println("called compareTo will return 0");
 			return 0;
 		} else {
-			//	System.out
-			//		.println("correct answer is NOT the same, compareTo will return -1");
+			System.out.println("called compareTo will retur -1");
 			return -1;
 		}
 	}
@@ -220,6 +218,18 @@ public class QuizResult implements Serializable, Comparable {
 
 	public void setNotes(String comment) {
 		this.notes = comment;
+	}
+
+	public int hashCode() {
+		return new Integer(this.getCorrectAnswer().hashCode())
+				- new Integer(this.getQuizExitCode().hashCode());
+	}
+
+	public boolean equals(Object obj) {
+
+		if (this.hashCode() == obj.hashCode())
+			return true;
+		return false;
 	}
 
 }

@@ -28,8 +28,6 @@ public class ExcelLoader {
 		log.trace("Default Contructor called ");
 		this.file = fileObj;
 		columnsNumber = 0;
-		PropertyConfigurator.configure("../conf/log4j.properties");
-
 	}
 
 	public void setSheetName(String s) {

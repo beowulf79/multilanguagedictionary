@@ -3,6 +3,8 @@ package net.verza.jdict.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import net.verza.jdict.DictionaryObject;
 import net.verza.jdict.SearchableObject;
 import org.apache.log4j.Logger;
 
@@ -10,7 +12,7 @@ public class JTableWordButtonEditor extends DefaultCellEditor {
 
 	private static final long serialVersionUID = 1L;
 	protected JButton button;
-	private Object obj;
+	private DictionaryObject dictionaryObject;
 	private boolean isPushed;
 	private static Logger log;
 
@@ -30,6 +32,10 @@ public class JTableWordButtonEditor extends DefaultCellEditor {
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
 		log.debug("inside getTableCellEditorComponent " + value);
+		
+		System.out.println("value "+value.toString());
+		dictionaryObject = (DictionaryObject)value;
+		
 		if (isSelected) {
 			button.setForeground(table.getSelectionForeground());
 			button.setBackground(table.getSelectionBackground());
@@ -52,7 +58,7 @@ public class JTableWordButtonEditor extends DefaultCellEditor {
 
 		}
 		isPushed = false;
-		return obj;
+		return dictionaryObject;
 	}
 
 	public boolean stopCellEditing() {

@@ -45,9 +45,6 @@ public final class SleepySectionDatabaseLoader {
 			this.sleepySectionDatabase.open();
 		}
 
-		// loadFile opens a file that contains our data
-		// and loads it into a list for us to work with. The sourceField
-		// parameter represents the number of fields in the file.
 		loadFile();
 
 		log.trace("sectionTable.size " + sectionTable.size());

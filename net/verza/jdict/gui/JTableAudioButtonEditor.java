@@ -32,13 +32,9 @@ public class JTableAudioButtonEditor extends DefaultCellEditor {
 
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
-		if (isSelected) {
-			button.setForeground(table.getSelectionForeground());
-			button.setBackground(table.getSelectionBackground());
-		} else {
-			button.setForeground(table.getForeground());
-			button.setBackground(table.getBackground());
-		}
+
+		
+		System.out.println("button.isEnabled() ? "+button.isEnabled());
 		
 		audio = (byte[]) value;
 		log.trace("playing audio data (size: "+audio.length+" )");
@@ -52,7 +48,6 @@ public class JTableAudioButtonEditor extends DefaultCellEditor {
 		}
 
 		isPushed = true;
-		button.setText("CHRIS");
 		return button;
 	}
 

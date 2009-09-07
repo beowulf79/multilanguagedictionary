@@ -104,14 +104,17 @@ public class Word extends DictionaryObject implements Serializable, IWord {
 		jpnl.add(categoryJLabel, c);
 		c.gridx = 1;
 		JTextField jtxf2 = new JTextField("not defined for this word");
-		jtxf2.setColumns(22);
+		jtxf2.setColumns(10);
 		jtxf2.setEditable(false);
 		if (this.getcategory().size() > 0) {
 			jtxf2.setText(this.getcategory().toString());
 		}
+
 		jpnl.add(jtxf2, c);
 
-		
+		jFrame.getContentPane().add(jpnl);
+		jFrame.pack();
+		jFrame.setVisible(true);
 
 	}
 
@@ -127,8 +130,8 @@ public class Word extends DictionaryObject implements Serializable, IWord {
 		dm.setDataVector(dataValues, headers);
 		JTable table = new JTable(dm);
 		table.getColumnModel().getColumn(0).setPreferredWidth(200);
-	    table.getColumnModel().getColumn(1).setPreferredWidth(400);
-	    table.getColumnModel().getColumn(2).setPreferredWidth(200);
+		table.getColumnModel().getColumn(1).setPreferredWidth(400);
+		table.getColumnModel().getColumn(2).setPreferredWidth(200);
 		table.getColumn("Obj").setCellRenderer(new JTableButtonRenderer("Obj"));
 		table.getColumn("Obj").setCellEditor(
 				new JTableWordButtonEditor(new JCheckBox()));
@@ -136,6 +139,7 @@ public class Word extends DictionaryObject implements Serializable, IWord {
 				new JTableAudioButtonRenderer("Play Audio"));
 		table.getColumn("Audio").setCellEditor(
 				new JTableAudioButtonEditor(new JCheckBox()));
+		
 		return table;
 
 	}

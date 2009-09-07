@@ -110,7 +110,7 @@ public interface Dictionary {
 	public abstract void deleteUserProfile(UserProfile up)
 			throws DatabaseException, UnsupportedEncodingException;
 
-	public abstract String[] getUserList();
+	public abstract String[] getUserList() throws DatabaseException;
 
 	/*
 	 * returns the username which has been loaded IMPORTATN. This method doesn't

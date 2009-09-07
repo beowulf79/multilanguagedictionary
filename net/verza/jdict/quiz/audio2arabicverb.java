@@ -13,6 +13,8 @@ import net.verza.jdict.ArabWord;
 import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
 import net.verza.jdict.exceptions.KeyNotFoundException;
+import net.verza.jdict.exceptions.QuizLoadException;
+
 import com.sleepycat.je.DatabaseException;
 import org.apache.log4j.Logger;
 
@@ -44,13 +46,11 @@ public class audio2arabicverb extends QuizAbstract {
 	}
 
 	@SuppressWarnings(value = "unchecked")
-	public int load() throws UnsupportedEncodingException, DatabaseException,
+	public void load() throws UnsupportedEncodingException, DatabaseException,
 			FileNotFoundException, DynamicCursorException,
-			KeyNotFoundException, DataNotFoundException {
+			KeyNotFoundException, DataNotFoundException, QuizLoadException {
 
-		int number;
-		int dbsize = 0;
-		int counter = 0;
+		int number = -1, dbsize = 0, counter = 0, max_loop_counter = 0;
 		Random generator = new Random();
 
 		localKeyArray = (Vector<ArabWord>) dit.read(this.language).clone();
@@ -61,18 +61,20 @@ public class audio2arabicverb extends QuizAbstract {
 					"No record found for the specified key");
 		log.trace("key vector size outside loop " + localKeyArray.size());
 
-		System.out.println("counter " + counter + " iterations " + iterations);
-
-		while (counter < iterations) {
-			quizResult = new QuizResult();
+		while ((max_loop_counter++ < Configuration.QUIZMAXLOOPS)
+				&& (counter < iterations)) {
 			log.trace("iteration number " + counter);
 			log.trace("database size " + dbsize);
-
 			number = generator.nextInt(dbsize);
 			log.debug("random generated index " + number);
 			log.trace("key vector size inside loop " + localKeyArray.size());
 			ArabWord key = localKeyArray.get(number);
+			if (key.getaudiobyte().length == 0) {
+				log.error("audio for the word not present, skip to next word ");
+				continue;
+			}
 
+			quizResult = new QuizResult();
 			quizResult.setQuizType(Configuration.AUDIO2EGYPTIAN);
 			quizResult.setWordID(key.getid().toString());
 
@@ -93,7 +95,10 @@ public class audio2arabicverb extends QuizAbstract {
 			counter++;
 		}
 
-		return 0;
+		//if the iterations number has not been reached it means that there were errors during
+		//quiz load. throws an exception 
+		if(counter < iterations)
+			throw new QuizLoadException("errors while quiz loading");
 	}
 
 	public int userAnswer(int index, String userAnswer)

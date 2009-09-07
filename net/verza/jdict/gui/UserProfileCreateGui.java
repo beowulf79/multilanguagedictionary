@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -32,14 +33,15 @@ public class UserProfileCreateGui extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private static final String FILE_CHOOSER_COMMAND_STRING = "Select file to Load";
 	private static final String CREATE_USERPROFILE_COMMAND_STRING = "Create User Profile";
-
 	private static Logger log;
 	private static UserProfileCreateGui singleton = null;
+	private JCheckBox isAdminJCheckBox;
 	private JTextField nameTextField, emailTextField;
 	private JPasswordField passwordField;
 	private JFileChooser fileChooser;
 	private JFrame frame;
 	private JButton create;
+	private int y_position = 0;
 
 	public UserProfileCreateGui() {
 		super();
@@ -65,7 +67,7 @@ public class UserProfileCreateGui extends JPanel implements ActionListener {
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = y_position++;
 		JLabel nameJLabel = new JLabel("username");
 		nameJLabel.setBorder(BorderFactory.createLineBorder(
 				GUIPreferences.borderColor, GUIPreferences.borderThickness));
@@ -77,7 +79,7 @@ public class UserProfileCreateGui extends JPanel implements ActionListener {
 		add(new JSeparator(), c);
 
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = y_position++;
 		c.anchor = GridBagConstraints.NORTHWEST;
 		JLabel passwordLabel = new JLabel("password");
 		passwordLabel.setBorder(BorderFactory.createLineBorder(
@@ -90,7 +92,7 @@ public class UserProfileCreateGui extends JPanel implements ActionListener {
 		add(new JSeparator(), c);
 
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = y_position++;
 		c.anchor = GridBagConstraints.NORTHWEST;
 		JLabel emailJLabel = new JLabel("email");
 		emailJLabel.setBorder(BorderFactory.createLineBorder(
@@ -101,8 +103,35 @@ public class UserProfileCreateGui extends JPanel implements ActionListener {
 		add(emailTextField = new JTextField(15), c);
 		add(new JSeparator(), c);
 
+		try {
+			if (Factory.getDictionary().getUser().getIsAdmin()) {
+				c.gridx = 0;
+				c.gridy = y_position++;
+				c.anchor = GridBagConstraints.NORTHWEST;
+				JLabel isAdminJLabel = new JLabel("isAdmin");
+				isAdminJLabel.setBorder(BorderFactory.createLineBorder(
+						GUIPreferences.borderColor,
+						GUIPreferences.borderThickness));
+				add(isAdminJLabel, c);
+				c.gridx = 1;
+				isAdminJCheckBox = new JCheckBox();
+				isAdminJCheckBox.setSelected(false);
+				add(isAdminJCheckBox, c);
+			}
+		} catch (DatabaseException e) {
+			System.err.println();
+		} catch (DataNotFoundException e) {
+			System.err.println();
+		} catch (FileNotFoundException e) {
+			System.err.println();
+		} catch (UnsupportedEncodingException e) {
+			System.err.println();
+		} catch (DynamicCursorException e) {
+			System.err.println();
+		}
+
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = y_position++;
 		c.anchor = GridBagConstraints.NORTHWEST;
 		JLabel pictureJLabel = new JLabel("Picture");
 		pictureJLabel.setBorder(BorderFactory.createLineBorder(
@@ -119,7 +148,7 @@ public class UserProfileCreateGui extends JPanel implements ActionListener {
 		add(new JSeparator(), c);
 
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = y_position++;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.NORTHEAST;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -189,10 +218,16 @@ public class UserProfileCreateGui extends JPanel implements ActionListener {
 				userProfile.setName(nameTextField.getText());
 				userProfile.setPassword(new String((char[]) passwordField
 						.getPassword()));
-				userProfile.setEmail(emailTextField.getText());
-				userProfile.setPicture(fileChooser.getSelectedFile());
-				Factory.getDictionary().writeUserProfile(userProfile);
+				if (null != emailTextField.getText())
+					userProfile.setEmail(emailTextField.getText());
+				if (null != fileChooser.getSelectedFile())
+					userProfile.setPicture(fileChooser.getSelectedFile());
 
+				if (Factory.getDictionary().getUser().getIsAdmin())
+					if (isAdminJCheckBox.isSelected())
+						userProfile.setIsAdmin(true);
+				
+				Factory.getDictionary().writeUserProfile(userProfile);
 				this.frame.dispose();
 
 			} catch (DatabaseException ex) {

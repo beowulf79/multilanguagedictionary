@@ -1,7 +1,6 @@
 package net.verza.jdict;
 
 import net.verza.jdict.quiz.QuizResult;
-import net.verza.jdict.gui.Commons;
 import org.apache.log4j.Logger;
 import javax.swing.ImageIcon;
 import java.util.Calendar;
@@ -24,10 +23,10 @@ public class UserProfile implements Serializable {
 	public static final int CSV_FIELD_SIZE = 7;
 	public static final String CSV_COMMENT = "#";
 
-	private String name,password,pictureFile;
+	private String name, password, pictureFile;
 	private ImageIcon picture;
 	private String email;
-	private int userType;
+	private boolean isAdmin;
 	private Vector<QuizResult> stats; // Stores QuizStat Objects
 	private static Logger log;
 
@@ -56,9 +55,9 @@ public class UserProfile implements Serializable {
 	 * 
 	 */
 	public void setName(String _name) {
-		if (_name == null)  {
+		if (_name == null) {
 			log.error("error setting name");
-			return ;
+			return;
 		}
 		name = _name;
 	}
@@ -95,7 +94,7 @@ public class UserProfile implements Serializable {
 	public void setPicture(File _picture_file) {
 		this.pictureFile = _picture_file.getAbsolutePath();
 		this.picture = new ImageIcon(this.pictureFile);
-		System.out.println("imageicon "+picture.getImage().getSource());
+		System.out.println("imageicon " + picture.getImage().getSource());
 	}
 
 	/*
@@ -120,16 +119,15 @@ public class UserProfile implements Serializable {
 	/*
 	 * 
 	 */
-	public int getUserType() {
-		return userType;
+	public boolean getIsAdmin() {
+		return isAdmin;
 	}
 
 	/*
 	 * 
 	 */
-	public int setUserType(int newtype) {
-		userType = newtype;
-		return 0;
+	public void setIsAdmin(boolean _isAdmin) {
+		isAdmin = _isAdmin;
 	}
 
 	/*
@@ -172,40 +170,40 @@ public class UserProfile implements Serializable {
 	/*
 	 * 
 	 */
-	public void addQuizStat(File csvStats) throws IOException{
+	public void addQuizStat(File csvStats) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader(csvStats));
 		String str;
 		while ((str = in.readLine()) != null) {
 			String[] tmp = new String[0];
 
-			if( (str.trim().startsWith(CSV_COMMENT)) ||	//skip comments
-					(tmp=str.split(SEPARATOR_CHAR)).length < CSV_FIELD_SIZE)	{ 	// skip invalid lines
+			if ((str.trim().startsWith(CSV_COMMENT)) || //skip comments
+					(tmp = str.split(SEPARATOR_CHAR)).length < CSV_FIELD_SIZE) { // skip invalid lines
 				log.error("found comment or invalid record, skipping");
 				continue;
 			}
 
 			QuizResult qr = new QuizResult();
-            qr.setData(tmp[0]);
-    		qr.setWordID(tmp[1]); 
-    		qr.setQuestion(tmp[2]);
-    		qr.setQuizExitCode(tmp[3]);
-    		qr.setQuizType(tmp[4]);
-    		qr.setUserAnswer(tmp[5]);
-    		qr.setCorrectAnswer(tmp[6]);
+			qr.setData(tmp[0]);
+			qr.setWordID(tmp[1]);
+			qr.setQuestion(tmp[2]);
+			qr.setQuizExitCode(tmp[3]);
+			qr.setQuizType(tmp[4]);
+			qr.setUserAnswer(tmp[5]);
+			qr.setCorrectAnswer(tmp[6]);
 
-    		addQuizStat(qr);
+			addQuizStat(qr);
 		}
-        
+
 	}
-	
+
 	/*
 	 * 
 	 */
-	public void flushStatistics()	{
+	public void flushStatistics() {
 		log.info("resetting user's statistics");
 		stats.clear();
 	}
-	
+
 	public int checkPassword(String pwd) {
 		int result = 1;
 		if (this.password.equals(pwd))
@@ -225,9 +223,8 @@ public class UserProfile implements Serializable {
 		while (itr.hasNext()) {
 			results = results.concat(itr.next().export2csv());
 		}
-		return "# Exported " + Calendar.getInstance().getTime()  + "\n" 
+		return "# Exported " + Calendar.getInstance().getTime() + "\n"
 				+ CSV_COMMENT + "\n" + results;
-		
 
 	}
 

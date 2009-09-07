@@ -1,7 +1,7 @@
 package net.verza.jdict.quiz;
 
 import org.apache.log4j.Logger;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -16,17 +16,18 @@ import java.util.Vector;
 public class QuizStats {
 	private static Logger log;
 	private Vector<QuizResult> data;
-	private TreeMap<QuizResult, Integer> resultsMap;
+	//private TreeMap<QuizResult, Integer> resultsMap;
+	private HashMap<QuizResult, Integer> resultsMap;
 
 	public QuizStats(Vector<QuizResult> quizResultVector) {
 		log = Logger.getLogger("net.verza.jdict.quiz");
 		log.trace("initializing class " + this.getClass().getName());
 		data = quizResultVector;
 		log.debug("found " + quizResultVector.size() + " questions to analize");
-		resultsMap = new TreeMap<QuizResult, Integer>();
+		resultsMap = new HashMap<QuizResult, Integer>();
 	}
 
-	public TreeMap<QuizResult, Integer> getResultStatsMap() {
+	public HashMap<QuizResult, Integer> getResultStatsMap() {
 		return resultsMap;
 	}
 
@@ -38,21 +39,18 @@ public class QuizStats {
 		QuizResult quizResultEntry;
 		while (itr.hasNext()) {
 			quizResultEntry = itr.next();
-			//log.trace(quizResultEntry.toString());
 
-		
-			if (resultsMap.containsKey(quizResultEntry))	{
-				resultsMap.put(quizResultEntry, (resultsMap
-						.get(quizResultEntry) + 1));
-				log.debug("incrementing counter with value "+(resultsMap
-						.get(quizResultEntry) + 1)+" inside resultsMap for the key"+quizResultEntry.toString());
-			}else	{
+			if (resultsMap.containsKey(quizResultEntry)) {
+				int counter = (resultsMap.get(quizResultEntry) + 1);
+				resultsMap.put(quizResultEntry, counter);
+
+			} else {
 				resultsMap.put(quizResultEntry, 1);
-				log.debug("added to resultsMap key "+quizResultEntry.toString() );
+				log.debug("added to resultsMap key "
+						+ quizResultEntry.toString());
 			}
-			log.trace("TreeMap size " + resultsMap.size());
-
 		}
+		
 		
 	}
 

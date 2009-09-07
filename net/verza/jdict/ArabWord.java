@@ -2,11 +2,14 @@ package net.verza.jdict;
 
 
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import net.verza.jdict.gui.GUIPreferences;
 import net.verza.jdict.gui.JTableAudioButtonEditor;
 import net.verza.jdict.gui.JTableAudioButtonRenderer;
 import net.verza.jdict.gui.JTableButtonRenderer;
@@ -57,6 +60,8 @@ public class ArabWord extends Word {
 		c.gridx = 0;
 		c.gridy = 6;
 		JLabel jlbl1 = new JLabel("Plural");
+		jlbl1.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		jpnl.add(jlbl1, c);
 		c.gridx = 1;
 		JTextField jtxf1 = new JTextField(this.getplural());
@@ -64,11 +69,9 @@ public class ArabWord extends Word {
 		jtxf1.setEditable(false);
 		jpnl.add(jtxf1, c);
 	
-		jFrame.setResizable(false);
 		jFrame.getContentPane().add(jpnl);
 		jFrame.pack();
 		jFrame.setVisible(true);
-		jFrame.setSize(300, 350);
 		
     }
     

@@ -72,7 +72,7 @@ public class SleepySectionDatabaseReader {
 		return null;
 	}
 
-	private void initialize() throws DatabaseException,
+	public void initialize() throws DatabaseException,
 			UnsupportedEncodingException {
 
 		DatabaseEntry foundKey = new DatabaseEntry();

@@ -9,10 +9,14 @@ import net.verza.jdict.exceptions.KeyNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import java.util.Vector;
+
+import net.verza.jdict.Configuration;
 import net.verza.jdict.SearchableObject;
 import net.verza.jdict.Word;
 import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
+import net.verza.jdict.exceptions.QuizLoadException;
+
 import com.sleepycat.je.DatabaseException;
 import org.apache.log4j.Logger;
 
@@ -27,7 +31,7 @@ public class italianword2englishword extends QuizAbstract {
 	private Vector<Word> localDataArray;
 	public String sourceLanguage;
 	public String targetLanguage;
-	
+
 	/**
 	 * @throws DatabaseException
 	 * @throws FileNotFoundException
@@ -43,59 +47,64 @@ public class italianword2englishword extends QuizAbstract {
 		log.trace("called class " + this.getClass().getName());
 		this.sourceLanguage = "italianword";
 		this.targetLanguage = "englishword";
-//		questions = new Vector<Word>();
+		//		questions = new Vector<Word>();
 	}
 
-	
-	
 	@SuppressWarnings(value = "unchecked")
-	public int load() throws UnsupportedEncodingException, DatabaseException,
-			FileNotFoundException, DynamicCursorException, KeyNotFoundException,
-			DataNotFoundException, LinkIDException {
+	public void load() throws UnsupportedEncodingException, DatabaseException,
+			FileNotFoundException, DynamicCursorException,
+			KeyNotFoundException, DataNotFoundException, LinkIDException,
+			QuizLoadException {
 
-		int number;
-		int dbsize = 0;
-		int counter = 0;
+		int number = -1, dbsize = 0, counter = 0, max_loop_counter = 0;
 		Random generator = new Random();
-		
-		localKeyArray  = (Vector<Word>) dit.read("italianword").clone();
+
+		localKeyArray = (Vector<Word>) dit.read("italianword").clone();
 		dbsize = localKeyArray.size();
 		//if db size is 0 let's throw an exception key not found
-		if(dbsize == 0) throw new KeyNotFoundException("No record found for the specified key");
-		log.trace("key vector size outside loop " 
-						+ localKeyArray.size());
-		
-		while (counter < iterations) {
-			quizResult = new QuizResult();
+		if (dbsize == 0)
+			throw new KeyNotFoundException(
+					"No record found for the specified key");
+		log.trace("key vector size outside loop " + localKeyArray.size());
+
+		while ((max_loop_counter++ < Configuration.QUIZMAXLOOPS)
+				&& (counter < iterations)) {
+
 			log.trace("iteration number " + counter);
 			log.trace("database size " + dbsize);
 
 			number = generator.nextInt(dbsize);
 			log.debug("random generated index " + number);
-			log.trace("key vector size inside loop " + localKeyArray.size());			
+			log.trace("key vector size inside loop " + localKeyArray.size());
 			Word key = localKeyArray.get(number);
-
+			if (null == key) {
+				log.error("word is null, skip to next word ");
+				continue;
+			}
+			quizResult = new QuizResult();
 			quizResult.setQuizType("Italian->English");
 			quizResult.setWordID(key.getid().toString());
 			// The Question String is composed by the Singular plus the notes if present
-			quizResult.setQuestion((key.getnotes() == null) ? key
-					.getsingular() : key.getsingular() );
+			quizResult.setQuestion((key.getnotes() == null) ? key.getsingular()
+					: key.getsingular());
 
 			quizResult.setNotes(key.getnotes());
-			
+
 			// Save in localDataArray the word connected to this 
-			localDataArray =  (Vector<Word>) dit.read("italianword",
-													key.getid().toString(), 
-													"englishword").clone();
-			
+			localDataArray = (Vector<Word>) dit.read("italianword",
+					key.getid().toString(), "englishword").clone();
+
 			localDataArray.iterator();
 			String answer = new String();
 			for (int i = 0; i < localDataArray.size(); i++) {
-				answer = answer.concat(localDataArray.get(i).getsingular()+ " / ");
+				answer = answer.concat(localDataArray.get(i).getsingular()
+						+ " / ");
 			}
-			log.info("setting correct answer into stats object as " + answer.substring(0, answer.length()-1) );
-			quizResult.setCorrectAnswer(answer.substring(0, answer.length()-1));
-			
+			log.info("setting correct answer into stats object as "
+					+ answer.substring(0, answer.length() - 1));
+			quizResult.setCorrectAnswer(answer
+					.substring(0, answer.length() - 1));
+
 			questions.add(counter, key);
 			log.trace("Writing statistic Object to Array index " + counter);
 
@@ -104,11 +113,12 @@ public class italianword2englishword extends QuizAbstract {
 
 			counter++;
 		}
-
-		return 0;
+		//if the iterations number has not been reached it means that there were errors during
+		//quiz load. throws an exception 
+		if (counter < iterations)
+			throw new QuizLoadException("errors while quiz loading");
 	}
-	
-	
+
 	public int userAnswer(int index, String userAnswer)
 			throws DatabaseException, FileNotFoundException,
 			UnsupportedEncodingException, DynamicCursorException,
@@ -121,7 +131,7 @@ public class italianword2englishword extends QuizAbstract {
 
 		SearchableObject srcObj = questions.get(index);
 		SearchableObject trgObj = dit.read(this.targetLanguage, userAnswer);
-		if(trgObj != null)
+		if (trgObj != null)
 			if (srcObj.equals(trgObj, this.sourceLanguage)) {
 				stObj.setQuizExitCode("1");
 				System.out.println("compared is ok");

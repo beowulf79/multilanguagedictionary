@@ -14,6 +14,7 @@ import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
 import net.verza.jdict.exceptions.KeyNotFoundException;
 import net.verza.jdict.exceptions.LinkIDException;
+import net.verza.jdict.exceptions.QuizLoadException;
 import net.verza.jdict.quiz.QuizAbstract;
 import org.apache.log4j.Logger;
 import com.sleepycat.je.DatabaseException;
@@ -26,9 +27,10 @@ import java.util.HashMap;
  */
 
 public class QuizTabGui extends JPanel implements ActionListener {
+
 	private static final long serialVersionUID = 1L;
 	private static final String questionLanguageLabel = "question language";
-	private static final String answerLanguageLabel = " answer language";	
+	private static final String answerLanguageLabel = " answer language";
 	public static final int DEFAULT_ARGUMENT_INDEX = 0;
 	public static final int DEFAULT_ITERATIONS = 10;
 	public static final String NOT_SELECTED_STRING = "---- Nothing Selected ----";
@@ -94,7 +96,7 @@ public class QuizTabGui extends JPanel implements ActionListener {
 
 		translations = LanguageSelection.buildLanguageMenu();
 
-		//JLabel
+		// JLabel
 		c.gridx = 0;
 		c.gridy = 0;
 		c.fill = GridBagConstraints.NONE;
@@ -102,10 +104,11 @@ public class QuizTabGui extends JPanel implements ActionListener {
 		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.NORTHWEST;
 		JLabel questionLanguageJLabel = new JLabel(questionLanguageLabel);
-		questionLanguageJLabel.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor));
+		questionLanguageJLabel.setBorder(BorderFactory
+				.createLineBorder(GUIPreferences.borderColor));
 		add(questionLanguageJLabel, c);
-		
-		//  JComboBox to choose the languages of the lookup
+
+		// JComboBox to choose the languages of the lookup
 		c.anchor = GridBagConstraints.NORTHEAST;
 		c.gridx = 2;
 		srcLangCombo = new JComboBox(translations.keySet().toArray());
@@ -126,7 +129,8 @@ public class QuizTabGui extends JPanel implements ActionListener {
 		c.insets = new Insets(2, 2, 2, 2); // add some space between components
 		// to avoid clutter
 		c.weightx = 0.1; // all components use vertical available space
-		c.weighty = 0; // the components WILL NOT use horizontal available space
+		c.weighty = 0; // the components WILL NOT use horizontal available
+						// space
 
 		buildQuizMenu(); // builds the JComboBox
 
@@ -135,7 +139,8 @@ public class QuizTabGui extends JPanel implements ActionListener {
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.NONE;
 		jlb3 = new JLabel("Iterations");
-		jlb3.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
+		jlb3.setBorder(BorderFactory.createLineBorder(
+				GUIPreferences.borderColor, GUIPreferences.borderThickness));
 		add(jlb3, c);
 
 		c.anchor = GridBagConstraints.NORTHEAST;
@@ -222,9 +227,11 @@ public class QuizTabGui extends JPanel implements ActionListener {
 
 			// add JComboBox to choose the languages of the lookup
 			if (command.equals("src_lang_selection_change")) {
-				
+
 				JLabel dst = new JLabel(answerLanguageLabel);
-				dst.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
+				dst.setBorder(BorderFactory.createLineBorder(
+						GUIPreferences.borderColor,
+						GUIPreferences.borderThickness));
 				if (this.srcLangCombo.getSelectedItem().equals(
 						NOT_SELECTED_STRING)) {
 					remove(this.dstLangCombo);
@@ -232,7 +239,8 @@ public class QuizTabGui extends JPanel implements ActionListener {
 				} else {
 					if (this.dstLangCombo != null)
 						remove(this.dstLangCombo);
-					c.weighty = 0; // all components use horizontal available space
+					c.weighty = 0; // all components use horizontal available
+									// space
 					c.gridheight = 1;
 					c.gridwidth = 1;
 					c.gridx = 0;
@@ -240,8 +248,8 @@ public class QuizTabGui extends JPanel implements ActionListener {
 					c.anchor = GridBagConstraints.NORTHWEST;
 					c.fill = GridBagConstraints.NONE;
 					c.gridwidth = 1;
-					add(dst, c);						//JLabel
-					
+					add(dst, c); // JLabel
+
 					c.gridx = 2;
 					c.anchor = GridBagConstraints.NORTHEAST;
 					this.dstLangCombo = new JComboBox(this.translations
@@ -251,8 +259,8 @@ public class QuizTabGui extends JPanel implements ActionListener {
 					dstLangCombo
 							.setSelectedIndex(dstLangCombo.getItemCount() - 1);
 					dstLangCombo.addActionListener(this);
-					add(this.dstLangCombo, c);						// JComboBox
-						
+					add(this.dstLangCombo, c); // JComboBox
+
 					this.revalidate();
 					setVisible(true);
 				}
@@ -265,24 +273,36 @@ public class QuizTabGui extends JPanel implements ActionListener {
 					wcounter.setLanguage(this.srcLangCombo.getSelectedItem()
 							.toString());
 
-				c.gridx = 0;	c.gridy = 2;	c.gridheight = 1;	c.gridwidth = 1; c.weighty = 0;
-				c.fill = GridBagConstraints.NONE; 	c.anchor = GridBagConstraints.NORTHWEST;
+				c.gridx = 0;
+				c.gridy = 2;
+				c.gridheight = 1;
+				c.gridwidth = 1;
+				c.weighty = 0;
+				c.fill = GridBagConstraints.NONE;
+				c.anchor = GridBagConstraints.NORTHWEST;
 				jlb4 = new JLabel("Section");
-				jlb4.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
+				jlb4.setBorder(BorderFactory.createLineBorder(
+						GUIPreferences.borderColor,
+						GUIPreferences.borderThickness));
 				add(jlb4, c);
 				// get section values counter
 				wcounter.setIndex("section");
 				wcounter.setInputData(readSection());
 				if (sectionSelectionJComboBox != null)
 					remove(sectionSelectionJComboBox);
-				
-				c.gridx = 2; 	c.fill = GridBagConstraints.NONE; c.anchor = GridBagConstraints.NORTHEAST;
+
+				c.gridx = 2;
+				c.fill = GridBagConstraints.NONE;
+				c.anchor = GridBagConstraints.NORTHEAST;
 				sectionSelectionJComboBox = new JComboBox(wcounter
 						.search("section"));
 				sectionSelectionJComboBox.addItem(NOT_SELECTED_STRING);
 				sectionSelectionJComboBox
 						.setSelectedIndex(sectionSelectionJComboBox
 								.getItemCount() - 1);
+				sectionSelectionJComboBox.setPrototypeDisplayValue("WWWWWWWWWW");
+
+				//sectionSelectionJComboBox.setMaximumSize(maximumSize)
 				add(sectionSelectionJComboBox, c);
 
 				// Verbs do not have category index
@@ -290,10 +310,16 @@ public class QuizTabGui extends JPanel implements ActionListener {
 						"verb") == -1)
 						&& (this.dstLangCombo.getSelectedItem().toString()
 								.indexOf("verb") == -1)) {
-					
-					c.gridx = 0; 	c.gridy = 3; 	c.weighty = 0;	c.fill = GridBagConstraints.NONE;		c.anchor = GridBagConstraints.NORTHWEST;
+
+					c.gridx = 0;
+					c.gridy = 3;
+					c.weighty = 0;
+					c.fill = GridBagConstraints.NONE;
+					c.anchor = GridBagConstraints.NORTHWEST;
 					jlb2 = new JLabel("Argument/Category");
-					jlb2.setBorder(BorderFactory.createLineBorder(GUIPreferences.borderColor, GUIPreferences.borderThickness));
+					jlb2.setBorder(BorderFactory.createLineBorder(
+							GUIPreferences.borderColor,
+							GUIPreferences.borderThickness));
 					add(jlb2, c);
 					// get section values counter
 					wcounter.setIndex("category");
@@ -308,6 +334,7 @@ public class QuizTabGui extends JPanel implements ActionListener {
 					categorySelectionJComboBox
 							.setSelectedIndex(categorySelectionJComboBox
 									.getItemCount() - 1);
+					categorySelectionJComboBox.setPrototypeDisplayValue("WWWWWWWWWW");
 					add(categorySelectionJComboBox, c);
 				}
 
@@ -423,7 +450,14 @@ public class QuizTabGui extends JPanel implements ActionListener {
 							"A KeyNotFoundException has occurred, please check the logs");
 			log.error("KeyNotFoundException: " + e.getMessage());
 			return;
-		} catch (LinkIDException e) {
+		} catch (QuizLoadException e) {
+			JOptionPane
+					.showMessageDialog(null,
+							"A QuizLoadException has occurred, please check the logs");
+			log.error("QuizLoadException: " + e.getMessage());
+			return;
+		}
+		catch (LinkIDException e) {
 			JOptionPane.showMessageDialog(null,
 					"LinkIDException occurred, check the log files");
 			log.error("LinkIDException: " + e.getMessage());

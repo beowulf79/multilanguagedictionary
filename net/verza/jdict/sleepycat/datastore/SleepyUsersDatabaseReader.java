@@ -1,6 +1,5 @@
 package net.verza.jdict.sleepycat.datastore;
 
-
 import net.verza.jdict.UserProfile;
 import java.io.UnsupportedEncodingException;
 import java.io.FileNotFoundException;
@@ -14,7 +13,6 @@ import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
 import org.apache.log4j.Logger;
 import net.verza.jdict.Configuration;
-
 
 public class SleepyUsersDatabaseReader {
 
@@ -36,10 +34,7 @@ public class SleepyUsersDatabaseReader {
 				UserProfile.class);
 		
 		user_db = dbHandler.getUsersDatabase();
-		config = new CursorConfig();
-		config.setReadUncommitted(true);
-		cursor = db.getUsersDatabase().openCursor(null, config);
-		buildUsersList();
+		
 
 	}
 
@@ -65,19 +60,16 @@ public class SleepyUsersDatabaseReader {
 		
 	}
 
-	public String[] getUserList() {
-
-		return userList;
-	}
-
-	private void buildUsersList() throws DatabaseException {
-
-		log.debug("building user list");
+	
+	public String[] getUserList() throws DatabaseException {
+		
 		String[] tmpUserList = new String[Configuration.MAX_USERS_PROFILES];
 		DatabaseEntry foundKey = new DatabaseEntry();
 		DatabaseEntry foundData = new DatabaseEntry();
 		int count = 0;
-		
+		config = new CursorConfig();
+		config.setReadUncommitted(true);
+		cursor = dbHandler.getUsersDatabase().openCursor(null, config);
 		while (cursor.getNext(foundKey, foundData, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
 			
 			UserProfile up = (UserProfile) dataBinding.entryToObject(foundData);
@@ -85,11 +77,13 @@ public class SleepyUsersDatabaseReader {
 			log.debug("found user profile " + up.getName());
 			count++;
 		}
+		cursor.close();
+		
 		log.trace("found "+count+" users profiles");
 		userList = new String[count];
 		System.arraycopy(tmpUserList,0, userList, 0, count);
-
 		
+		return userList;
 	}
 
 }

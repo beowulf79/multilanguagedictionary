@@ -80,6 +80,9 @@ public class Verb extends DictionaryObject implements Serializable, IVerb {
 		jtxf1.setEditable(false);
 		jpnl.add(jtxf1, c);
 
+		jFrame.getContentPane().add(jpnl);
+		jFrame.pack();
+		jFrame.setVisible(true);
 		
     }
     

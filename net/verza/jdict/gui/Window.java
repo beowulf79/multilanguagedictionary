@@ -17,8 +17,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import net.verza.jdict.dictionary.Factory;
+import net.verza.jdict.exceptions.DataNotFoundException;
+import net.verza.jdict.exceptions.DynamicCursorException;
 import org.apache.log4j.Logger;
+import com.sleepycat.je.DatabaseException;
 
 public class Window extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +42,6 @@ public class Window extends JFrame implements ActionListener {
 	private static final String SHOW_USERPROFILE_STATISTICS = "Show User Quiz Statistics";
 	private static final String DATA_IMPORT = "Import Data";
 
-
 	public static final int FRAME_WIDTH = 400;
 	public static final int FRAME_HEIGHT = 420;
 	public static final int PANEL_WIDHT = 380;
@@ -48,17 +52,11 @@ public class Window extends JFrame implements ActionListener {
 	private static Window windowManager = null;
 
 	public Window() {
-
-		super("Grid Layout");
+		super();
 		windowManager = this; // initialize single-ton object
-
 		log = Logger.getLogger("net.verza.jdict.gui");
 		log.trace("Window Constructor");
-
 		initComponents();
-		createShowGUI();
-
-
 	}
 
 	private void initComponents() {
@@ -94,25 +92,25 @@ public class Window extends JFrame implements ActionListener {
 
 	private void createShowGUI() {
 		// Create and set up the window.
-		frame = new JFrame("Window");
-		frame.setTitle("JDICT 0.6");
-		frame.setJMenuBar(menuBar);
-		frame.setSize(500, 500);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		// Create and set up the content pane.
-		frame.setLocationRelativeTo(null);
-		//frame.setResizable(false);
-		frame.getContentPane().add(tabbedPane);
+		setTitle("JDICT 0.6");
+		setJMenuBar(menuBar);
+		setSize(1000, 500);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setResizable(true);
+		getContentPane().add(tabbedPane);
 	}
 
 	public void showGui() {
+		createShowGUI();
 		// Display the window.
 		pack();
-		frame.setVisible(true);
+		setVisible(true);
 	}
 
 	public void close()	{
-		frame.dispose();
+		windowManager = null;
+		dispose();
 	}
 	
 	private JMenuBar createMenuBar() {
@@ -123,8 +121,6 @@ public class Window extends JFrame implements ActionListener {
 		JMenuItem mImport = new JMenuItem(DATA_IMPORT);
 		mFile.add(mImport);
 		mImport.addActionListener(this);
-
-		
 
 		JMenu mUserProfileMenu = new JMenu("User");
 		JMenuItem mUserProfileCreate = new JMenuItem(CREATE_USERPROFILE);
@@ -141,7 +137,23 @@ public class Window extends JFrame implements ActionListener {
 		
 		JMenuItem mUserProfileDelete = new JMenuItem(DELETE_USERPROFILE);
 		mUserProfileDelete.addActionListener(this);
-		mUserProfileMenu.add(mUserProfileDelete);
+
+		try {
+
+			if(Factory.getDictionary().getUser().getIsAdmin() )	
+				mUserProfileMenu.add(mUserProfileDelete);			
+			
+		} catch (DatabaseException e) {
+			System.err.println(e.getMessage());
+		} catch (UnsupportedEncodingException e) {
+			System.err.println(e.getMessage());
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (DataNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (DynamicCursorException e) {
+			System.err.println(e.getMessage());
+		}
 		
 		JMenuItem mImportUserProfile = new JMenuItem(
 				IMPORT_USERPROFILE_STATS);

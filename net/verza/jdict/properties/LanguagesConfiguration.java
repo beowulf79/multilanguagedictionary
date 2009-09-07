@@ -50,6 +50,7 @@ public class LanguagesConfiguration {
 			langDesc.setType( sub.getString("type"));
 			langDesc.setClassQualifiedName( sub.getString("class"));
 			langDesc.setIsEnabled( sub.getBoolean("enabled"));
+			langDesc.setAudioLoaderClass( sub.getString("audio_loader_class"));
 			langDesc.setIsAudioEnabled( sub.getBoolean("audio", false));
 			langDesc.setAudioAttribute( sub.getString("audio_attribute"));
 			langDesc.setAudioPath( sub.getString("audio_directory"));

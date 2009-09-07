@@ -252,6 +252,8 @@ public final class SleepyConnector implements Dictionary {
 		categoryReader.closeCursors();
 		int count = categoryLoader.loadDatabases();
 		categoryReader.openCursors();
+		categoryReader.initialize();
+		
 		return count;
 	}
 
@@ -294,7 +296,8 @@ public final class SleepyConnector implements Dictionary {
 		sectionReader.closeCursors();
 		int count = sectionLoader.loadDatabases();
 		sectionReader.openCursors();
-
+		sectionReader.initialize();
+		
 		return count;
 	}
 
@@ -358,7 +361,7 @@ public final class SleepyConnector implements Dictionary {
 
 	}
 
-	public String[] getUserList() {
+	public String[] getUserList() throws DatabaseException {
 		log.trace("called method getUserList");
 		return userReader.getUserList();
 	}

@@ -244,7 +244,9 @@ public class UserProfileLoaderGui extends JPanel implements ActionListener,
 
 				// Password OK
 				// let's open the main Frame from here
-				log.info("successfull authentication");
+				log.info("successfull authentication");	
+				// destroy and open a new instance of Window
+				Window.getInstance().close();
 				Window.getInstance().showGui();
 				// let's delete this instance so that other calls to this
 				// class will reopen the frame

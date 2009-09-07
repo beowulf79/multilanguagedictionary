@@ -14,6 +14,7 @@ public class LanguageConfigurationClassDescriptor {
 	public Boolean isAudioEnabled;
 	public String type;
 	public String languageNickname;
+	public String audioLoaderClass;
 	public String audioAttribute;
 	public String audioPath;
 	public String excelSheet;
@@ -47,6 +48,14 @@ public class LanguageConfigurationClassDescriptor {
 	public void setIsAudioEnabled(Boolean _audio) {
 		log.trace("called method setAudioEnabled with argument  " + _audio);
 		this.isAudioEnabled = _audio;
+	}
+
+	public String getAudioLoaderClass() {
+		return audioLoaderClass;
+	}
+
+	public void setAudioLoaderClass(String audioLoaderClass) {
+		this.audioLoaderClass = audioLoaderClass;
 	}
 
 	public String getType() {

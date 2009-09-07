@@ -6,9 +6,6 @@ import javax.swing.table.*;
 
 /**
  * 
- * 
- * /**
- * 
  * @author ChristianVerdelli
  * 
  */
@@ -34,7 +31,6 @@ public class JTableAudioButtonRenderer extends JButton implements
 		}
 		//if audio null set Play audio button disable
 		byte[] audio = (byte[]) value;
-		System.out.println("audio lenght "+audio.length);
 		if(audio.length == 0)  {
 			setText("-----");
 			setEnabled(false);
@@ -43,4 +39,6 @@ public class JTableAudioButtonRenderer extends JButton implements
 		
 		return this;
 	}
+
+	
 }

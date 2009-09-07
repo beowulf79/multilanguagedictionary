@@ -16,6 +16,8 @@ import net.verza.jdict.Word;
 import net.verza.jdict.ArabWord;
 import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
+import net.verza.jdict.exceptions.QuizLoadException;
+
 import com.sleepycat.je.DatabaseException;
 import org.apache.log4j.Logger;
 
@@ -50,13 +52,11 @@ public class arabicword2italianword extends QuizAbstract {
 	}
 
 	@SuppressWarnings(value = "unchecked")
-	public int load() throws UnsupportedEncodingException, DatabaseException,
+	public void load() throws UnsupportedEncodingException, DatabaseException,
 			FileNotFoundException, DynamicCursorException,
-			KeyNotFoundException, DataNotFoundException, LinkIDException {
+			KeyNotFoundException, DataNotFoundException, LinkIDException, QuizLoadException {
 
-		int number;
-		int dbsize = 0;
-		int counter = 0;
+		int number = -1, dbsize = 0, counter = 0, max_loop_counter = 0;
 		Random generator = new Random();
 
 		localKeyArray = (Vector<ArabWord>) dit.read("arabicword").clone();
@@ -67,16 +67,21 @@ public class arabicword2italianword extends QuizAbstract {
 					"No record found for the specified key");
 		log.trace("key vector size outside loop " + localKeyArray.size());
 
-		while (counter < iterations) {
-			quizResult = new QuizResult();
+		while ((max_loop_counter++ < Configuration.QUIZMAXLOOPS)
+				&& (counter < iterations)) {
+			
 			log.trace("iteration number " + counter);
 			log.trace("database size " + dbsize);
-
 			number = generator.nextInt(dbsize);
 			log.debug("random generated index " + number);
 			log.trace("key vector size inside loop " + localKeyArray.size());
 			Word key = localKeyArray.get(number);
+			if(null == key) {
+				log.error("word is null, skip to next word ");
+				continue;
+			}
 
+			quizResult = new QuizResult();
 			quizResult.setQuizType(Configuration.ARABIC2ITALIAN);
 			quizResult.setWordID(key.getid().toString());
 			// The Question String is composed by the Singular plus the comment
@@ -101,14 +106,17 @@ public class arabicword2italianword extends QuizAbstract {
 
 			questions.add(counter, key);
 			log.trace("Writing statistic Object to Array index " + counter);
-
 			stats.add(counter, quizResult);
 			quizResult = null;
 
 			counter++;
 		}
+		
+		//if the iterations number has not been reached it means that there were errors during
+		//quiz load. throws an exception 
+		if(counter < iterations)
+			throw new QuizLoadException("errors while quiz loading");
 
-		return 0;
 	}
 
 	public int userAnswer(int index, String userAnswer)

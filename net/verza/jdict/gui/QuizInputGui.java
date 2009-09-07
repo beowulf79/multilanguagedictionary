@@ -21,21 +21,17 @@ import com.sleepycat.je.DatabaseException;
  */
 
 public class QuizInputGui extends JPanel {
+	
 	private static final long serialVersionUID = 1L;
-
 	private static Logger log;
-
 	QuizInputHandler handler;
 	GridBagConstraints c;
-
-
 	private JFrame frame;
 	private JPanel jpnl;
 	private JTextField jtxf4;
 	private JTextField jtxf5;
 	private JLabel jlb6;
 	private JLabel jlb7;
-	private JButton previousJButton;
 	private JButton nextJButton;
 	private JButton jbt4;
 	private JButton playAudioButton;
@@ -54,7 +50,7 @@ public class QuizInputGui extends JPanel {
 	}
 
 	private void createShowGUI() {
-		frame = new JFrame("UserProfileCreateGui");
+		frame = new JFrame("QuizInputGui");
 		frame.setBounds(5, 111, 252, 140);
 		frame.setBackground(GUIPreferences.backgroundColor);
 		frame.getContentPane().add(jpnl);
@@ -151,16 +147,10 @@ public class QuizInputGui extends JPanel {
 		jtxf5.setEditable(true);
 		jtxf5.setColumns(10);
 		jpnl.add(jtxf5, c);
-
-		// previous button
-		c.gridx = 0;
-		c.gridy = ++y;
-		previousJButton.addActionListener(quiz_handler);
-		previousJButton.setEnabled(false);
-		jpnl.add(previousJButton, c);
-
-		// previous button
+		
+		// next button
 		c.gridx = 1;
+		c.gridy = ++y;
 		nextJButton.addActionListener(quiz_handler);
 		jpnl.add(nextJButton, c);
 
@@ -186,8 +176,7 @@ public class QuizInputGui extends JPanel {
 			jtxf4 = new JTextField();
 			jlb7 = new JLabel("Answer");
 			jtxf5 = new JTextField("-");
-			previousJButton = new JButton("previous");
-			nextJButton = new JButton("next");
+			nextJButton = new JButton("answer!");
 			jbt4 = new JButton("show results");
 			playAudioButton = new JButton("play audio");
 			jlb6 = new JLabel("Question");
@@ -218,13 +207,13 @@ public class QuizInputGui extends JPanel {
 				if (command.equals("next")) {
 
 					if (quizEnded) {
-						System.out.println("quizEnded");
+
 						position++;
 						if (position == (quiztab.iterations - 1)) {
 							System.out.println("disabilito next ed audio");
 							nextJButton.setEnabled(false);
 						}
-						previousJButton.setEnabled(true);
+
 						if (quiztab.quiz.getQuestion(position) instanceof String) {
 							String qs = new String((String) quiztab.quiz
 									.getQuestion(position));
@@ -244,13 +233,12 @@ public class QuizInputGui extends JPanel {
 						} else {
 							userAnswer = new String(jtxf5.getText().getBytes(
 									"UTF-8"));
-							log.debug("User answer " + userAnswer);
+							log.debug("user answer " + userAnswer);
 							quiztab.quiz.userAnswer(position, userAnswer);
 						}
-						previousJButton.setEnabled(true); // enabling previous
-						// button
+					
 						position++;
-						if (position == (quiztab.iterations)) {
+						if (position == (quiztab.iterations)) {	// Quizd End
 							log
 									.trace("iterations end reached, disabling next button,enabling showresults button and setting quizEnded true");
 							jtxf5.setEditable(false);
@@ -258,6 +246,7 @@ public class QuizInputGui extends JPanel {
 							playAudioButton.setEnabled(false);
 							jbt4.setEnabled(true);
 							quizEnded = true;
+							
 						} else if (position < quiztab.iterations) { //modificare iterations con quiz.getIterations();
 							if (quiztab.quiz.getQuestion(position) instanceof String) {
 								String s = new String((String) quiztab.quiz
@@ -270,34 +259,6 @@ public class QuizInputGui extends JPanel {
 						}
 					}
 
-				} else if (command.equals("previous")) {
-
-					if (quizEnded) {
-						position--;
-						if (position == 0)
-							previousJButton.setEnabled(false);
-						playAudioButton.setEnabled(true);
-						nextJButton.setEnabled(true);
-						if (quiztab.quiz.getQuestion(position) instanceof String) {
-							String qs = new String((String) quiztab.quiz
-									.getQuestion(position));
-							jtxf4.setText(new String(qs.getBytes(), "UTF-8"));
-						}
-						String as = new String((String) quiztab.quiz
-								.getUserAnswer(position));
-						jtxf5.setText(new String(as.getBytes(), "UTF-8"));
-
-					} else if (!quizEnded) {
-						position--;
-						nextJButton.setEnabled(true);
-						if (position == 0) {
-							previousJButton.setEnabled(false);
-						} // IMPLEMENTARE CONTROLLO
-						jtxf4.setText((String) quiztab.quiz
-								.getQuestion(position));
-						jtxf5.setText(quiztab.quiz.getUserAnswer(position));
-						position--;
-					}
 				}
 
 			} catch (UnsupportedEncodingException e) {

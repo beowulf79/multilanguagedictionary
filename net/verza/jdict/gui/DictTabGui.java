@@ -12,10 +12,8 @@ import java.util.Vector;
 import net.verza.jdict.dictionary.Dictionary;
 import net.verza.jdict.dictionary.Factory;
 import net.verza.jdict.exceptions.*;
-import net.verza.jdict.Configuration;
 import net.verza.jdict.SearchableObject;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import com.sleepycat.je.DatabaseException;
 
 /**
@@ -35,7 +33,8 @@ public class DictTabGui extends JPanel implements ActionListener {
 	private JTextField jtxf1;
 	private HashMap<String, String[]> translations;
 	private JTextArea jtxa1;
-
+	private JPanel internal;
+	
 	public DictTabGui() {
 		super();
 
@@ -43,8 +42,7 @@ public class DictTabGui extends JPanel implements ActionListener {
 		log.trace("called class " + this.getClass().getName());
 		translations = new HashMap<String, String[]>();
 		initComponents(); // initialize components graphics
-		PropertyConfigurator.configure(Configuration.LOG4JCONF);
-
+		 internal = new JPanel();
 	}
 
 	/*
@@ -171,17 +169,13 @@ public class DictTabGui extends JPanel implements ActionListener {
 		}
 
 		else if (command.equals("search")) {
-
 			Vector<SearchableObject> objs = new Vector<SearchableObject>();
-
 			try {
 				dit = Factory.getDictionary();
-
 				if (this.dstLangCombo.getSelectedItem().toString().indexOf(
 						"audio") != -1)
 					objs.add(dit.read(this.srcLangCombo.getSelectedItem()
 							.toString(), jtxf1.getText().toString()));
-
 				else
 					objs = dit.read((String) srcLangCombo.getSelectedItem(),
 							new String(jtxf1.getText().getBytes("UTF-8")),
@@ -193,19 +187,25 @@ public class DictTabGui extends JPanel implements ActionListener {
 					return;
 				}
 
-				JPanel internal = new JPanel();
+				remove(jtxa1);	
+				remove(internal);
+				//it's not enough to remove the internal panel. but
+				// all elements previously added to internal panel must be removed otherwise
+				//they will keep appearing.
+				internal.removeAll();
+				
 				internal.setBackground(new Color(0.0f, 1.0f, 0.0f, 0.35f));
 				internal.setLayout(new GridBagLayout());
 				GridBagConstraints d = new GridBagConstraints();
 				d.insets = new Insets(2, 2, 2, 2); // avoid clutter
 				d.anchor = GridBagConstraints.NORTH;// anchor all components WEST
 				d.fill = GridBagConstraints.HORIZONTAL;
-				d.weightx = 1.0;
-				d.weighty = 1.0;
+				d.weightx = 0.1;
+				d.weighty = 0.1;
 				d.gridx = 0;
 				d.gridy = 0;
 				int y = 0;
-
+				
 				for (int i = 0; i < objs.size(); i++) {
 					SearchableObject sObj = objs.get(i);
 					if (sObj == null)
@@ -222,14 +222,19 @@ public class DictTabGui extends JPanel implements ActionListener {
 				c.gridy = 4;
 				c.gridwidth = 2;
 				c.gridheight = 3;
-				c.ipadx = 150;c.ipady = 150;	
-				c.fill = GridBagConstraints.BOTH;
 
-				remove(jtxa1);
-				remove(internal);
+				c.gridx = 0;
+				c.gridy = 4;
+				c.gridwidth = 2;
+				c.gridheight = 3;
+				c.weighty = 0.1;
+				c.fill = GridBagConstraints.BOTH;
+			
 				internal.revalidate();
 				internal.setVisible(true);
 				add(internal, c);
+				revalidate();
+				setVisible(true);
 
 			} catch (UnsupportedEncodingException e) {
 				log.error("UnsupportedEncodingException: " + e.getMessage());
