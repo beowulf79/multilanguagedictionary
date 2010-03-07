@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<loader>
+
+	<network_timeout>5</network_timeout>
+	<howjsay_audio_loader_url>http://www.howjsay.com/mp3/</howjsay_audio_loader_url>
+	<howjsay_audio_loader_savetodisk>true</howjsay_audio_loader_savetodisk>
+	<howjsay_audio_loader_overwrite>false</howjsay_audio_loader_overwrite>
+	<forvo_audio_loader_url>http://www.forvo.com/word/</forvo_audio_loader_url>
+	<forvo_audio_loader_login_url>http://www.forvo.com/login/</forvo_audio_loader_login_url>
+	<forvo_audio_loader_login_username>addisabeba</forvo_audio_loader_login_username>
+	<forvo_audio_loader_login_password>JuveBravo1</forvo_audio_loader_login_password>
+	<forvo_audio_loader_savetodisk>true</forvo_audio_loader_savetodisk>
+	<forvo_audio_loader_overwrite>false</forvo_audio_loader_overwrite>
+	
+	<category>
+			<sheet_name>Categories</sheet_name>
+			<index_field>CATEGORY_LIST</index_field>
+			<name_field>ID</name_field>
+	</category>
+	<section>
+			<sheet_name>Sections</sheet_name>
+			<index_field>SECTION_LIST</index_field>
+			<name_field>ID</name_field>
+	</section>
+
+	<multivalue_separator><![CDATA[#]]></multivalue_separator>
+	<maxnumber>1500</maxnumber>
+	<database_settings>
+		<default>
+			<environmentPath>data/default</environmentPath>
+		</default>
+		<users>
+			<environmentPath>data/users</environmentPath>
+		</users>
+		<class_catalog>
+			<environmentPath>data/class_catalog</environmentPath>
+		</class_catalog>
+	</database_settings>
+	
+	
+	
+	<!-- Class used to serialize and deserialize objects from database -->
+	<dataBindingClass>net.verza.jdict.model.SearchableObject</dataBindingClass>
+		
+		
+		
+	<language>
+		<enabled>no</enabled>
+		<editor_class>net.verza.jdict.model.ArabWordEditor</editor_class>
+		<audio>yes</audio>
+		<nickname>arabic</nickname>
+		<type>word</type>
+		<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/arabic_words/</audio_directory>
+		<excel_sheet>arabic words</excel_sheet>
+		<class>net.verza.jdict.model.ArabWord</class>
+		<translations>italian,english,egyptian</translations>
+		<fields>
+				 <label>
+						<class_attribute>linkid</class_attribute>
+						<label_name>english</label_name>
+				</label>
+				<label>
+						<class_attribute>linkid</class_attribute>
+						<label_name>italian</label_name>
+				</label>
+                <label>
+						<class_attribute>linkid</class_attribute>
+						<label_name>egyptian</label_name>
+				</label>
+				<label>		
+						<class_attribute>id</class_attribute>
+						<label_name>ID</label_name>
+						<key_type>primary</key_type>
+				</label>
+				<label>
+						<class_attribute>singular</class_attribute>
+						<label_name>ARABIC SINGULAR</label_name>
+						<key_type>subindex</key_type>
+						<audio_enabled>true</audio_enabled>
+						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator</index_class_creator>
+				</label>
+				<label>
+						<class_attribute>plural</class_attribute>
+						<label_name>ARABIC PLURAL</label_name>
+						<key_type>subindex</key_type>
+						<audio_enabled>false</audio_enabled>
+						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator</index_class_creator>
+				</label>
+				<label>
+						<class_attribute>notes</class_attribute>
+						<label_name>NOTES</label_name>
+				</label>
+				<label>
+						<class_attribute>section</class_attribute>
+						<label_name>SECTION</label_name>
+						<key_type>subindex</key_type>
+						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator</index_class_creator>
+						<multivalue>true</multivalue>
+				</label>
+				<label>
+						<class_attribute>category</class_attribute>
+						<label_name>CATEGORY</label_name>
+						<key_type>subindex</key_type>
+						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator</index_class_creator>
+						<multivalue>true</multivalue>
+				</label>
+		</fields>
+		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
+		By default comma is used as delimiter; use the static setDefaultDelimiter() method of AbstractConfiguration to define a different delimiter character -->
+	</language>
+		
+		
+	<language>
+		<enabled>no</enabled>
+		<editor_class>net.verza.jdict.model.ArabWordEditor</editor_class>
+		<audio>yes</audio>
+		<nickname>egyptian</nickname>
+		<type>word</type>
+		<audio_loader_class>
+			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+		</audio_loader_class>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/egyptian_words/</audio_directory>
+		<excel_sheet>egyptian words</excel_sheet>
+		<class>net.verza.jdict.model.ArabWord</class>
+		<translations>italian,arabic,english</translations>
+		<fields>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>english</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>arabic</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>italian</label_name>
+			</label>
+			<label>
+				<class_attribute>id</class_attribute>
+				<label_name>ID</label_name>
+				<key_type>primary</key_type>
+			</label>
+			<label>
+				<class_attribute>singular</class_attribute>
+				<label_name>EGYPTIAN SINGULAR</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>plural</class_attribute>
+				<label_name>EGYPTIAN PLURAL</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>false</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>notes</class_attribute>
+				<label_name>NOTES</label_name>
+			</label>
+			<label>
+				<class_attribute>section</class_attribute>
+				<label_name>SECTION</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+			<label>
+				<class_attribute>category</class_attribute>
+				<label_name>CATEGORY</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+		</fields>
+		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
+			By default comma is used as delimiter; use the static setDefaultDelimiter() method of AbstractConfiguration to define a different delimiter character -->
+	</language>
+
+
+
+	<language>
+		<enabled>yes</enabled>
+		<editor_class>net.verza.jdict.model.WordEditor</editor_class>
+		<audio>yes</audio>
+		<nickname>italian</nickname>
+		<type>word</type>
+		<audio_loader_class>
+			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+		</audio_loader_class>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/italian_words/</audio_directory>
+		<excel_sheet>italian words</excel_sheet>
+		<class>net.verza.jdict.model.Word</class>
+		<translations>egyptian,arabic,english</translations>
+		<fields>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>english</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>arabic</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>egyptian</label_name>
+			</label>
+			<label>
+				<class_attribute>id</class_attribute>
+				<label_name>ID</label_name>
+				<key_type>primary</key_type>
+			</label>
+			<label>
+				<class_attribute>singular</class_attribute>
+				<label_name>SINGULAR</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>notes</class_attribute>
+				<label_name>NOTES</label_name>
+			</label>
+			<label>
+				<class_attribute>section</class_attribute>
+				<label_name>SECTION</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+			<label>
+				<class_attribute>category</class_attribute>
+				<label_name>CATEGORY</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+		</fields>
+		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
+			By default comma is used as delimiter; use the static setDefaultDelimiter() method of AbstractConfiguration to define a different delimiter character -->
+	</language>
+
+
+	<language>
+		<editor_class>net.verza.jdict.model.WordEditor</editor_class>
+		<enabled>yes</enabled>
+		<audio>no</audio>
+		<nickname>english</nickname>
+		<type>word</type>
+		<audio_loader_class>
+			net.verza.jdict.dataloaders.HowJSayAudioLoader
+		</audio_loader_class>
+		<howjsay_audio_loader_savetodisk>
+			yes
+		</howjsay_audio_loader_savetodisk>
+		<howjsay_audio_loader_replacefiles>
+			no
+		</howjsay_audio_loader_replacefiles>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/english_words/</audio_directory>
+		<excel_sheet>english words</excel_sheet>
+		<class>net.verza.jdict.model.Word</class>
+		<translations>arabic,italian,egyptian</translations>
+		<fields>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>italian</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>arabic</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>egyptian</label_name>
+			</label>
+			<label>
+				<class_attribute>id</class_attribute>
+				<label_name>ID</label_name>
+				<key_type>primary</key_type>
+			</label>
+			<label>
+				<class_attribute>singular</class_attribute>
+				<label_name>SINGULAR</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>notes</class_attribute>
+				<label_name>NOTES</label_name>
+			</label>
+			<label>
+				<class_attribute>section</class_attribute>
+				<label_name>SECTION</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+			<label>
+				<class_attribute>category</class_attribute>
+				<label_name>CATEGORY</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+		</fields>
+		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
+			By default comma is used as delimiter; use the static setDefaultDelimiter() method of AbstractConfiguration to define a different delimiter character -->
+	</language>
+
+
+
+	<!--
+    VERB SECTION
+    -->
+
+
+	<language>
+		<enabled>no</enabled>
+		<editor_class>net.verza.jdict.model.VerbEditor</editor_class>
+		<audio>yes</audio>
+		<type>verb</type>
+		<nickname>italian</nickname>
+		<type>verb</type>
+		<audio_loader_class>
+			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+		</audio_loader_class>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/italian_verbs/</audio_directory>
+		<excel_sheet>italian verbs</excel_sheet>
+		<class>net.verza.jdict.model.Verb</class>
+		<translations>egyptian,arabic,english</translations>
+		<fields>
+			<!-- 
+				class_attribute:  must corresponds to the attribute of the class 
+				being loaded; besides the class must provide the method to set
+				this attribute with the same name of the attribute specied here prefixed
+				by set.
+				es. if the class has ian attribute id, the value of name must be id
+				and the class must provide a method called setid();
+				
+				label_name:  is the name of the label inside the excel file that corresponds
+				to the class attributo to load
+			-->
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>english</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>arabic</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>egyptian</label_name>
+			</label>
+			<label>
+				<class_attribute>id</class_attribute>
+				<label_name>ID</label_name>
+				<key_type>primary</key_type>
+			</label>
+			<label>
+				<class_attribute>infinitive</class_attribute>
+				<label_name>INFINITIVE</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>notes</class_attribute>
+				<label_name>NOTES</label_name>
+			</label>
+			<label>
+				<class_attribute>section</class_attribute>
+				<label_name>SECTION</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+		</fields>
+		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string. -->
+		<!-- By default comma is used as delimiter; use the static setDefaultDelimiter() method of AbstractConfiguration to define a different delimiter character -->
+		<!--	<translations>arabic,english</translations> -->
+	</language>
+
+
+	<language>
+		<enabled>no</enabled>
+		<editor_class>net.verza.jdict.model.VerbEditor</editor_class>
+		<audio>yes</audio>
+		<nickname>english</nickname>
+		<type>verb</type>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/english_verbs/</audio_directory>
+		<audio_loader_class>
+			net.verza.jdict.dataloaders.HowJSayAudioLoader
+		</audio_loader_class>
+		<howjsay_audio_loader_savetodisk>
+			yes
+		</howjsay_audio_loader_savetodisk>
+		<howjsay_audio_loader_replacefiles>
+			no
+		</howjsay_audio_loader_replacefiles>
+		<class>net.verza.jdict.model.Verb</class>
+		<excel_sheet>english verbs</excel_sheet>
+		<translations>italian,egyptian</translations>
+		<fields>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>italian</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>egyptian</label_name>
+			</label>
+			<label>
+				<class_attribute>id</class_attribute>
+				<label_name>ID</label_name>
+				<key_type>primary</key_type>
+			</label>
+			<label>
+				<class_attribute>infinitive</class_attribute>
+				<label_name>INFINITIVE</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>notes</class_attribute>
+				<label_name>NOTES</label_name>
+			</label>
+			<label>
+				<class_attribute>section</class_attribute>
+				<label_name>SECTION</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+		</fields>
+	</language>
+
+
+	<language>
+		<enabled>no</enabled>
+		<editor_class>net.verza.jdict.model.ArabVerbEditor</editor_class>
+		<audio>no</audio>
+		<nickname>arabic</nickname>
+		<type>verb</type>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>
+			/Users/ChristianVerdelli/documents/workspace/jdict/audio/arabic_verbs/
+		</audio_directory>
+		<class>net.verza.jdict.model.ArabVerb</class>
+		<excel_sheet>arabic verbs</excel_sheet>
+		<translations>italian,egyptian</translations>
+		<fields>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>egyptian</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>italian</label_name>
+			</label>
+			<label>
+				<class_attribute>id</class_attribute>
+				<label_name>ID</label_name>
+				<key_type>primary</key_type>
+			</label>
+			<label>
+				<class_attribute>infinitive</class_attribute>
+				<label_name>ARABIC PRESENT</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>false</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>notes</class_attribute>
+				<label_name>NOTES</label_name>
+			</label>
+			<label>
+				<class_attribute>paradigm</class_attribute>
+				<label_name>PARADIGM</label_name>
+			</label>
+			<label>
+				<class_attribute>section</class_attribute>
+				<label_name>SECTION</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+			<label>
+				<class_attribute>past</class_attribute>
+				<label_name>ARABIC PAST</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+		</fields>
+	</language>
+
+
+	<language>
+		<enabled>no</enabled>
+		<editor_class>net.verza.jdict.model.ArabVerbEditor</editor_class>
+		<audio>yes</audio>
+		<nickname>egyptian</nickname>
+		<type>verb</type>
+		<audio_loader_class>
+			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+		</audio_loader_class>
+		<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/egyptian_verbs/</audio_directory>
+		<class>net.verza.jdict.model.ArabVerb</class>
+		<excel_sheet>egyptian verbs</excel_sheet>
+		<translations>italian,arabic</translations>
+		<fields>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>arabic</label_name>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>italian</label_name>
+			</label>
+			<label>
+				<class_attribute>id</class_attribute>
+				<label_name>ID</label_name>
+				<key_type>primary</key_type>
+			</label>
+			<label>
+				<class_attribute>infinitive</class_attribute>
+				<label_name>EGYPTIAN PRESENT</label_name>
+				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>notes</class_attribute>
+				<label_name>NOTES</label_name>
+			</label>
+			<label>
+				<class_attribute>paradigm</class_attribute>
+				<label_name>PARADIGM</label_name>
+			</label>
+			<label>
+				<class_attribute>section</class_attribute>
+				<label_name>SECTION</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
+				</index_class_creator>
+				<multivalue>true</multivalue>
+			</label>
+			<label>
+				<class_attribute>past</class_attribute>
+				<label_name>EGYPTIAN PAST</label_name>
+				<key_type>subindex</key_type>
+				<index_class_creator>
+					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
+				</index_class_creator>
+			</label>
+
+		</fields>
+	</language>
+
+
+
+
+</loader>
+
+

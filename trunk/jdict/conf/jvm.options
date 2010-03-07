@@ -1,0 +1,4 @@
+-Dfile.encoding=UTF8
+-Xms256m
+-Xmx1024m
+-Djxl.nowarnings=true
