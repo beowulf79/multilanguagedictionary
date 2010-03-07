@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Java Multi Language Dictionary" default="usage" basedir=".">
+
+
+	<property name="project_name" value="jdict"/>
+	<property name="project_version" value="1.0"/>
+	<property name="classes_dir" value="classes"/>
+	<property name="src_dir" value="src"/>
+	<property name="lib_dir" value="lib"/>
+	<property name="release_base_dir" value="release"/>
+	<property name="release_dir" value="${release_base_dir}/${project_name}"/>
+	<property name="conf_dir" value="conf"/>
+	<property name="jar_file" value="${project_name}.jar"/>
+	<property name="manifest_file" value="MANIFEST.MF"/>
+	<property name="release.tar.file" value="${project_name}.${project_version}.tar"/>
+	<property name="release.gz.file" value="${release.tar.file}.gz"/>
+	<property name="manifest_classpath" value="lib/commons-collections-3.2.jar lib/commons-lang-2.4.jar lib/jxl.jar lib/commons-configuration-1.5.jar lib/NTEventLogAppender.dll lib/commons-logging-api.jar lib/je_23112009.jar lib/jl0.4.jar lib/jl1.0.jar lib/jlgui2.3.jar lib/jogg-0.0.5.jar lib/jorbis-0.0.12.jar lib/jspeex0.9.3.jar lib/jxl.jar lib/log4j-1.2.14.jar lib/mp3spi1.9.1.jar lib/tritonus_share.jar lib/vorbisspi1.0.jar conf/"/>
+
+	<fileset id="file.props" dir="${conf_dir}" >
+		<!-- File di properties da includere nel tar.
+             Se vanno inclusi file con estensione diversa da .properties occorre mapparli qui sotto! -->
+		<include name="**/*.xml"/>
+		<include name="**/*.properties"/>
+		<include name="**/*.dtd"/>
+	</fileset>
+
+	<fileset id="lib.deploy" dir="${lib_dir}">
+		<!-- Qui vanno inseriti i nomi dei jar da includere nei file war -->
+		<include name="NTEventLogAppender.dll"/>
+		<include name="**.jar"/>
+
+		<!--<include name="jxl.jar"/>
+        <include name="je_23112009.jar"/>
+        <include name="jl0.4.jar"/>
+        <include name="jl1.0.jar"/>
+        <include name="jlgui2.3.jar"/>
+        <include name="jogg-0.0.5.jar"/>
+        <include name="jxl.jar"/>
+        <include name="jspeex0.9.3.jar"/>
+        <include name="vorbisspi1.0.jar"/>
+        <include name="mp3spi1.9.1.jar"/>
+        <include name="log4j-1.2.14.jar"/>
+        <include name="jorbis-0.0.12.jar"/>  
+        <include name="tritonus_share.jar"/>
+        <include name="commons-configuration-1.5.jar"/>
+        -->
+	</fileset>
+
+
+	<fileset id="audio.dir" dir="audio" />
+
+	<path id="classpath">
+		<!-- mette nel classpath per compilare TUTTI i jar che trova sotto ./lib (e subdirectory) -->
+		<fileset dir="${lib_dir}" casesensitive="yes">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${classes_dir}"/>
+	</target>
+
+
+	<target name="compile" description="Compila sorgenti" >
+		<mkdir dir="${classes_dir}"/>
+
+		<javac srcdir="${src_dir}" 
+	        	encoding="UTF-8"
+	        	excludes="net/verza/jdict/verbs/**"
+	        	debug="true" 
+	        	debuglevel="lines,vars,source" 
+	        	optimize="true" 
+	        	destdir="${classes_dir}">
+			<classpath refid="classpath"/>
+		</javac>
+
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<jar jarfile="${jar_file}" basedir="${classes_dir}">
+			<manifest>
+				<attribute name="Class-Path" value="${manifest_classpath}"/>
+				<attribute name="Main-Class" value="net.verza.jdict.gui.Gui"/>
+			</manifest>
+		</jar>
+		<fileset dir="${src_dir}/conf"/>
+		<fileset dir="${src_dir}/lib"/>
+	</target>
+
+	
+	<target name="update-release-jar" depends="jar" description="copy the updated jar into release" >
+		<copy todir="${release_dir}" file="${jar_file}"/>
+	</target>
+	
+		
+	<target name="release" depends="jar" description="Crea il package finale compresi i file audio" >
+		<mkdir dir="${release_dir}"/>
+		<mkdir dir="${release_dir}/conf"/>
+		<mkdir dir="${release_dir}/lib"/>
+		<mkdir dir="${release_dir}/logs"/>
+		<mkdir dir="${release_dir}/data"/>
+		<mkdir dir="${release_dir}/data/class_catalog"/>
+		<mkdir dir="${release_dir}/data/users"/>
+		<mkdir dir="${release_dir}/data/default"/>
+		<mkdir dir="${release_dir}/audio"/>
+
+		<copy todir="${release_dir}/conf">
+			<fileset refid="file.props"/>
+		</copy>
+		<copy todir="${release_dir}" file="misc/jdict.command"/>
+		<copy todir="${release_dir}" file="misc/jdict.bat"/>
+		<copy todir="${release_dir}" file="misc/jdict.sh"/>
+		<copy todir="${release_dir}" file="${jar_file}"/>
+		<copy todir="${release_dir}/lib">
+			<fileset refid="lib.deploy"/>
+		</copy>
+		<!--<copy todir="${release_dir}" file="README.TXT"/> -->
+
+		<tar basedir="${release_base_dir}" destfile="${release.tar.file}">
+		</tar>
+		<gzip src="${release.tar.file}" zipfile="${release.gz.file}">
+		</gzip>
+
+		<!--<delete file="${release.tar.file}"/> -->
+		<!-- <delete dir="${release_base_dir}"/>	-->
+	</target>
+
+
+
+	<target name="usage">
+		<echo message=" "/>
+		<echo message=" Following targets are available:"/>
+		<echo message=" "/>
+		<echo message=" clean     	: empties the classfile directory"/>
+		<echo message=" compile     : compiles the source file into classfile directory"/>
+		<echo message=" jar      	: generate the jar file"/>
+		<echo message=" update-release-jar     	: copy the updated jar into release"/>
+		<echo message=" usage       : displays this usage message"/>
+		<echo message=" "/>
+		<echo message=" To run a target, issue the following command:"/>
+		<echo message=" "/>
+		<echo message=" ant &lt;target-name&gt;"/>
+		<echo message=" "/>
+	</target>
+
+
+
+</project>
