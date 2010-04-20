@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
-import net.verza.jdict.exceptions.KeyNotFoundException;
 import net.verza.jdict.model.SearchableObject;
 import net.verza.jdict.properties.Configuration;
 import net.verza.jdict.properties.LanguagesConfiguration;
@@ -35,7 +34,7 @@ public class DatabaseReaderTestClass {
 
 	    new PropertiesLoader();
 	    new LanguagesConfiguration();
-	    new SleepyBinding();
+	    // new SleepyBinding();
 	    factory = SleepyFactory.getInstance();
 
 	    BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -78,7 +77,7 @@ public class DatabaseReaderTestClass {
 
 	try {
 	    reader = new SleepyDatabaseReader(factory.getDatabase(lang));
-	    reader.setDataBinding(SleepyBinding.getDataBinding());
+	    // reader.setDataBinding(SleepyBinding.getDataBinding());
 
 	    if (!"".equals(key))
 		reader.setKey(key);
@@ -102,8 +101,6 @@ public class DatabaseReaderTestClass {
 	    e.printStackTrace();
 	} catch (UnsupportedEncodingException e) {
 	    e.printStackTrace();
-	} catch (KeyNotFoundException e) {
-	    e.printStackTrace();
 	}
 
     }
@@ -125,7 +122,7 @@ public class DatabaseReaderTestClass {
 	    SleepyDatabase db = factory.getDatabase(_language);
 
 	    reader = new SleepyDatabaseReader(factory.getDatabase(_language));
-	    reader.setDataBinding(SleepyBinding.getDataBinding());
+	    // reader.setDataBinding(SleepyBinding.getDataBinding());
 	    reader.setSecondaryCursor(db.getIndex(_index), theKey);
 
 	    int count = reader.read();
@@ -142,8 +139,6 @@ public class DatabaseReaderTestClass {
 	} catch (DataNotFoundException e) {
 	    System.out.println("parola non trovata");
 	} catch (DynamicCursorException e) {
-	    e.printStackTrace();
-	} catch (KeyNotFoundException e) {
 	    e.printStackTrace();
 	}
 

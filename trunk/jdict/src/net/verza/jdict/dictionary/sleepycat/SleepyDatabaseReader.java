@@ -202,10 +202,10 @@ public class SleepyDatabaseReader {
 
     }
 
-    public void setDataBinding(EntryBinding eb) {
-	log.debug("setting key binding with object " + eb.hashCode());
-	// this.dataBinding = eb;
-    }
+    // public void setDataBinding(EntryBinding eb) {
+    // log.debug("setting key binding with object " + eb.hashCode());
+    // // this.dataBinding = eb;
+    // }
 
     private Vector<SearchableObject> readJoin() throws DatabaseException,
 	    DynamicCursorException {

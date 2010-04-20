@@ -45,7 +45,7 @@ public class SleepyEnvironment {
 	envConfig.setAllowCreate(true);
 	envConfig.setConfigParam("java.util.logging.ConsoleHandler.on", "true");
 	envConfig.setConfigParam("java.util.logging.FileHandler.on", "true");
-	envConfig.setConfigParam("java.util.logging.level", "FINE");
+	envConfig.setConfigParam("java.util.logging.level", "INFO");
 
 	this.buildEnvironmentHashMap();
 

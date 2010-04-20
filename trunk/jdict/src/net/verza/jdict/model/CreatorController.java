@@ -96,8 +96,17 @@ public class CreatorController extends JPanel implements ActionListener {
 
 	c.gridx = 1;
 	c.gridy = y_position++;
-	Set<String> translations = LanguagesConfiguration
-		.getAvalaibleLanguages();
+	Set<String> translations = LanguagesConfiguration.getEnabledLanguages();
+
+	// try {
+	// HashMap<String, String[]> translation = LanguageSelection
+	// .buildLanguageMenu();
+	// } catch (LanguagesConfigurationException e) {
+	// e.printStackTrace();
+	// log.error("Exception " + e.getMessage());
+	// JOptionPane.showMessageDialog(null, e.getMessage());
+	// }
+
 	languageSelector = new JComboBox(translations.toArray());
 	languageSelector.setActionCommand(COMBO_LANGUAGE_CHANGE);
 	languageSelector.addItem(NOT_SELECTED_STRING);
@@ -110,6 +119,7 @@ public class CreatorController extends JPanel implements ActionListener {
 	next = new JButton(NEXT_BUTTON_STRING);
 	next.addActionListener(this);
 	next.setActionCommand(NEXT_BUTTON_STRING);
+	next.setVisible(false);
 	panel.add(next, c);
 
 	c.anchor = GridBagConstraints.WEST;
@@ -117,6 +127,7 @@ public class CreatorController extends JPanel implements ActionListener {
 	finish = new JButton(FINISH_BUTTON_STRING);
 	finish.setActionCommand(FINISH_BUTTON_STRING);
 	finish.addActionListener(this);
+	finish.setVisible(false);
 	panel.add(finish, c);
 
     }
@@ -131,6 +142,8 @@ public class CreatorController extends JPanel implements ActionListener {
 	frame.setBackground(GUIPreferences.backgroundColor);
 	frame.setResizable(true);
 	frame.setLocationRelativeTo(null);
+	frame.pack();
+	frame.validate();
 	frame.setVisible(true);
     }
 
@@ -177,6 +190,8 @@ public class CreatorController extends JPanel implements ActionListener {
 			.getSearchableObject().getid(), language);
 		// searchableObjectCreator
 		searchableObjectCreator = null;
+		next.setVisible(false);
+		finish.setVisible(false);
 
 	    } else if (e.getActionCommand().equals(FINISH_BUTTON_STRING)) {
 		log.trace("received command " + FINISH_BUTTON_STRING);
@@ -223,6 +238,8 @@ public class CreatorController extends JPanel implements ActionListener {
 
 		c.gridwidth = 2;
 		panel.add(searchableObjectCreator, c);
+		next.setVisible(true);
+		finish.setVisible(true);
 		frame.pack();
 		frame.validate();
 	    }
@@ -255,7 +272,8 @@ public class CreatorController extends JPanel implements ActionListener {
 	    log.error("IllegalAccessException: " + exp.getMessage());
 	    exp.printStackTrace();
 	} catch (InvocationTargetException exp) {
-	    JOptionPane.showMessageDialog(frame, exp.getMessage());
+	    JOptionPane.showMessageDialog(frame, "InvocationTargetException: "
+		    + exp.getMessage());
 	    log.error("InvocationTargetException: " + exp.getMessage());
 	    exp.printStackTrace();
 	} catch (MalformedURLException exp) {

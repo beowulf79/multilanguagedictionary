@@ -16,9 +16,9 @@ public interface SearchableObject {
 
     public abstract void setlinkid(String language, String newvalue);
 
-    public abstract void addlinkid(String langauge, String newvalue);
+    public abstract void addlinkid(String langauge, Integer newvalue);
 
-    public abstract void removelinkid(String language, String newvalue);
+    public abstract void removelinkid(String language, Integer newvalue);
 
     public abstract void setsection(String newvalue);
 

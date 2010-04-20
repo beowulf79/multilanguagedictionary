@@ -109,17 +109,16 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	this.linkId.put(language, ids_integer);
     }
 
-    public void addlinkid(String language, String ids) {
+    public void addlinkid(String language, Integer _id) {
 	log.trace("called method addLinkId with language " + language
-		+ " and id " + ids);
-	Integer id = new Integer(ids);
+		+ " and id " + _id);
 
 	Integer[] oldArray = linkId.get(language);
 	if (oldArray == null) {
 	    log
 		    .error("old array empty/null; creating new array and put the id,language");
 	    oldArray = new Integer[1];
-	    oldArray[0] = id;
+	    oldArray[0] = _id;
 	    linkId.put(language, oldArray);
 	    return;
 	}
@@ -131,16 +130,15 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	System.arraycopy(oldArray, 0, newArray, 0, oldArrayLenght);
 	// then add the new id at the end
 	log.debug("newArrayLength " + newArray.length);
-	newArray[newArray.length - 1] = id;
+	newArray[newArray.length - 1] = _id;
 	// remove the old array and put the new one
 	linkId.remove(language);
 	linkId.put(language, newArray);
     }
 
-    public void removelinkid(String language, String ids) {
+    public void removelinkid(String language, Integer _id) {
 	log.trace("called method removelinkid with language " + language
-		+ " and id " + id);
-	Integer id = new Integer(ids);
+		+ " and id " + _id);
 
 	Integer[] oldArray = linkId.get(language);
 	if (oldArray == null) {
@@ -159,12 +157,25 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	int oldArrayLenght = linkId.get(language).length;
 	Integer[] newArray = new Integer[oldArrayLenght - 1];
 	// copy each element in the new array but the id to remove
+	int newArrayIndex = 0;
 	for (int i = 0; i < oldArrayLenght; i++) {
-	    if (oldArray[i] == id) {
+	    log.debug("oldArray[" + i + "],id to remove:" + oldArray[i] + "-"
+		    + _id + "-");
+	    if (oldArray[i].equals(_id)) {
+		// if the array is just one cell delete it and return
+		if (newArray.length == 1) {
+		    log
+			    .debug("link id array is just one cell large, set it to null");
+		    linkId.remove(language);
+		    return;
+		}
 		log.debug("got id to remove, skipping insert on new array");
 		continue;
 	    }
-	    newArray[i] = oldArray[i];
+	    log.debug("newArray.size(),oldArray.size() " + newArray.length
+		    + "-" + oldArray.length);
+	    newArray[newArrayIndex] = oldArray[i];
+	    newArrayIndex++;
 	}
 
 	// remove the old array and put the new one

@@ -143,7 +143,7 @@ public final class SleepyConnector implements Dictionary {
 	    IllegalAccessException, InvocationTargetException,
 	    FileNotFoundException {
 	reader.setDatabase(SleepyFactory.getInstance().getDatabase(language));
-	reader.setDataBinding(SleepyBinding.getDataBinding());
+	// reader.setDataBinding(SleepyBinding.getDataBinding());
 	int nentries = reader.read();
 	log.debug("lookup found entries " + nentries);
 	return reader.getData();
@@ -181,7 +181,7 @@ public final class SleepyConnector implements Dictionary {
 		    .next();
 	    log.debug("looking up using index " + tmp.getAttributeName());
 	    if ("subindex".equals(tmp.getKey_type())) {
-		reader.setDataBinding(SleepyBinding.getDataBinding());
+		// reader.setDataBinding(SleepyBinding.getDataBinding());
 		reader.setSecondaryCursor(SleepyFactory.getInstance()
 			.getDatabase(_language)
 			.getIndex(tmp.getAttributeName()), new DatabaseEntry(
@@ -191,7 +191,7 @@ public final class SleepyConnector implements Dictionary {
 		    break;
 
 	    } else if ("primary".equals(tmp.getKey_type())) {
-		reader.setDataBinding(SleepyBinding.getDataBinding());
+		// reader.setDataBinding(SleepyBinding.getDataBinding());
 		reader.setKey(_key);
 		nentries = reader.read();
 

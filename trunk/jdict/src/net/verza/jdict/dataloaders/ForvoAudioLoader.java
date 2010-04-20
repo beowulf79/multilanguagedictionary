@@ -102,7 +102,7 @@ public class ForvoAudioLoader implements IAudioFileLoader {
     public ForvoAudioLoader(LanguageConfigurationClassDescriptor sub)
 	    throws MalformedURLException, IOException {
 
-	log = Logger.getLogger("tmp");
+	log = Logger.getLogger("jdict");
 	log.trace("called class " + this.getClass().getName());
 	cookieHandler = new CookieManager();
 	url = PropertiesLoader.getProperty(SITE_URL_XML_MARKUP);

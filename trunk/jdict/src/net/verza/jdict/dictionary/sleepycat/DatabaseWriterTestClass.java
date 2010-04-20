@@ -2,7 +2,6 @@ package net.verza.jdict.dictionary.sleepycat;
 
 import java.io.UnsupportedEncodingException;
 
-import net.verza.jdict.exceptions.KeyNotFoundException;
 import net.verza.jdict.exceptions.LanguagesConfigurationException;
 import net.verza.jdict.model.ArabVerb;
 import net.verza.jdict.model.Verb;
@@ -44,7 +43,7 @@ public class DatabaseWriterTestClass {
 	try {
 
 	    writer = new SleepyDatabaseWriter();
-	    writer.setDataBinding(SleepyBinding.getDataBinding());
+	    // writer.setDataBinding(SleepyBinding.getDataBinding());
 	    LanguageConfigurationClassDescriptor langconf;
 
 	    // ############### ITALIAN WORD WRITE TEST
@@ -310,8 +309,6 @@ public class DatabaseWriterTestClass {
 	} catch (DatabaseException e) {
 	    e.printStackTrace();
 	} catch (UnsupportedEncodingException e) {
-	    e.printStackTrace();
-	} catch (KeyNotFoundException e) {
 	    e.printStackTrace();
 	} catch (LanguagesConfigurationException e) {
 	    e.printStackTrace();

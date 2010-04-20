@@ -26,6 +26,8 @@ public class ArabVerb extends Verb implements Serializable {
     private static final long serialVersionUID = -5752057185882277357L;
     private String past;
     private String paradigm;
+    private String imperative;
+    private String pronounce;
     private static Logger log;
 
     // private ArabVerbPast pastObject;
@@ -38,54 +40,55 @@ public class ArabVerb extends Verb implements Serializable {
     }
 
     public String getpast() {
+	log.trace("called function getpast");
 	return this.past;
     }
 
     public String getparadigm() {
+	log.trace("called function getparadigm");
 	return this.paradigm;
     }
 
     public void setpast(String _past) {
+	log.trace("called function setpast " + _past);
 	try {
-	    System.out.println("setting past to "
-		    + new String(_past.getBytes("UTF-8")));
+	    log.debug("setting past to " + new String(_past.getBytes("UTF-8")));
 	    this.past = _past;
-
 	} catch (UnsupportedEncodingException e) {
+	    log.error("UnsupportedEncodingException " + e.getMessage());
 	    e.printStackTrace();
 	}
     }
 
     public void setparadigm(String _paradigm) {
+	log.trace("called function setparadigm with arg" + _paradigm);
 	this.paradigm = _paradigm;
     }
 
     public void pastToString() {
+	log.trace("called function pastToString");
 	try {
-
 	    new ArabVerbPast(this.past.toCharArray(), this.paradigm).toString();
-
 	} catch (DataNotFoundException e) {
-	    System.err.println(e.toString());
+	    log.error("UnsupportedEncodingException " + e.getMessage());
 	    e.printStackTrace();
 	}
     }
 
     public void presentToString() {
+	log.trace("called function presentToString");
 	try {
-
 	    new ArabVerbPresent(this.infinitive.toCharArray(), this.paradigm)
 		    .toString();
-
 	} catch (DataNotFoundException e) {
-	    System.err.println(e.toString());
+	    log.error("DataNotFoundException " + e.getMessage());
 	    e.printStackTrace();
 	}
 
     }
 
     public String toString() {
-
+	log.trace("called function toString");
 	// System.out.println("---------------------------------------------------------------------");
 	// System.out.println("------------ PAST VERB CONJUGATION
 	// -------------");
@@ -117,6 +120,7 @@ public class ArabVerb extends Verb implements Serializable {
     }
 
     public void toGraphich() {
+	log.trace("called function toGraphich");
 	super.toGraphich();
 
 	// Display Past
@@ -139,6 +143,8 @@ public class ArabVerb extends Verb implements Serializable {
     }
 
     public JTable getTable() {
+	log.trace("called function getTable");
+
 	// super.getTable();
 	Object dataValues[][];
 	dataValues = new Object[1][4];
@@ -159,6 +165,26 @@ public class ArabVerb extends Verb implements Serializable {
 		new JTableAudioButtonEditor(new JCheckBox()));
 	return table;
 
+    }
+
+    public String getimperative() {
+	log.trace("called function getimperative");
+	return imperative;
+    }
+
+    public void setimperative(String imperative) {
+	log.trace("called function setimperative with arg " + imperative);
+	this.imperative = imperative;
+    }
+
+    public String getpronounce() {
+	log.trace("called function getpronounce");
+	return pronounce;
+    }
+
+    public void setpronounce(String pronounce) {
+	log.trace("called function setpronounce with arg " + pronounce);
+	this.pronounce = pronounce;
     }
 
 }
