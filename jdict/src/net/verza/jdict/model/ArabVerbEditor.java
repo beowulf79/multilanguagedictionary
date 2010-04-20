@@ -45,15 +45,13 @@ import org.apache.log4j.Logger;
 
 import com.sleepycat.je.DatabaseException;
 
-public class ArabWordEditor extends SearchableObjectEditor implements
+public class ArabVerbEditor extends SearchableObjectEditor implements
 	ActionListener {
 
     private static final long serialVersionUID = 1L;
     private static final String NOT_SELECTED_STRING = "---- Nothing Selected ----";
     private static final String SECTION_COMBO_COMMAND = "sectioncombochange";
     private static final String REMOVE_SECTION_BUTTON = "removesection";
-    private static final String REMOVE_CATEGORY_BUTTON = "removecategory";
-    private static final String CATEGORY_COMBO_COMMAND = "categorycombochange";
     private static final String SEARCH_BUTTON_COMMAND = "search words";
     private static final String CONNECT_WORDS_COMMAND = "connect words";
     private static final String REMOVE_WORDS_COMMAND = "remove words";
@@ -61,27 +59,27 @@ public class ArabWordEditor extends SearchableObjectEditor implements
     private static final String LINKID_SEPARATOR = ": ";
     private static Logger log;
 
-    private LanguageConfigurationClassDescriptor config;
-    private ArabWord word;
-    private Word tmpConnectedWord;
-    private Map<SearchableObject, String> addMap, deleteMap;
-    private Dictionary dit;
-    private String mainObjectLanguage;
-    private IAudioFileLoader audioLoader;
-    private byte[] audio;
+    protected LanguageConfigurationClassDescriptor config;
+    protected ArabVerb verb;
+    protected Verb tmpConnectedVerb;
+    protected Map<SearchableObject, String> addMap, deleteMap;
+    protected Dictionary dit;
+    protected String mainObjectLanguage;
+    protected IAudioFileLoader audioLoader;
+    protected byte[] audio;
 
-    private JPanel panel;
-    private GridBagConstraints c;
-    private JButton connectWordsButton;
-    private JTextField singularText, pluralText, searchText, searchResult;
-    private JTextArea notesArea;
-    private JList sectionList, categoryList, linkIdList;
-    private DefaultListModel sectionListModel, categoryListModel,
-	    linkIdListModel;
-    private JComboBox sectionCombo, categoryCombo, languageSelectorCombo;
-    private JCheckBox loadAudio;
+    protected JPanel panel;
+    protected GridBagConstraints c;
+    protected JButton connectWordsButton;
+    protected JTextField presentText, pastText, imperativeText, pronounceText,
+	    searchText, searchResult;
+    protected JTextArea notesArea;
+    protected JList sectionList, categoryList, linkIdList;
+    private DefaultListModel sectionListModel, linkIdListModel;
+    protected JComboBox sectionCombo, categoryCombo, languageSelectorCombo;
+    protected JCheckBox loadAudio;
 
-    public ArabWordEditor(String language) throws SecurityException,
+    public ArabVerbEditor(String language) throws SecurityException,
 	    IllegalArgumentException, ClassNotFoundException,
 	    NoSuchMethodException, InstantiationException,
 	    IllegalAccessException, InvocationTargetException,
@@ -90,16 +88,17 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	    DynamicCursorException, KeyNotFoundException {
 	super();
 	log = Logger.getLogger("jdict");
+
 	log
-		.trace("called constructor ArabWordEditor with language "
+		.trace("called constructor ArabVerbEditor with language "
 			+ language);
 	config = LanguagesConfiguration.getLanguageMainConfigNode(language);
 
 	mainObjectLanguage = config.getLanguageNickname() + config.getType();
-	if (word == null)
-	    word = new ArabWord();
+	if (verb == null)
+	    verb = new ArabVerb();
 
-	word.setid(SleepyFactory.getInstance().getDatabase(mainObjectLanguage)
+	verb.setid(SleepyFactory.getInstance().getDatabase(mainObjectLanguage)
 		.getFreeId());
 	addMap = new HashMap<SearchableObject, String>();
 	deleteMap = new HashMap<SearchableObject, String>();
@@ -135,7 +134,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
     }
 
-    public ArabWordEditor(SearchableObject _word, String language)
+    public ArabVerbEditor(SearchableObject _sobj, String language)
 	    throws SecurityException, IllegalArgumentException,
 	    ClassNotFoundException, NoSuchMethodException,
 	    InstantiationException, IllegalAccessException,
@@ -144,9 +143,9 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	    FileNotFoundException, DataNotFoundException,
 	    DynamicCursorException, KeyNotFoundException {
 	this(language);
-	log.trace("called constructor ArabWordEditor(with word "
-		+ _word.toString() + " and language " + language);
-	word = (ArabWord) _word;
+	log.trace("called constructor ArabVerbEditor(with verb "
+		+ _sobj.toString() + " and language " + language);
+	verb = (ArabVerb) _sobj;
 
     }
 
@@ -159,9 +158,6 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	    IllegalAccessException, InvocationTargetException {
 	log.trace("called function initComponents");
 
-	panel = new JPanel(new GridBagLayout());
-	panel.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5
-	panel.setBackground(GUIPreferences.backgroundColor);
 	c = new GridBagConstraints();
 	c.insets = new Insets(2, 2, 2, 2);
 	c.anchor = GridBagConstraints.WEST;
@@ -169,39 +165,75 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	c.weighty = 0.1;
 	c.gridheight = 1;
 	c.gridwidth = 1;
-	int y = 0;
+
+	panel = new JPanel(new GridBagLayout());
+	panel.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5
+	panel.setBackground(GUIPreferences.backgroundColor);
+	int y = 2;
 
 	c.gridx = 0;
 	c.gridy = y;
-	JLabel singularLabel = new JLabel("singular");
-	singularLabel.setBorder(BorderFactory.createLineBorder(
+	JLabel presentLabel = new JLabel("present (المضارع)");
+	presentLabel.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(singularLabel, c);
+	panel.add(presentLabel, c);
 
 	c.gridx = 1;
 	c.gridy = y++;
-	singularText = (("".equals(word.getsingular())) || (word.getsingular() == null)) ? new JTextField(
-		20)
-		: new JTextField(word.getsingular());
-	singularText.setBorder(BorderFactory.createLineBorder(
+	presentText = (("".equals(verb.getinfinitive())) || (verb
+		.getinfinitive() == null)) ? new JTextField(20)
+		: new JTextField(verb.getinfinitive());
+	presentText.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(singularText, c);
+	panel.add(presentText, c);
 
 	c.gridx = 0;
 	c.gridy = y;
-	JLabel pluralLabel = new JLabel("plural");
-	pluralLabel.setBorder(BorderFactory.createLineBorder(
+	JLabel pastLabel = new JLabel("past (الماضي)");
+	pastLabel.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(pluralLabel, c);
+	panel.add(pastLabel, c);
 
 	c.gridx = 1;
 	c.gridy = y++;
-	pluralText = (("".equals(word.getplural())) || (word.getplural() == null)) ? new JTextField(
+	pastText = (("".equals(verb.getpast())) || (verb.getpast() == null)) ? new JTextField(
 		20)
-		: new JTextField(word.getplural());
-	pluralText.setBorder(BorderFactory.createLineBorder(
+		: new JTextField(verb.getpast());
+	pastText.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(pluralText, c);
+	panel.add(pastText, c);
+
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel imperativeLabel = new JLabel("imperative (الامر)");
+	imperativeLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(imperativeLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	imperativeText = (("".equals(verb.getimperative())) || (verb
+		.getimperative() == null)) ? new JTextField(20)
+		: new JTextField(verb.getimperative());
+	imperativeText.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(imperativeText, c);
+
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel pronounceLabel = new JLabel("pronounce");
+	pronounceLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(pronounceLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	pronounceText = (("".equals(verb.getpronounce())) || (verb
+		.getpronounce() == null)) ? new JTextField(20)
+		: new JTextField(verb.getpronounce());
+	pronounceText.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(pronounceText, c);
 
 	c.gridx = 0;
 	c.gridy = y;
@@ -230,7 +262,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
 	c.gridx = 1;
 	c.gridy = y++;
-	// sectionList = (word.getsection() == null) ? new JList() : new
+	// sectionList = (verb.getsection() == null) ? new JList() : new
 	// JList();
 	// sectionList.setModel(sectionListModel);
 	// sectionList.setBorder(BorderFactory.createLineBorder(
@@ -250,55 +282,6 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
 	c.gridx = 0;
 	c.gridy = y;
-	JLabel categoryLabel = new JLabel("category");
-	categoryLabel.setBorder(BorderFactory.createLineBorder(
-		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(categoryLabel, c);
-
-	c.gridx = 1;
-	c.gridy = y++;
-	categoryCombo = new JComboBox(dit.getCategoryValue());
-	categoryCombo.setBorder(BorderFactory.createLineBorder(
-		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	categoryCombo.addItem(NOT_SELECTED_STRING);
-	categoryCombo.setSelectedItem(NOT_SELECTED_STRING);
-	categoryCombo.setActionCommand(CATEGORY_COMBO_COMMAND);
-	categoryCombo.addActionListener(this);
-	panel.add(categoryCombo, c);
-
-	c.gridx = 0;
-	c.gridy = y;
-	JLabel categoryListLabel = new JLabel("category");
-	categoryListLabel.setBorder(BorderFactory.createLineBorder(
-		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(categoryListLabel, c);
-
-	c.gridx = 1;
-	c.gridy = y++;
-	categoryListModel = new DefaultListModel();
-	categoryList = new JList();
-	buildCategoryList();
-	categoryList.setModel(categoryListModel);
-	panel.add(categoryList, c);
-
-	// categoryListModel = new DefaultListModel();
-	// categoryList = (word.getcategory() == null) ? new JList() : new
-	// JList(
-	// word.getcategory().toArray());
-	// categoryList.setModel(categoryListModel);
-	// categoryList.setBorder(BorderFactory.createLineBorder(
-	// GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	// panel.add(categoryList, c);
-
-	c.gridx = 1;
-	c.gridy = y++;
-	JButton removeCategoryButton = new JButton("remove category/s");
-	removeCategoryButton.setActionCommand(REMOVE_CATEGORY_BUTTON);
-	removeCategoryButton.addActionListener(this);
-	panel.add(removeCategoryButton, c);
-
-	c.gridx = 0;
-	c.gridy = y;
 	JLabel notesTextLabel = new JLabel("notes");
 	notesTextLabel.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
@@ -306,9 +289,9 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
 	c.gridx = 1;
 	c.gridy = y++;
-	notesArea = (("".equals(word.getnotes())) || (word.getnotes() == null)) ? new JTextArea(
+	notesArea = (("".equals(verb.getnotes())) || (verb.getnotes() == null)) ? new JTextArea(
 		5, 20)
-		: new JTextArea(word.getnotes());
+		: new JTextArea(verb.getnotes());
 	notesArea.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	panel.add(notesArea, c);
@@ -413,7 +396,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
     private void buildSectionList() throws UnsupportedEncodingException,
 	    DatabaseException {
 	log.trace("called function buildSectionList");
-	Iterator<String> entry = word.getsection().iterator();
+	Iterator<String> entry = verb.getsection().iterator();
 	while (entry.hasNext()) {
 	    String sectionId = entry.next();
 	    log.debug("section id " + sectionId);
@@ -428,24 +411,6 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	}
     }
 
-    private void buildCategoryList() throws UnsupportedEncodingException,
-	    DatabaseException {
-	log.trace("called function buildCategoryList");
-	Iterator<String> entry = word.getcategory().iterator();
-	while (entry.hasNext()) {
-	    String categoryId = entry.next();
-	    log.debug("category id " + categoryId);
-	    String categoryValue = dit.readCategoryDatabase(categoryId);
-	    if ("".equals(categoryValue) || (categoryValue == null))
-		continue;
-	    log.debug("adding category value to the category list "
-		    + categoryValue);
-	    categoryListModel.addElement(categoryValue);
-	    categoryList.setSelectedIndex(categoryList.getSelectedIndex());
-	    categoryList.ensureIndexIsVisible(categoryList.getSelectedIndex());
-	}
-    }
-
     public void buildLinkIdList() throws LanguagesConfigurationException,
 	    UnsupportedEncodingException, DatabaseException,
 	    DynamicCursorException, DataNotFoundException,
@@ -455,7 +420,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	    IllegalAccessException, InvocationTargetException {
 	log.trace("called function buildLinkIdList");
 
-	for (java.util.Map.Entry<String, Integer[]> entry : word.getlinkid()
+	for (java.util.Map.Entry<String, Integer[]> entry : verb.getlinkid()
 		.entrySet()) {
 	    String language = entry.getKey();
 	    // add only enabled languages
@@ -470,15 +435,15 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	    Integer ids[] = entry.getValue();
 	    for (Integer item : ids) {
 		log.debug("searching language " + language + " and id " + item);
-		Word obj = (Word) dit.read(language, item.toString());
+		Verb obj = (Verb) dit.read(language, item.toString());
 		if (obj == null) {
 		    log.error("broken link with language " + language
 			    + " and id " + item);
 		    continue;
 		}
-		log.debug("adding to list word " + obj.getsingular());
+		log.debug("adding to list verb " + obj.infinitive);
 		linkIdListModel.addElement(language + LINKID_SEPARATOR
-			+ obj.getsingular());
+			+ obj.getinfinitive());
 	    }
 
 	}
@@ -486,7 +451,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
     }
 
     public SearchableObject getSearchableObject() {
-	return this.word;
+	return this.verb;
     }
 
     public void write() throws KeyNotFoundException, DynamicCursorException,
@@ -497,41 +462,45 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	    InstantiationException {
 	log.trace("called method write");
 
-	if ((singularText.getText() == null)
-		|| ("".equals(singularText.getText()))) {
+	if ((presentText.getText() == null)
+		|| ("".equals(presentText.getText()))) {
 	    log.error("singular field is null or empty");
 	    throw new DatabaseException("singular cannot be empty");
 	}
-	word.setsingular(singularText.getText());
+	verb.setinfinitive(presentText.getText());
 
-	if ((pluralText.getText() == null) || ("".equals(pluralText.getText()))) {
-	    log.error("plural field is null or empty");
-	    throw new DatabaseException("plural cannot be empty");
-	}
-	word.setplural(pluralText.getText());
+	if (!(pastText.getText() == null) || !("".equals(pastText.getText())))
+	    verb.setpast(pastText.getText());
+
+	if (!(imperativeText.getText() == null)
+		|| !("".equals(imperativeText.getText())))
+	    verb.setimperative(imperativeText.getText());
+
+	if (!(pronounceText.getText() == null)
+		|| !("".equals(pronounceText.getText())))
+	    verb.setpronounce(pronounceText.getText());
 
 	if (loadAudio.isSelected() || audio != null)
-	    log.debug("setting audio inside object");
-	word.setaudio(audio);
+	    verb.setaudio(audio);
 
 	if ((notesArea.getText() != null) || (notesArea.getText() != ""))
-	    word.setnotes(notesArea.getText());
+	    verb.setnotes(notesArea.getText());
 
 	// linkedId, section and category gets search at each jcombo change and
 	// not here
 	connectedWords();
 
 	// if id has value then update the entry
-	if (word.getid() != null) {
-	    log.info("updating searchable object " + word.toString());
+	if (verb.getid() != null) {
+	    log.info("updating searchable object " + verb.toString());
 	    dit.write(SleepyFactory.getInstance().getDatabase(
-		    config.getLanguageNickname() + config.getType()), word
-		    .getid(), word);
+		    config.getLanguageNickname() + config.getType()), verb
+		    .getid(), verb);
 	    // otherwise add the new entry
 	} else {
-	    log.info("creating searchable object " + word.toString());
+	    log.info("creating searchable object " + verb.toString());
 	    dit.write(SleepyFactory.getInstance().getDatabase(
-		    config.getLanguageNickname() + config.getType()), word);
+		    config.getLanguageNickname() + config.getType()), verb);
 	}
     }
 
@@ -550,7 +519,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
      * @throws IllegalArgumentException
      * @throws SecurityException
      */
-    private void connectedWords() throws KeyNotFoundException,
+    public void connectedWords() throws KeyNotFoundException,
 	    UnsupportedEncodingException, DynamicCursorException,
 	    DataNotFoundException, DatabaseException, SecurityException,
 	    IllegalArgumentException, FileNotFoundException,
@@ -564,8 +533,8 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	for (java.util.Map.Entry<SearchableObject, String> entryAdd : addMap
 		.entrySet()) {
 	    log.debug("updating linked of searchable object with language "
-		    + mainObjectLanguage + ", id " + word.getid().toString());
-	    entryAdd.getKey().addlinkid(mainObjectLanguage, word.getid());
+		    + mainObjectLanguage + ", id " + verb.getid().toString());
+	    entryAdd.getKey().addlinkid(mainObjectLanguage, verb.getid());
 	    dit.write(SleepyFactory.getInstance().getDatabase(
 		    entryAdd.getValue()), entryAdd.getKey().getid(), entryAdd
 		    .getKey());
@@ -579,8 +548,8 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 		.entrySet()) {
 
 	    log.debug("updating linked of searchable object with language "
-		    + mainObjectLanguage + ", id " + word.getid().toString());
-	    entryDel.getKey().removelinkid(mainObjectLanguage, word.getid());
+		    + mainObjectLanguage + ", id " + verb.getid().toString());
+	    entryDel.getKey().removelinkid(mainObjectLanguage, verb.getid());
 	    dit.write(SleepyFactory.getInstance().getDatabase(
 		    entryDel.getValue()), entryDel.getKey().getid(), entryDel
 		    .getKey());
@@ -651,7 +620,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
 		log.debug("adding section id to the searchable object "
 			+ sectionId);
-		word.addsection(sectionId);
+		verb.addsection(sectionId);
 		sectionListModel.addElement(sectionCombo.getSelectedItem());
 		sectionList.setSelectedIndex(sectionList.getSelectedIndex());
 		sectionList
@@ -666,79 +635,44 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 			    .readSectionDatabase((String) objArray[i]);
 		    // String sectionToRemove = (String) objArray[i];
 		    log.debug("section to remove is " + sectionId);
-		    word.removesection(sectionId);
+		    verb.removesection(sectionId);
 		    sectionListModel.removeElement(objArray[i]);
-		}
-
-	    } else if (evt.getActionCommand().equals(CATEGORY_COMBO_COMMAND)) {
-		log.debug("adding to category  "
-			+ categoryCombo.getSelectedItem().toString());
-		String categoryId = null;
-		try {
-		    categoryId = dit.readCategoryDatabase(categoryCombo
-			    .getSelectedItem().toString());
-		} catch (UnsupportedEncodingException e) {
-		    log.error("UnsupportedEncodingException " + e.getMessage());
-		    e.printStackTrace();
-		} catch (DatabaseException e) {
-		    log.error("DatabaseException " + e.getMessage());
-		    e.printStackTrace();
-		}
-		log.debug("adding section id to the searchable object "
-			+ categoryId);
-		word.addcategory(categoryId);
-		categoryListModel.addElement(categoryCombo.getSelectedItem());
-		categoryList.setSelectedIndex(categoryList.getSelectedIndex());
-		categoryList.ensureIndexIsVisible(categoryList
-			.getSelectedIndex());
-
-	    } else if (evt.getActionCommand().equals(REMOVE_CATEGORY_BUTTON)) {
-		Object[] objArray = (Object[]) categoryList.getSelectedValues();
-		log.debug("got " + objArray.length
-			+ " from category list to delete");
-		for (int i = 0; i < objArray.length; i++) {
-		    String categoryId = dit
-			    .readCategoryDatabase((String) objArray[i]);
-		    // String categoryToRemove = (String) objArray[i];
-		    log.debug("category to remove is " + categoryId);
-		    word.removecategory(categoryId);
-		    categoryListModel.removeElement(objArray[i]);
 		}
 
 	    } else if (evt.getActionCommand().equals(CONNECT_WORDS_COMMAND)) {
 		String language = (languageSelectorCombo.getSelectedItem()
 			.toString() + config.getType());
-		log.debug("setting linkId with word "
-			+ tmpConnectedWord.toString() + " of language "
+		log.debug("setting linkId with verb "
+			+ tmpConnectedVerb.toString() + " of language "
 			+ languageSelectorCombo.getSelectedItem()
 			+ config.getType());
 
-		// first set the id of the connected object in the word
+		// first set the id of the connected object in the verb
 		log
 			.debug("updating linkid of main object with searchable object having language "
 				+ languageSelectorCombo.getSelectedItem()
 				+ config.getType()
 				+ " and id "
-				+ tmpConnectedWord.getid().toString());
-		word.addlinkid(languageSelectorCombo.getSelectedItem()
-			+ config.getType(), tmpConnectedWord.getid());
+				+ tmpConnectedVerb.getid().toString());
+		verb.addlinkid(languageSelectorCombo.getSelectedItem()
+			+ config.getType(), tmpConnectedVerb.getid());
 
-		// then add in the linkid JList the new connected word
+		// then add in the linkid JList the new connected verb
 		log.debug("add element to the list "
-			+ tmpConnectedWord.toString());
+			+ tmpConnectedVerb.toString());
 		linkIdListModel.addElement(languageSelectorCombo
 			.getSelectedItem()
 			+ config.getType()
 			+ LINKID_SEPARATOR
-			+ tmpConnectedWord.getsingular());
+			+ tmpConnectedVerb.getinfinitive());
 
-		// add the connect Words to the Map; the key is the
+		// add the connect Verbs to the Map; the key is the
 		// language+type and the value
-		// is the connected word itself
+		// is the connected verb itself
 		log.debug("add element to the add map "
-			+ tmpConnectedWord.toString());
+			+ tmpConnectedVerb.toString());
 		log.debug(" map size" + addMap.size());
-		addMap.put(tmpConnectedWord, language);
+		addMap.put(tmpConnectedVerb, language);
 		linkIdList.setSelectedIndex(linkIdList.getSelectedIndex());
 		linkIdList.ensureIndexIsVisible(linkIdList.getSelectedIndex());
 
@@ -747,7 +681,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 		// to string here as it throws exception, so i'll do it later
 		Object[] objArray = (Object[]) linkIdList.getSelectedValues();
 		log.debug("got " + objArray.length
-			+ " from connected words list to delete");
+			+ " from connected verbs list to delete");
 		for (int i = 0; i < objArray.length; i++) {
 		    String tmp2 = (String) objArray[i];
 		    String[] tmp = tmp2.split(LINKID_SEPARATOR);
@@ -757,13 +691,13 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 			    language, key);
 		    if (obj == null) {
 			log
-				.error("connected word not found, can't disconnect word ");
+				.error("connected verb not found, can't disconnect verb ");
 			continue;
 		    }
 		    log
 			    .debug("removing linkid of main object with searchable object having language "
 				    + language + " and id " + obj.getid());
-		    word.removelinkid(language, obj.getid());
+		    verb.removelinkid(language, obj.getid());
 		    log.debug("removing from list");
 
 		    log
@@ -778,15 +712,14 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 		log.debug("loading audio");
 		if (loadAudio.isSelected()) {
 		    log.debug("enabling audio load");
-		    if ("".equals(singularText.getText())
-			    || singularText == null) {
+		    if ("".equals(presentText.getText()) || presentText == null) {
 			JOptionPane
 				.showMessageDialog(null, "singular empty!! ");
 			loadAudio.setSelected(false);
 			return;
 		    }
 		    initializeAudioLoader();
-		    audio = (getAudio(singularText.getText()));
+		    audio = (getAudio(presentText.getText()));
 		    if (audio == null) {
 			log.error("audio not found!");
 			JOptionPane.showMessageDialog(null,
@@ -806,16 +739,16 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
 		String language = (languageSelectorCombo.getSelectedItem()
 			.toString() + config.getType());
-		tmpConnectedWord = (Word) dit.read(language, searchText
+		tmpConnectedVerb = (Verb) dit.read(language, searchText
 			.getText());
-		if (tmpConnectedWord == null) {
+		if (tmpConnectedVerb == null) {
 		    JOptionPane.showMessageDialog(null,
 			    "data not found in the dictionary");
 		    connectWordsButton.setEnabled(false);
 		    return;
 		}
 		connectWordsButton.setEnabled(true);
-		searchResult.setText(tmpConnectedWord.getsingular());
+		searchResult.setText(tmpConnectedVerb.getinfinitive());
 	    }
 	} catch (MalformedURLException e) {
 	    e.printStackTrace();

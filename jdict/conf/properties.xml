@@ -44,9 +44,9 @@
 	<dataBindingClass>net.verza.jdict.model.SearchableObject</dataBindingClass>
 		
 		
-		
+	<!--	ARABIC WORD -->
 	<language>
-		<enabled>no</enabled>
+		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.ArabWordEditor</editor_class>
 		<audio>yes</audio>
 		<nickname>arabic</nickname>
@@ -112,9 +112,9 @@
 		By default comma is used as delimiter; use the static setDefaultDelimiter() method of AbstractConfiguration to define a different delimiter character -->
 	</language>
 		
-		
+	<!--	EGYPTIAN WORD -->	
 	<language>
-		<enabled>no</enabled>
+		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.ArabWordEditor</editor_class>
 		<audio>yes</audio>
 		<nickname>egyptian</nickname>
@@ -191,7 +191,7 @@
 	</language>
 
 
-
+	<!--	ITALIAN WORD -->
 	<language>
 		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.WordEditor</editor_class>
@@ -199,7 +199,7 @@
 		<nickname>italian</nickname>
 		<type>word</type>
 		<audio_loader_class>
-			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+			net.verza.jdict.dataloaders.ForvoAudioLoader
 		</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
 		<audio_directory>audio/italian_words/</audio_directory>
@@ -260,11 +260,11 @@
 			By default comma is used as delimiter; use the static setDefaultDelimiter() method of AbstractConfiguration to define a different delimiter character -->
 	</language>
 
-
+	<!--	ENGLSIH WORD -->
 	<language>
 		<editor_class>net.verza.jdict.model.WordEditor</editor_class>
 		<enabled>yes</enabled>
-		<audio>no</audio>
+		<audio>yes</audio>
 		<nickname>english</nickname>
 		<type>word</type>
 		<audio_loader_class>
@@ -337,13 +337,10 @@
 
 
 
-	<!--
-    VERB SECTION
-    -->
 
-
+	<!--	ITALIAN VERB -->
 	<language>
-		<enabled>no</enabled>
+		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.VerbEditor</editor_class>
 		<audio>yes</audio>
 		<type>verb</type>
@@ -414,9 +411,9 @@
 		<!--	<translations>arabic,english</translations> -->
 	</language>
 
-
+	<!--	ENGLISH VERB -->
 	<language>
-		<enabled>no</enabled>
+		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.VerbEditor</editor_class>
 		<audio>yes</audio>
 		<nickname>english</nickname>
@@ -474,16 +471,16 @@
 		</fields>
 	</language>
 
-
+	<!--	ARABIC VERB -->
 	<language>
-		<enabled>no</enabled>
+		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.ArabVerbEditor</editor_class>
-		<audio>no</audio>
+		<audio>yes</audio>
 		<nickname>arabic</nickname>
 		<type>verb</type>
+		<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
-		<audio_directory>
-			/Users/ChristianVerdelli/documents/workspace/jdict/audio/arabic_verbs/
+		<audio_directory>audio/arabic_verbs/
 		</audio_directory>
 		<class>net.verza.jdict.model.ArabVerb</class>
 		<excel_sheet>arabic verbs</excel_sheet>
@@ -506,7 +503,7 @@
 				<class_attribute>infinitive</class_attribute>
 				<label_name>ARABIC PRESENT</label_name>
 				<key_type>subindex</key_type>
-				<audio_enabled>false</audio_enabled>
+				<audio_enabled>true</audio_enabled>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
@@ -536,12 +533,20 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
 			</label>
+						<label>
+				<class_attribute>imperative</class_attribute>
+				<label_name>ARABIC IMPERATIVE</label_name>
+			</label>
+			<label>
+				<class_attribute>pronounce</class_attribute>
+				<label_name>ARABIC PRONOUNCE</label_name>
+			</label>
 		</fields>
 	</language>
 
-
+	<!--	EGYPTIAN VERB -->
 	<language>
-		<enabled>no</enabled>
+		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.ArabVerbEditor</editor_class>
 		<audio>yes</audio>
 		<nickname>egyptian</nickname>
@@ -601,6 +606,14 @@
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+			</label>
+			<label>
+				<class_attribute>imperative</class_attribute>
+				<label_name>EGYPTIAN IMPERATIVE</label_name>
+			</label>
+			<label>
+				<class_attribute>pronounce</class_attribute>
+				<label_name>EGYPTIAN PRONOUNCE</label_name>
 			</label>
 
 		</fields>

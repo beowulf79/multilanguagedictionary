@@ -147,6 +147,21 @@ public class EditorController extends JPanel implements ActionListener {
 	c.gridheight = 1;
 	c.gridwidth = 1;
 
+	c.gridx = 0;
+	c.gridy = BUTTONS_Y_POSITION;
+	c.anchor = GridBagConstraints.EAST;
+	next = new JButton(NEXT_BUTTON_STRING);
+	next.addActionListener(this);
+	next.setActionCommand(NEXT_BUTTON_STRING);
+	panel.add(next, c);
+
+	c.anchor = GridBagConstraints.WEST;
+	c.gridx = 1;
+	finish = new JButton(FINISH_BUTTON_STRING);
+	finish.setActionCommand(FINISH_BUTTON_STRING);
+	finish.addActionListener(this);
+	panel.add(finish, c);
+
 	try {
 	    loadNextSearchableObject();
 	} catch (UnsupportedEncodingException e) {
@@ -171,21 +186,6 @@ public class EditorController extends JPanel implements ActionListener {
 	    JOptionPane.showMessageDialog(null, e.getMessage());
 	}
 
-	c.gridx = 0;
-	c.gridy = BUTTONS_Y_POSITION;
-	c.anchor = GridBagConstraints.EAST;
-	next = new JButton(NEXT_BUTTON_STRING);
-	next.addActionListener(this);
-	next.setActionCommand(NEXT_BUTTON_STRING);
-	panel.add(next, c);
-
-	c.anchor = GridBagConstraints.WEST;
-	c.gridx = 1;
-	finish = new JButton(FINISH_BUTTON_STRING);
-	finish.setActionCommand(FINISH_BUTTON_STRING);
-	finish.addActionListener(this);
-	panel.add(finish, c);
-
     }
 
     private void createAndShowGUI() {
@@ -199,6 +199,7 @@ public class EditorController extends JPanel implements ActionListener {
 	frame.setResizable(true);
 	frame.setLocationRelativeTo(null);
 	frame.pack();
+	frame.validate();
 	frame.setVisible(true);
     }
 
@@ -321,15 +322,16 @@ public class EditorController extends JPanel implements ActionListener {
 		log.error("Exception " + e.getMessage());
 		JOptionPane.showMessageDialog(null, e.getMessage());
 	    }
-	} else
-	    next.setEnabled(false);
+	} else {
+	    log.debug("no more objects to modify, closing the frame");
+	    frame.dispose();
+	}
     }
 
     public void actionPerformed(ActionEvent e) {
 	log.trace("called function actionPerformed");
 	try {
 	    if (e.getActionCommand().equals(NEXT_BUTTON_STRING)) {
-
 		log.trace("received command " + NEXT_BUTTON_STRING);
 		// send write command and remove previous word from the panel
 		searchableObjectEditor.write();

@@ -1,6 +1,7 @@
 package net.verza.jdict.properties;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -106,6 +107,22 @@ public class LanguagesConfiguration {
     public static Set<String> getAvalaibleLanguages() {
 
 	return languageConfigurationBlock.keySet();
+    }
+
+    public static Set<String> getEnabledLanguages() {
+	log.trace("called function getEnabledLanguages()");
+	Set<String> tmp = new HashSet();
+	for (Iterator<String> it = languageConfigurationBlock.keySet()
+		.iterator(); it.hasNext();) {
+	    String key = it.next();
+	    LanguageConfigurationClassDescriptor lang = (languageConfigurationBlock
+		    .get(key));
+	    if (lang.isEnabled()) {
+		log.trace(key + " enabled, adding to languages enabled map ");
+		tmp.add(key);
+	    }
+	}
+	return tmp;
     }
 
     public static List<SubnodeConfiguration> getFieldsConfigNode(

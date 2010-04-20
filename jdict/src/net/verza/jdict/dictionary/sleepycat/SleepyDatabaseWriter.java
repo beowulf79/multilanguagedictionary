@@ -37,15 +37,16 @@ public class SleepyDatabaseWriter {
 
     }
 
-    public void setDataBinding(EntryBinding eb) {
-	log.debug("setting key binding with object " + eb.hashCode());
-	// this.dataBinding = eb;
-    }
+    // public void setDataBinding(EntryBinding eb) {
+    // log.debug("setting key binding with object " + eb.hashCode());
+    // // this.dataBinding = eb;
+    // }
 
     public void setDatabase(SleepyDatabase _db) throws DatabaseException {
 
 	log.debug("setting db to " + _db.getDatabase().getDatabaseName());
 	this.database = _db;
+	dataBinding = _db.getEntryBinding();
     }
 
     /**
@@ -75,7 +76,6 @@ public class SleepyDatabaseWriter {
 		+ db.getDatabase().getDatabaseName() + "  value "
 		+ data.toString());
 	setDatabase(db);
-	log.debug("got available id " + key);
 	write(key, data);
     }
 

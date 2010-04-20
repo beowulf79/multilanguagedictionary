@@ -327,8 +327,8 @@ public class SleepyDatabase {
 	    return id;
 	}
 
-	log.error("free id not found");
-	return null;
+	log.error("free id not found, returning 1");
+	return 1;
     }
 
     public String toString() {

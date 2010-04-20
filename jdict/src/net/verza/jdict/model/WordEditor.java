@@ -12,6 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -56,26 +57,29 @@ public class WordEditor extends SearchableObjectEditor implements
     private static final String SEARCH_BUTTON_COMMAND = "search words";
     private static final String CONNECT_WORDS_COMMAND = "connect words";
     private static final String REMOVE_WORDS_COMMAND = "remove words";
+    private static final String LOAD_WORDS_COMMAND = "load audio";
     private static final String LINKID_SEPARATOR = ": ";
     private static Logger log;
-    private LanguageConfigurationClassDescriptor config;
-    private Word word;
-    private Word tmpConnectedWord;
-    private Map<SearchableObject, String> addMap, deleteMap;
-    private Dictionary dit;
-    private String mainObjectLanguage;
-    private IAudioFileLoader audioLoader;
 
-    private JPanel panel;
-    private GridBagConstraints c;
-    private JButton connectWordsButton;
-    private JTextField singularText, searchText, searchResult;
-    private JTextArea notesArea;
-    private JList sectionList, categoryList, linkIdList;
+    protected LanguageConfigurationClassDescriptor config;
+    protected Word word;
+    protected Word tmpConnectedWord;
+    protected Map<SearchableObject, String> addMap, deleteMap;
+    protected Dictionary dit;
+    protected String mainObjectLanguage;
+    protected IAudioFileLoader audioLoader;
+    protected byte[] audio;
+
+    protected JPanel panel;
+    protected GridBagConstraints c;
+    protected JButton connectWordsButton;
+    protected JTextField singularText, searchText, searchResult;
+    protected JTextArea notesArea;
+    protected JList sectionList, categoryList, linkIdList;
     private DefaultListModel sectionListModel, categoryListModel,
 	    linkIdListModel;
-    private JComboBox sectionCombo, categoryCombo, languageSelectorCombo;
-    private JCheckBox loadAudio;
+    protected JComboBox sectionCombo, categoryCombo, languageSelectorCombo;
+    protected JCheckBox loadAudio;
 
     public WordEditor(String language) throws SecurityException,
 	    IllegalArgumentException, ClassNotFoundException,
@@ -86,6 +90,7 @@ public class WordEditor extends SearchableObjectEditor implements
 	    DynamicCursorException, KeyNotFoundException {
 	super();
 	log = Logger.getLogger("jdict");
+
 	log.trace("called constructor WordEditor with language " + language);
 	config = LanguagesConfiguration.getLanguageMainConfigNode(language);
 
@@ -97,9 +102,6 @@ public class WordEditor extends SearchableObjectEditor implements
 		.getFreeId());
 	addMap = new HashMap<SearchableObject, String>();
 	deleteMap = new HashMap<SearchableObject, String>();
-
-	if (config.isAudioEnabled)
-	    initializeAudioLoader();
 
 	try {
 	    dit = Factory.getDictionary();
@@ -156,9 +158,6 @@ public class WordEditor extends SearchableObjectEditor implements
 	    IllegalAccessException, InvocationTargetException {
 	log.trace("called function initComponents");
 
-	panel = new JPanel(new GridBagLayout());
-	panel.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5
-	panel.setBackground(GUIPreferences.backgroundColor);
 	c = new GridBagConstraints();
 	c.insets = new Insets(2, 2, 2, 2);
 	c.anchor = GridBagConstraints.WEST;
@@ -166,7 +165,11 @@ public class WordEditor extends SearchableObjectEditor implements
 	c.weighty = 0.1;
 	c.gridheight = 1;
 	c.gridwidth = 1;
-	int y = 0;
+
+	panel = new JPanel(new GridBagLayout());
+	panel.setBorder(new EmptyBorder(new Insets(5, 5, 5, 5)));// 5
+	panel.setBackground(GUIPreferences.backgroundColor);
+	int y = 2;
 
 	c.gridx = 0;
 	c.gridy = y;
@@ -211,12 +214,15 @@ public class WordEditor extends SearchableObjectEditor implements
 
 	c.gridx = 1;
 	c.gridy = y++;
+	// sectionList = (word.getsection() == null) ? new JList() : new
+	// JList();
+	// sectionList.setModel(sectionListModel);
+	// sectionList.setBorder(BorderFactory.createLineBorder(
+	// GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	sectionListModel = new DefaultListModel();
-	sectionList = (word.getsection() == null) ? new JList() : new JList(
-		word.getsection().toArray());
+	sectionList = new JList();
+	buildSectionList();
 	sectionList.setModel(sectionListModel);
-	sectionList.setBorder(BorderFactory.createLineBorder(
-		GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	panel.add(sectionList, c);
 
 	c.gridx = 1;
@@ -254,12 +260,19 @@ public class WordEditor extends SearchableObjectEditor implements
 	c.gridx = 1;
 	c.gridy = y++;
 	categoryListModel = new DefaultListModel();
-	categoryList = (word.getcategory() == null) ? new JList() : new JList(
-		word.getcategory().toArray());
+	categoryList = new JList();
+	buildCategoryList();
 	categoryList.setModel(categoryListModel);
-	categoryList.setBorder(BorderFactory.createLineBorder(
-		GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	panel.add(categoryList, c);
+
+	// categoryListModel = new DefaultListModel();
+	// categoryList = (word.getcategory() == null) ? new JList() : new
+	// JList(
+	// word.getcategory().toArray());
+	// categoryList.setModel(categoryListModel);
+	// categoryList.setBorder(BorderFactory.createLineBorder(
+	// GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	// panel.add(categoryList, c);
 
 	c.gridx = 1;
 	c.gridy = y++;
@@ -296,6 +309,10 @@ public class WordEditor extends SearchableObjectEditor implements
 	loadAudio = new JCheckBox();
 	loadAudio.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	loadAudio.setActionCommand(LOAD_WORDS_COMMAND);
+	loadAudio.addActionListener(this);
+	if (!config.isAudioEnabled)
+	    loadAudio.setEnabled(false);
 	panel.add(loadAudio, c);
 	add(panel);
 
@@ -377,6 +394,42 @@ public class WordEditor extends SearchableObjectEditor implements
 
     }
 
+    private void buildSectionList() throws UnsupportedEncodingException,
+	    DatabaseException {
+	log.trace("called function buildSectionList");
+	Iterator<String> entry = word.getsection().iterator();
+	while (entry.hasNext()) {
+	    String sectionId = entry.next();
+	    log.debug("section id " + sectionId);
+	    String sectionValue = dit.readSectionDatabase(sectionId);
+	    if ("".equals(sectionValue) || (sectionValue == null))
+		continue;
+	    log.debug("adding section value to the section list "
+		    + sectionValue);
+	    sectionListModel.addElement(sectionValue);
+	    sectionList.setSelectedIndex(sectionList.getSelectedIndex());
+	    sectionList.ensureIndexIsVisible(sectionList.getSelectedIndex());
+	}
+    }
+
+    private void buildCategoryList() throws UnsupportedEncodingException,
+	    DatabaseException {
+	log.trace("called function buildCategoryList");
+	Iterator<String> entry = word.getcategory().iterator();
+	while (entry.hasNext()) {
+	    String categoryId = entry.next();
+	    log.debug("category id " + categoryId);
+	    String categoryValue = dit.readCategoryDatabase(categoryId);
+	    if ("".equals(categoryValue) || (categoryValue == null))
+		continue;
+	    log.debug("adding category value to the category list "
+		    + categoryValue);
+	    categoryListModel.addElement(categoryValue);
+	    categoryList.setSelectedIndex(categoryList.getSelectedIndex());
+	    categoryList.ensureIndexIsVisible(categoryList.getSelectedIndex());
+	}
+    }
+
     public void buildLinkIdList() throws LanguagesConfigurationException,
 	    UnsupportedEncodingException, DatabaseException,
 	    DynamicCursorException, DataNotFoundException,
@@ -435,8 +488,9 @@ public class WordEditor extends SearchableObjectEditor implements
 	}
 	word.setsingular(singularText.getText());
 
-	if (loadAudio.isSelected())
-	    word.setaudio(getAudio(word.getsingular()));
+	if (loadAudio.isSelected() || audio != null)
+	    log.debug("setting audio inside object");
+	word.setaudio(audio);
 
 	if ((notesArea.getText() != null) || (notesArea.getText() != ""))
 	    word.setnotes(notesArea.getText());
@@ -445,10 +499,18 @@ public class WordEditor extends SearchableObjectEditor implements
 	// not here
 	connectedWords();
 
-	log.info("creating/updating searchable object " + word.toString());
-	dit.write(SleepyFactory.getInstance().getDatabase(
-		config.getLanguageNickname() + config.getType()), word);
-
+	// if id has value then update the entry
+	if (word.getid() != null) {
+	    log.info("updating searchable object " + word.toString());
+	    dit.write(SleepyFactory.getInstance().getDatabase(
+		    config.getLanguageNickname() + config.getType()), word
+		    .getid(), word);
+	    // otherwise add the new entry
+	} else {
+	    log.info("creating searchable object " + word.toString());
+	    dit.write(SleepyFactory.getInstance().getDatabase(
+		    config.getLanguageNickname() + config.getType()), word);
+	}
     }
 
     /**
@@ -466,7 +528,7 @@ public class WordEditor extends SearchableObjectEditor implements
      * @throws IllegalArgumentException
      * @throws SecurityException
      */
-    private void connectedWords() throws KeyNotFoundException,
+    public void connectedWords() throws KeyNotFoundException,
 	    UnsupportedEncodingException, DynamicCursorException,
 	    DataNotFoundException, DatabaseException, SecurityException,
 	    IllegalArgumentException, FileNotFoundException,
@@ -481,8 +543,7 @@ public class WordEditor extends SearchableObjectEditor implements
 		.entrySet()) {
 	    log.debug("updating linked of searchable object with language "
 		    + mainObjectLanguage + ", id " + word.getid().toString());
-	    entryAdd.getKey().addlinkid(mainObjectLanguage,
-		    word.getid().toString());
+	    entryAdd.getKey().addlinkid(mainObjectLanguage, word.getid());
 	    dit.write(SleepyFactory.getInstance().getDatabase(
 		    entryAdd.getValue()), entryAdd.getKey().getid(), entryAdd
 		    .getKey());
@@ -495,10 +556,9 @@ public class WordEditor extends SearchableObjectEditor implements
 	for (java.util.Map.Entry<SearchableObject, String> entryDel : deleteMap
 		.entrySet()) {
 
-	    log.debug("updating linkied of searchable object key:"
-		    + entryDel.getKey() + ", value:" + entryDel.getValue());
-	    entryDel.getKey().removelinkid(mainObjectLanguage,
-		    word.getid().toString());
+	    log.debug("updating linked of searchable object with language "
+		    + mainObjectLanguage + ", id " + word.getid().toString());
+	    entryDel.getKey().removelinkid(mainObjectLanguage, word.getid());
 	    dit.write(SleepyFactory.getInstance().getDatabase(
 		    entryDel.getValue()), entryDel.getKey().getid(), entryDel
 		    .getKey());
@@ -519,18 +579,33 @@ public class WordEditor extends SearchableObjectEditor implements
 	log.debug(" method to use to set audio " + audio_method
 		+ "; audio directory where load audio from " + audio_directory);
 
-	Class<?> audioLoaderClass;
-	Class<?>[] constructorParams;
-	Constructor<?> IConstructor;
+	try {
 
-	String audioLoaderClassName = config.getAudioLoaderClass();
-	log.debug("using " + audioLoaderClassName + " as audio Loader Class");
+	    Class<?> audioLoaderClass;
+	    Class<?>[] constructorParams;
+	    Constructor<?> IConstructor;
 
-	audioLoaderClass = Class.forName(audioLoaderClassName);
-	// get an instance
-	constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
-	IConstructor = audioLoaderClass.getConstructor(constructorParams);
-	audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	    String audioLoaderClassName = config.getAudioLoaderClass();
+	    log.debug("using " + audioLoaderClassName
+		    + " as audio Loader Class");
+
+	    audioLoaderClass = Class.forName(audioLoaderClassName);
+	    // get an instance
+	    constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+	    IConstructor = audioLoaderClass.getConstructor(constructorParams);
+
+	    audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	} catch (InvocationTargetException e) {
+	    JOptionPane
+		    .showMessageDialog(
+			    null,
+			    "InvocationTargetException with audio loader class, disabling audio flag; exception was"
+				    + e.getMessage());
+	    log
+		    .error("InvocationTargetException with audio loader class, disabling audio flag; exception was "
+			    + e.getCause());
+
+	}
 
     }
 
@@ -538,8 +613,6 @@ public class WordEditor extends SearchableObjectEditor implements
 	    IllegalAccessException, InvocationTargetException,
 	    MalformedURLException, FileNotFoundException, IOException {
 	log.trace("called function getAudio with audio " + audio);
-	if ((audio != null) || ("".equals(audio)))
-	    throw new IOException("cannot load null/empty audio stream");
 	return (byte[]) audioLoader.get(audio);
     }
 
@@ -567,9 +640,11 @@ public class WordEditor extends SearchableObjectEditor implements
 		log.debug("got " + objArray.length
 			+ " from section list to delete");
 		for (int i = 0; i < objArray.length; i++) {
-		    String sectionToRemove = (String) objArray[i];
-		    log.debug("section to remove is " + sectionToRemove);
-		    word.removesection(sectionToRemove);
+		    String sectionId = dit
+			    .readSectionDatabase((String) objArray[i]);
+		    // String sectionToRemove = (String) objArray[i];
+		    log.debug("section to remove is " + sectionId);
+		    word.removesection(sectionId);
 		    sectionListModel.removeElement(objArray[i]);
 		}
 
@@ -600,9 +675,11 @@ public class WordEditor extends SearchableObjectEditor implements
 		log.debug("got " + objArray.length
 			+ " from category list to delete");
 		for (int i = 0; i < objArray.length; i++) {
-		    String categoryToRemove = (String) objArray[i];
-		    log.debug("category to remove is " + categoryToRemove);
-		    word.removesection(categoryToRemove);
+		    String categoryId = dit
+			    .readCategoryDatabase((String) objArray[i]);
+		    // String categoryToRemove = (String) objArray[i];
+		    log.debug("category to remove is " + categoryId);
+		    word.removecategory(categoryId);
 		    categoryListModel.removeElement(objArray[i]);
 		}
 
@@ -621,10 +698,8 @@ public class WordEditor extends SearchableObjectEditor implements
 				+ config.getType()
 				+ " and id "
 				+ tmpConnectedWord.getid().toString());
-		word
-			.addlinkid(languageSelectorCombo.getSelectedItem()
-				+ config.getType(), tmpConnectedWord.getid()
-				.toString());
+		word.addlinkid(languageSelectorCombo.getSelectedItem()
+			+ config.getType(), tmpConnectedWord.getid());
 
 		// then add in the linkid JList the new connected word
 		log.debug("add element to the list "
@@ -638,7 +713,7 @@ public class WordEditor extends SearchableObjectEditor implements
 		// add the connect Words to the Map; the key is the
 		// language+type and the value
 		// is the connected word itself
-		log.debug("add element to the map "
+		log.debug("add element to the add map "
 			+ tmpConnectedWord.toString());
 		log.debug(" map size" + addMap.size());
 		addMap.put(tmpConnectedWord, language);
@@ -666,9 +741,43 @@ public class WordEditor extends SearchableObjectEditor implements
 		    log
 			    .debug("removing linkid of main object with searchable object having language "
 				    + language + " and id " + obj.getid());
-		    word.removelinkid(language, obj.getid().toString());
+		    word.removelinkid(language, obj.getid());
 		    log.debug("removing from list");
+
+		    log
+			    .debug("add element to the delete map "
+				    + obj.toString());
+		    deleteMap.put(obj, language);
+		    log.debug(" map size" + deleteMap.size());
 		    linkIdListModel.removeElement(objArray[i]);
+		}
+
+	    } else if (evt.getActionCommand().equals(LOAD_WORDS_COMMAND)) {
+		log.debug("loading audio");
+		if (loadAudio.isSelected()) {
+		    log.debug("enabling audio load");
+		    if ("".equals(singularText.getText())
+			    || singularText == null) {
+			JOptionPane
+				.showMessageDialog(null, "singular empty!! ");
+			loadAudio.setSelected(false);
+			return;
+		    }
+		    initializeAudioLoader();
+		    audio = (getAudio(singularText.getText()));
+		    if (audio == null) {
+			log.error("audio not found!");
+			JOptionPane.showMessageDialog(null,
+				"audio not found!! ");
+			loadAudio.setSelected(false);
+		    } else
+			log
+				.info("got audio of size " + audio.length
+					+ " bytes");
+
+		} else {
+		    log.debug("disabling audio load");
+		    audio = null;
 		}
 
 	    } else if (evt.getActionCommand().equals(SEARCH_BUTTON_COMMAND)) {
@@ -686,6 +795,10 @@ public class WordEditor extends SearchableObjectEditor implements
 		connectWordsButton.setEnabled(true);
 		searchResult.setText(tmpConnectedWord.getsingular());
 	    }
+	} catch (MalformedURLException e) {
+	    e.printStackTrace();
+	    log.error("Exception " + e.getMessage());
+	    JOptionPane.showMessageDialog(null, e.getMessage());
 	} catch (UnsupportedEncodingException e) {
 	    JOptionPane.showMessageDialog(null, e.getMessage());
 	    log.error("UnsupportedEncodingException " + e.getMessage());
@@ -743,6 +856,10 @@ public class WordEditor extends SearchableObjectEditor implements
 	    log.error("Exception " + e.getMessage());
 	    JOptionPane.showMessageDialog(null, e.getMessage());
 	} catch (InvocationTargetException e) {
+	    e.printStackTrace();
+	    log.error("Exception " + e.getMessage());
+	    JOptionPane.showMessageDialog(null, e.getMessage());
+	} catch (IOException e) {
 	    e.printStackTrace();
 	    log.error("Exception " + e.getMessage());
 	    JOptionPane.showMessageDialog(null, e.getMessage());

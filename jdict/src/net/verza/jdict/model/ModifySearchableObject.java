@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,7 +30,7 @@ import net.verza.jdict.exceptions.KeyNotFoundException;
 import net.verza.jdict.exceptions.LanguagesConfigurationException;
 import net.verza.jdict.exceptions.LinkIDException;
 import net.verza.jdict.gui.GUIPreferences;
-import net.verza.jdict.gui.LanguageSelection;
+import net.verza.jdict.properties.LanguagesConfiguration;
 
 import org.apache.log4j.Logger;
 
@@ -62,25 +63,25 @@ public class ModifySearchableObject extends JPanel implements ActionListener {
 	createAndShowGUI();
     }
 
-    private void buildLanguageMenu() throws LanguagesConfigurationException {
-
-	translations = LanguageSelection.buildLanguageMenu();
-
-	// add JComboBox to choose the languages of the lookup
-	c.gridx = 0;
-	c.gridy = 0;
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.gridwidth = 1;
-	JLabel srcLangJLabel = new JLabel("Select language to lookup");
-	srcLangJLabel.setBorder(BorderFactory.createLineBorder(
-		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	add(srcLangJLabel, c);
-	c.gridx = 1;
-	srcLangCombo = new JComboBox(translations.keySet().toArray());
-	srcLangCombo.addItem(NOT_SELECTED_STRING);
-	srcLangCombo.setSelectedIndex(srcLangCombo.getItemCount() - 1);
-	add(srcLangCombo, c);
-    }
+    // private void buildLanguageMenu() throws LanguagesConfigurationException {
+    //
+    // translations = LanguageSelection.buildLanguageMenu();
+    //
+    // // add JComboBox to choose the languages of the lookup
+    // c.gridx = 0;
+    // c.gridy = 0;
+    // c.fill = GridBagConstraints.HORIZONTAL;
+    // c.gridwidth = 1;
+    // JLabel srcLangJLabel = new JLabel("Select language to lookup");
+    // srcLangJLabel.setBorder(BorderFactory.createLineBorder(
+    // GUIPreferences.borderColor, GUIPreferences.borderThickness));
+    // add(srcLangJLabel, c);
+    // c.gridx = 1;
+    // srcLangCombo = new JComboBox(translations.keySet().toArray());
+    // srcLangCombo.addItem(NOT_SELECTED_STRING);
+    // srcLangCombo.setSelectedIndex(srcLangCombo.getItemCount() - 1);
+    // add(srcLangCombo, c);
+    // }
 
     private void initComponents() {
 
@@ -96,13 +97,20 @@ public class ModifySearchableObject extends JPanel implements ActionListener {
 	c.weighty = 0;
 	c.fill = GridBagConstraints.HORIZONTAL;
 
-	try {
-	    buildLanguageMenu();
-	} catch (LanguagesConfigurationException e) {
-	    JOptionPane.showMessageDialog(frame, e.getMessage());
-	    log.error("LanguagesConfigurationException " + e.getMessage());
-	    e.printStackTrace();
-	}
+	c.gridx = 1;
+	Set<String> translations = LanguagesConfiguration.getEnabledLanguages();
+	srcLangCombo = new JComboBox(translations.toArray());
+	srcLangCombo.addItem(NOT_SELECTED_STRING);
+	srcLangCombo.setSelectedIndex(srcLangCombo.getItemCount() - 1);
+	add(srcLangCombo, c);
+
+	// try {
+	// buildLanguageMenu();
+	// } catch (LanguagesConfigurationException e) {
+	// JOptionPane.showMessageDialog(frame, e.getMessage());
+	// log.error("LanguagesConfigurationException " + e.getMessage());
+	// e.printStackTrace();
+	// }
 
 	// add JLabel and JTextfield for the user input
 	c.gridx = 0;
@@ -139,6 +147,7 @@ public class ModifySearchableObject extends JPanel implements ActionListener {
 	frame.setResizable(true);
 	frame.setLocationRelativeTo(null);
 	frame.pack();
+	frame.validate();
 	frame.setVisible(true);
     }
 

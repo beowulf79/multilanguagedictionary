@@ -218,7 +218,7 @@ public class SleepyLinkidResolver {
 
 		    this.reader.setDatabase(factory.getDatabase(lang));
 		    this.reader.setKey(ids[i].toString());
-		    this.reader.setDataBinding(SleepyBinding.getDataBinding());
+		    // this.reader.setDataBinding(SleepyBinding.getDataBinding());
 		    this.reader.read();
 		    int size = this.reader.getData().size();
 
