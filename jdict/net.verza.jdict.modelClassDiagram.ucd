@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="net.verza.jdict.modelClassDiagram" foregroundRGB="255,255,255" id="{UMLID=_9O10AD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model}" metadata="uml2-1.0" initialized="true" tag="10" key="3230303730363239206A64696374">
+  <children xsi:type="editmodel:ClassEditModel" name="UserProfile" location="593,376" size="91,27" timstampe="266" stereotype="" id="{UMLID=_-4bA8D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile}" shortShow="true" runTimeClassModel="addQuizStat(Lnet.verza.jdict.quiz.QuizResult;),getEmail(),pictureFile,checkPassword(Ljava.lang.String;),stats,CSV_COMMENT,password,toString(),flushStatistics(),getName(),getPicture(),export2csv(),setPassword(Ljava.lang.String;),addQuizStat(Ljava.io.File;),setIsAdmin(Z),SEPARATOR_CHAR,name,serialVersionUID,UserProfile(),getPassword(),getQuizStat(I),setName(Ljava.lang.String;),setEmail(Ljava.lang.String;),CSV_FIELD_SIZE,log,getIsAdmin(),picture,getQuizStat(),email,UserProfile(Ljava.lang.String;Ljava.lang.String;),isAdmin,setPicture(Ljava.io.File;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,198">
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_--z80D5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="SEPARATOR_CHAR" size="102,16" id="{UMLID=_--nIgD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CSV_FIELD_SIZE" size="92,16" id="{UMLID=_--rZ8D5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CSV_COMMENT" size="90,16" id="{UMLID=_--i3ED5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" size="48,16" id="{UMLID=_--eloj5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="password" size="62,16" id="{UMLID=_--8fsT5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pictureFile" size="65,16" id="{UMLID=_--RxUT5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="picture" size="52,16" id="{UMLID=_-9BNED5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="email" size="47,16" id="{UMLID=_--WCwT5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="isAdmin" size="57,16" id="{UMLID=_--vrYD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stats" size="51,21" id="{UMLID=_--aUMD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_--4OQD5cEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="90,378">
+      <children xsi:type="editmodel:MethodEditModel" name="UserProfile" size="75,16" id="{UMLID=__CLZ4D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#UserProfile()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="UserProfile" size="75,16" id="{UMLID=__ANrAD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#UserProfile(Ljava.lang.String;Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" size="67,16" id="{UMLID=__BNwkD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#getName()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" size="67,16" id="{UMLID=__AG9UD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#setName(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPassword" size="80,16" id="{UMLID=_-_AxID5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#getPassword()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPassword" size="80,16" id="{UMLID=__BmLED5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#setPassword(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPicture" size="70,16" id="{UMLID=__BgEcD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#getPicture()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPicture" size="70,16" id="{UMLID=__AYDED5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#setPicture(Ljava.io.File;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEmail" size="66,16" id="{UMLID=__AszMD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#getEmail()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setEmail" size="66,16" id="{UMLID=__CT8wD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#setEmail(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getIsAdmin" size="74,16" id="{UMLID=__BZ90D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#getIsAdmin()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setIsAdmin" size="74,16" id="{UMLID=__B67MD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#setIsAdmin(Z)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getQuizStat" size="75,16" id="{UMLID=__BHC4D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#getQuizStat()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getQuizStat" size="75,16" id="{UMLID=__CBB0D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#getQuizStat(I)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addQuizStat" size="77,16" id="{UMLID=__Ah0ED5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#addQuizStat(Lnet.verza.jdict.quiz.QuizResult;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addQuizStat" size="77,16" id="{UMLID=__A9R4D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#addQuizStat(Ljava.io.File;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="flushStatistics" size="83,16" id="{UMLID=__BEmoD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#flushStatistics()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="checkPassword" size="90,16" id="{UMLID=__Ay50D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#checkPassword(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" size="62,16" id="{UMLID=__BT3MD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#toString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="export2csv" size="73,16" id="{UMLID=__CNPED5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/UserProfile#export2csv()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ModifySearchableObject" location="50,376" size="159,27" timstampe="376" stereotype="" id="{UMLID=_ArT64D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject}" shortShow="true" runTimeClassModel="getInstance(),c,srcLangCombo,jtxf1,log,ModifySearchableObject(),frame,actionPerformed(Ljava.awt.event.ActionEvent;),destroyInstance(),buildLanguageMenu(),dit,translations,NOT_SELECTED_STRING,serialVersionUID,net.verza.jdict.model.ModifySearchableObject.MainFrameCloser,createAndShowGUI(),instance,initComponents()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="125,126">
+      <children xsi:type="editmodel:AttributeEditModel" name="NOT_SELECTED_STRING" size="125,16" id="{UMLID=_AsoJgT5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_Assa8D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_As4oMD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="instance" size="63,21" id="{UMLID=_As0WwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dit" size="43,21" id="{UMLID=_AsRkMD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="c" size="33,16" id="{UMLID=_AsNSwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="frame" size="49,16" id="{UMLID=_AsIaQD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="jtxf1" size="43,16" id="{UMLID=_AswFUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="srcLangCombo" size="81,16" id="{UMLID=_Ashb0D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="translations" size="74,21" id="{UMLID=_AsbVMj5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="119,131">
+      <children xsi:type="editmodel:MethodEditModel" name="ModifySearchableObject" size="119,16" id="{UMLID=_AtDAQD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject#ModifySearchableObject()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="buildLanguageMenu" size="103,16" id="{UMLID=_AtFcgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject#buildLanguageMenu()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="initComponents" size="89,16" id="{UMLID=_AtNYUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject#initComponents()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="createAndShowGUI" size="103,16" id="{UMLID=_AtdP8D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject#createAndShowGUI()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="destroyInstance" size="89,16" id="{UMLID=_AtPNgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject#destroyInstance()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getInstance" size="80,21" id="{UMLID=_As85oD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject#getInstance()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="actionPerformed" size="92,16" id="{UMLID=_AtRpwD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject#actionPerformed(Ljava.awt.event.ActionEvent;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="123,29">
+      <children xsi:type="editmodel:ClassEditModel" name="MainFrameCloser" size="123,27" timstampe="376" stereotype="" id="{UMLID=_AtfsMD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject$MainFrameCloser}" shortShow="true" runTimeClassModel="frame,windowClosed(Ljava.awt.event.WindowEvent;),MainFrameCloser(Lnet.verza.jdict.model.ModifySearchableObject;)">
+        <children xsi:type="editmodel:CompartmentEditModel">
+          <children xsi:type="editmodel:AttributeEditModel" name="frame" size="55,21" id="{UMLID=_BSDx0D5dEd-Hlc8yp_w5vQ}"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="99,36">
+          <children xsi:type="editmodel:MethodEditModel" name="MainFrameCloser" size="99,16" id="{UMLID=_BSIDQD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject$MainFrameCloser#MainFrameCloser(Lnet.verza.jdict.model.ModifySearchableObject;)}"/>
+          <children xsi:type="editmodel:MethodEditModel" name="windowClosed" size="86,16" id="{UMLID=_BSOw8D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ModifySearchableObject$MainFrameCloser#windowClosed(Ljava.awt.event.WindowEvent;)}"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+      </children>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="EditorController" location="429,376" size="114,27" timstampe="3119" stereotype="" id="{UMLID=_AuET8D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController}" shortShow="true" runTimeClassModel="EDITOR_POSITION,panel,searchableObjectEditor,next,transactionMap,EditorController(),NEXT_BUTTON_STRING,dit,serialVersionUID,createAndShowGUI(),setData(Ljava.lang.String;),CONFIRM_MODIFY_NEW,COMBO_LANGUAGE_CHANGE,getInstance(),c,net.verza.jdict.model.EditorController.MainFrameCloser,singleton,FINISH_BUTTON_STRING,loadNextSearchableObject(),log,finish,frame,actionPerformed(Ljava.awt.event.ActionEvent;),destroyInstance(),setData(Ljava.lang.String;Ljava.lang.Integer;),NOT_SELECTED_STRING,BUTTONS_Y_POSITION,initComponents()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="144,270">
+      <children xsi:type="editmodel:AttributeEditModel" name="NOT_SELECTED_STRING" size="125,16" id="{UMLID=_BXRpAD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="COMBO_LANGUAGE_CHANGE" size="144,16" id="{UMLID=_BWY4MD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="NEXT_BUTTON_STRING" size="121,16" id="{UMLID=_BXDmkD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="FINISH_BUTTON_STRING" size="126,16" id="{UMLID=_BWoIwT5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CONFIRM_MODIFY_NEW" size="124,16" id="{UMLID=_BXcoID5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="EDITOR_POSITION" size="99,16" id="{UMLID=_BWUmwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="BUTTONS_Y_POSITION" size="116,16" id="{UMLID=_BXg5kD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_BXVTYD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_BW09ED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="searchableObjectEditor" size="113,21" id="{UMLID=_BWhbED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dit" size="43,21" id="{UMLID=_BXMwgD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="singleton" size="65,21" id="{UMLID=_BWsaMD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="frame" size="49,16" id="{UMLID=_BXIfED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="panel" size="46,16" id="{UMLID=_BWPuQD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="c" size="33,16" id="{UMLID=_BWdJoD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="next" size="43,16" id="{UMLID=_BWwroD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="finish" size="47,16" id="{UMLID=_BW_VID5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="transactionMap" size="81,16" id="{UMLID=_BW4ncD5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="126,162">
+      <children xsi:type="editmodel:MethodEditModel" name="EditorController" size="90,16" id="{UMLID=_BXrRoD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#EditorController()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setData" size="62,16" id="{UMLID=_BYRukD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#setData(Ljava.lang.String;Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setData" size="62,16" id="{UMLID=_BX5UED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#setData(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="initComponents" size="89,16" id="{UMLID=_BXtt4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#initComponents()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="createAndShowGUI" size="103,16" id="{UMLID=_BYOrQD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#createAndShowGUI()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getInstance" size="74,16" id="{UMLID=_BXlLAD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#getInstance()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="destroyInstance" size="89,16" id="{UMLID=_BYcGoD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#destroyInstance()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="loadNextSearchableObject" size="126,16" id="{UMLID=_BX_asD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#loadNextSearchableObject()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="actionPerformed" size="92,16" id="{UMLID=_BXvjED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController#actionPerformed(Ljava.awt.event.ActionEvent;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="123,29">
+      <children xsi:type="editmodel:ClassEditModel" name="MainFrameCloser" size="123,27" timstampe="3119" stereotype="" id="{UMLID=_BYei4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController$MainFrameCloser}" shortShow="true" runTimeClassModel="MainFrameCloser(Lnet.verza.jdict.model.EditorController;),frame,windowClosed(Ljava.awt.event.WindowEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel">
+          <children xsi:type="editmodel:AttributeEditModel" name="frame" size="55,21" id="{UMLID=_CDM64D5dEd-Hlc8yp_w5vQ}"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="99,36">
+          <children xsi:type="editmodel:MethodEditModel" name="MainFrameCloser" size="99,16" id="{UMLID=_CDRMUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController$MainFrameCloser#MainFrameCloser(Lnet.verza.jdict.model.EditorController;)}"/>
+          <children xsi:type="editmodel:MethodEditModel" name="windowClosed" size="86,16" id="{UMLID=_CDX6AD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/EditorController$MainFrameCloser#windowClosed(Ljava.awt.event.WindowEvent;)}"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+      </children>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="CreatorController" location="259,376" size="120,27" timstampe="5904" stereotype="" id="{UMLID=_C_YPQD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController}" shortShow="true" runTimeClassModel="panel,EDITOR_POSITION,next,transactionMap,NEXT_BUTTON_STRING,searchableObjectCreator,serialVersionUID,createAndShowGUI(),CreatorController(),CONFIRM_MODIFY_NEW,COMBO_LANGUAGE_CHANGE,y_position,getInstance(),c,singleton,FINISH_BUTTON_STRING,log,languageSelector,finish,frame,actionPerformed(Ljava.awt.event.ActionEvent;),destroyInstance(),NOT_SELECTED_STRING,language,net.verza.jdict.model.CreatorController.MainFrameCloser,BUTTONS_Y_POSITION,initComponents()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="144,324">
+      <children xsi:type="editmodel:AttributeEditModel" name="NOT_SELECTED_STRING" size="125,16" id="{UMLID=_DBRssD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="COMBO_LANGUAGE_CHANGE" size="144,16" id="{UMLID=_DAb_MD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="NEXT_BUTTON_STRING" size="121,16" id="{UMLID=_DBE4YD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="FINISH_BUTTON_STRING" size="126,16" id="{UMLID=_DAkiED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CONFIRM_MODIFY_NEW" size="124,16" id="{UMLID=_DBehAD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="EDITOR_POSITION" size="99,16" id="{UMLID=_DAOj0D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="BUTTONS_Y_POSITION" size="116,16" id="{UMLID=_DBiycD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_DBV-ID5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_DAxWYD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="singleton" size="65,21" id="{UMLID=_DAozgD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="frame" size="49,16" id="{UMLID=_DBJJ0D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="panel" size="46,16" id="{UMLID=_DATcUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="searchableObjectCreator" size="119,21" id="{UMLID=_DBNbQD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="languageSelector" size="86,16" id="{UMLID=_DA1n0D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="c" size="33,16" id="{UMLID=_DAgQoD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="next" size="43,16" id="{UMLID=_DAtE8D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="finish" size="47,16" id="{UMLID=_DA__4D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="y_position" size="63,16" id="{UMLID=_DAXtwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="transactionMap" size="81,16" id="{UMLID=_DA55QD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="language" size="59,16" id="{UMLID=_DBaPkD5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="103,108">
+      <children xsi:type="editmodel:MethodEditModel" name="CreatorController" size="96,16" id="{UMLID=_DBnD4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController#CreatorController()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="initComponents" size="89,16" id="{UMLID=_DBpgID5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController#initComponents()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="createAndShowGUI" size="103,16" id="{UMLID=_DB27gD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController#createAndShowGUI()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getInstance" size="74,16" id="{UMLID=_DB5XwD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController#getInstance()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="destroyInstance" size="89,16" id="{UMLID=_DBrVUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController#destroyInstance()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="actionPerformed" size="92,16" id="{UMLID=_DBtxkD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController#actionPerformed(Ljava.awt.event.ActionEvent;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="123,29">
+      <children xsi:type="editmodel:ClassEditModel" name="MainFrameCloser" size="123,27" timstampe="5904" stereotype="" id="{UMLID=_DCAFcD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController$MainFrameCloser}" shortShow="true" runTimeClassModel="frame,MainFrameCloser(Lnet.verza.jdict.model.CreatorController;),windowClosed(Ljava.awt.event.WindowEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel">
+          <children xsi:type="editmodel:AttributeEditModel" name="frame" size="55,21" id="{UMLID=_Dpuz0D5dEd-Hlc8yp_w5vQ}"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="99,36">
+          <children xsi:type="editmodel:MethodEditModel" name="MainFrameCloser" size="99,16" id="{UMLID=_DpzsUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController$MainFrameCloser#MainFrameCloser(Lnet.verza.jdict.model.CreatorController;)}"/>
+          <children xsi:type="editmodel:MethodEditModel" name="windowClosed" size="86,16" id="{UMLID=_Dp6aAD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/CreatorController$MainFrameCloser#windowClosed(Ljava.awt.event.WindowEvent;)}"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+      </children>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="WordEditor" location="411,127" size="92,27" timstampe="3877" stereotype="" id="{UMLID=_Ds3nYD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor}" shortShow="true" runTimeClassModel="panel,connectWordsButton,tmpConnectedWord,mainObjectLanguage,linkIdListModel,languageSelectorCombo,CONNECT_WORDS_COMMAND,SECTION_COMBO_COMMAND,CATEGORY_COMBO_COMMAND,SEARCH_BUTTON_COMMAND,getAudio(Ljava.lang.String;),searchResult,getSearchableObject(),buildLinkIdList(),dit,write(),sectionCombo,config,singularText,serialVersionUID,linkIdList,connectedWords(),buildCategoryList(),sectionListModel,buildSectionList(),REMOVE_CATEGORY_BUTTON,sectionList,loadAudio,LINKID_SEPARATOR,c,categoryListModel,notesArea,REMOVE_WORDS_COMMAND,log,audioLoader,categoryCombo,WordEditor(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;),initializeAudioLoader(),actionPerformed(Ljava.awt.event.ActionEvent;),categoryList,searchText,NOT_SELECTED_STRING,deleteMap,word,addMap,WordEditor(Ljava.lang.String;),initComponents(),REMOVE_SECTION_BUTTON">
+    <children xsi:type="editmodel:CompartmentEditModel" size="152,558">
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_EBhBsD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="NOT_SELECTED_STRING" size="125,16" id="{UMLID=_ECpqID5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="SECTION_COMBO_COMMAND" size="144,16" id="{UMLID=_EBHZED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="REMOVE_SECTION_BUTTON" size="138,16" id="{UMLID=_EDCrsD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="REMOVE_CATEGORY_BUTTON" size="146,16" id="{UMLID=_EBw5UD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CATEGORY_COMBO_COMMAND" size="152,16" id="{UMLID=_EBDHoD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="SEARCH_BUTTON_COMMAND" size="145,16" id="{UMLID=_EA-2MD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CONNECT_WORDS_COMMAND" size="150,16" id="{UMLID=_EA6kwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="REMOVE_WORDS_COMMAND" size="144,16" id="{UMLID=_ECSdwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="LINKID_SEPARATOR" size="104,16" id="{UMLID=_EB9toD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_ECOMUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="config" size="55,21" id="{UMLID=_EBYe0D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="word" size="52,21" id="{UMLID=_ECyNAD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tmpConnectedWord" size="103,21" id="{UMLID=_EAnCwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="addMap" size="56,16" id="{UMLID=_EC8lED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="deleteMap" size="64,16" id="{UMLID=_EC2ecD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dit" size="43,21" id="{UMLID=_EBP78D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mainObjectLanguage" size="100,16" id="{UMLID=_EA2TUT5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="audioLoader" size="75,21" id="{UMLID=_ECWvMD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="panel" size="46,16" id="{UMLID=_EAdRwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="c" size="33,16" id="{UMLID=_ECB_ED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="connectWordsButton" size="99,16" id="{UMLID=_EAixUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="singularText" size="70,16" id="{UMLID=_EBdXUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="searchText" size="66,16" id="{UMLID=_ECt7kD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="searchResult" size="74,16" id="{UMLID=_EBLqgD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="notesArea" size="63,16" id="{UMLID=_ECJ64D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sectionList" size="65,16" id="{UMLID=_EB1KwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="categoryList" size="70,16" id="{UMLID=_EClYsD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linkIdList" size="59,16" id="{UMLID=_EBlTID5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sectionListModel" size="85,16" id="{UMLID=_EBsn4T5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="categoryListModel" size="90,16" id="{UMLID=_ECGQgD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linkIdListModel" size="79,16" id="{UMLID=_EAvloD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sectionCombo" size="78,16" id="{UMLID=_EBUNYD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="categoryCombo" size="83,16" id="{UMLID=_EChHQj5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="languageSelectorCombo" size="112,16" id="{UMLID=_EArUMD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="loadAudio" size="62,16" id="{UMLID=_EB5cMD5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="106,216">
+      <children xsi:type="editmodel:MethodEditModel" name="WordEditor" size="75,16" id="{UMLID=_EED_YD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#WordEditor(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="WordEditor" size="75,16" id="{UMLID=_EE0NUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#WordEditor(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="initComponents" size="89,16" id="{UMLID=_EDHkMD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#initComponents()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="buildSectionList" size="89,16" id="{UMLID=_EEA8ED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#buildSectionList()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="buildCategoryList" size="95,16" id="{UMLID=_EEjHkD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#buildCategoryList()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="buildLinkIdList" size="84,16" id="{UMLID=_ED5AQD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#buildLinkIdList()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSearchableObject" size="106,16" id="{UMLID=_EEcZ4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#getSearchableObject()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="write" size="53,16" id="{UMLID=_EERawD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#write()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="connectedWords" size="93,16" id="{UMLID=_EElj0D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#connectedWords()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="initializeAudioLoader" size="106,16" id="{UMLID=_EENJUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#initializeAudioLoader()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAudio" size="65,16" id="{UMLID=_EFBosD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#getAudio(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="actionPerformed" size="92,16" id="{UMLID=_EEqcUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/WordEditor#actionPerformed(Ljava.awt.event.ActionEvent;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.6/@sourceConnections.0" size="2,1" autoLocated="true" id="{UMLID=_D-os0D5dEd-Hlc8yp_w5vQ}" source="//@children.4" target="//@children.5" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="46,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="77,27" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.0" name="SearchableObjectEditor" location="446,50" size="155,27" timstampe="452" stereotype="" id="{UMLID=_BWlsgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObjectEditor}" shortShow="true" runTimeClassModel="getSearchableObject(),write(),initComponents()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="106,54">
+      <children xsi:type="editmodel:MethodEditModel" name="initComponents" size="89,16" id="{UMLID=_DtaZ8D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObjectEditor#initComponents()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="write" size="53,16" id="{UMLID=_DtCmgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObjectEditor#write()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSearchableObject" size="106,16" id="{UMLID=_Dtjj4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObjectEditor#getSearchableObject()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ArabWordEditor" location="533,127" size="114,27" timstampe="888" stereotype="" id="{UMLID=_Ds6DoD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor}" shortShow="true" runTimeClassModel="panel,pluralText,connectWordsButton,tmpConnectedWord,mainObjectLanguage,linkIdListModel,languageSelectorCombo,CONNECT_WORDS_COMMAND,SECTION_COMBO_COMMAND,CATEGORY_COMBO_COMMAND,SEARCH_BUTTON_COMMAND,getAudio(Ljava.lang.String;),ArabWordEditor(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;),searchResult,getSearchableObject(),buildLinkIdList(),idText,dit,write(),sectionCombo,config,singularText,serialVersionUID,linkIdList,connectedWords(),sectionListModel,REMOVE_CATEGORY_BUTTON,sectionList,loadAudio,LINKID_SEPARATOR,c,categoryListModel,notesArea,REMOVE_WORDS_COMMAND,log,arabword,audioLoader,categoryCombo,initializeAudioLoader(),actionPerformed(Ljava.awt.event.ActionEvent;),categoryList,ArabWordEditor(Ljava.lang.String;),NOT_SELECTED_STRING,searchText,deleteMap,addMap,initComponents(),REMOVE_SECTION_BUTTON">
+    <children xsi:type="editmodel:CompartmentEditModel" size="152,594">
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_E-gOYD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="NOT_SELECTED_STRING" size="125,16" id="{UMLID=_E_pd4D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="SECTION_COMBO_COMMAND" size="144,16" id="{UMLID=_E-CUUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="REMOVE_SECTION_BUTTON" size="138,16" id="{UMLID=_E_58kD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="REMOVE_CATEGORY_BUTTON" size="146,16" id="{UMLID=_E-tCsD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CATEGORY_COMBO_COMMAND" size="152,16" id="{UMLID=_E9-p8D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="SEARCH_BUTTON_COMMAND" size="145,16" id="{UMLID=_E95xcD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="CONNECT_WORDS_COMMAND" size="150,16" id="{UMLID=_E91gAD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="REMOVE_WORDS_COMMAND" size="144,16" id="{UMLID=_E_POMD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="LINKID_SEPARATOR" size="104,16" id="{UMLID=_E-53AD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_E_K8wD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="config" size="55,21" id="{UMLID=_E-XrgD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="arabword" size="67,21" id="{UMLID=_E_TfoD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tmpConnectedWord" size="103,21" id="{UMLID=_E9lBUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="addMap" size="56,16" id="{UMLID=_E_z18D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="deleteMap" size="64,16" id="{UMLID=_E_tvUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dit" size="43,21" id="{UMLID=_E-PIoD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mainObjectLanguage" size="100,16" id="{UMLID=_E9xOkD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="audioLoader" size="75,21" id="{UMLID=_E_XxED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="panel" size="46,16" id="{UMLID=_E9Xl8D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="c" size="33,16" id="{UMLID=_E--IcD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="connectWordsButton" size="99,16" id="{UMLID=_E9gI0D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="singularText" size="70,16" id="{UMLID=_E-ckAD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pluralText" size="62,16" id="{UMLID=_E9b3YD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="idText" size="49,16" id="{UMLID=_E-K3MD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="searchText" size="66,16" id="{UMLID=_E_lMcD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="searchResult" size="74,16" id="{UMLID=_E-GlwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="notesArea" size="63,16" id="{UMLID=_E_GrUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sectionList" size="65,16" id="{UMLID=_E-xUID5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="categoryList" size="70,16" id="{UMLID=_E_g7AD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linkIdList" size="59,16" id="{UMLID=_E-kf0D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sectionListModel" size="85,16" id="{UMLID=_E-pYUD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="categoryListModel" size="90,16" id="{UMLID=_E_CZ4D5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linkIdListModel" size="79,16" id="{UMLID=_E9tkMD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sectionCombo" size="78,16" id="{UMLID=_E-TaED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="categoryCombo" size="83,16" id="{UMLID=_E_cpkD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="languageSelectorCombo" size="112,16" id="{UMLID=_E9pSwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="loadAudio" size="62,16" id="{UMLID=_E-1lkD5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="106,180">
+      <children xsi:type="editmodel:MethodEditModel" name="ArabWordEditor" size="90,16" id="{UMLID=_FAw4MD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#ArabWordEditor(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ArabWordEditor" size="90,16" id="{UMLID=_FBR1kD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#ArabWordEditor(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="initComponents" size="89,16" id="{UMLID=_FArYoD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#initComponents()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="buildLinkIdList" size="84,16" id="{UMLID=_FAiOsD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#buildLinkIdList()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSearchableObject" size="106,16" id="{UMLID=_FBep4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#getSearchableObject()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="write" size="53,16" id="{UMLID=_E_-1ED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#write()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="connectedWords" size="93,16" id="{UMLID=_FAt04D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#connectedWords()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="initializeAudioLoader" size="106,16" id="{UMLID=_FBw9wD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#initializeAudioLoader()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAudio" size="65,16" id="{UMLID=_FBkwgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#getAudio(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="actionPerformed" size="92,16" id="{UMLID=_FBHdgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWordEditor#actionPerformed(Ljava.awt.event.ActionEvent;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" size="2,1" autoLocated="true" id="{UMLID=_E71U4D5dEd-Hlc8yp_w5vQ}" source="//@children.6" target="//@children.4/@sourceConnections.0" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="57,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="39,27"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.11/@sourceConnections.1" name="IVerb" location="297,136" size="64,36" timstampe="42" id="{UMLID=_COQUUD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb}" shortShow="true" runTimeClassModel="getsection(),getinfinitive(),setnotes(Ljava.lang.String;),setlinkid(Ljava.lang.String;Ljava.lang.String;),getlinkid(),getaudio(),setinfinitive(Ljava.lang.String;),getid(),setid(Ljava.lang.Integer;),setaudio([B),getnotes(),getlinkid(Ljava.lang.String;),setsection(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="74,234">
+      <children xsi:type="editmodel:MethodEditModel" name="getid" size="52,16" id="{UMLID=_C6H70D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#getid()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setid" size="52,16" id="{UMLID=_C5jUED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#setid(Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getinfinitive" size="74,16" id="{UMLID=_C6OCcD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#getinfinitive()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setinfinitive" size="74,16" id="{UMLID=_C6BOID5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#setinfinitive(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getlinkid" size="64,16" id="{UMLID=_C5qBwD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#getlinkid(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getlinkid" size="64,16" id="{UMLID=_C50Z0T5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#getlinkid()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setlinkid" size="64,16" id="{UMLID=_C4ztMD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#setlinkid(Ljava.lang.String;Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getnotes" size="64,16" id="{UMLID=_C5PyED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#getnotes()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setnotes" size="64,16" id="{UMLID=_C5cmYD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#setnotes(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getaudio" size="64,16" id="{UMLID=_C5CWsD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#getaudio()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setaudio" size="64,16" id="{UMLID=_C5V4sD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#setaudio([B)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getsection" size="70,16" id="{UMLID=_C5JEYD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#getsection()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setsection" size="70,16" id="{UMLID=_C56gcD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IVerb#setsection(Ljava.lang.String;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.10/@sourceConnections.0" name="Word" location="113,222" size="64,27" timstampe="269" stereotype="" id="{UMLID=__cYCkD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word}" shortShow="true" runTimeClassModel="Word(),getTable(),paintComponent(Ljava.awt.Graphics;),toGraphich(),setsingular(Ljava.lang.String;),removecategory(Ljava.lang.String;),singular,log,getcategory(),addcategory(Ljava.lang.String;),toString(),category,setcategory(Ljava.lang.String;),serialVersionUID,getsingular()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="87,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=__dO-MD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=__dXhED5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="singular" size="55,16" id="{UMLID=__dTPoD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="category" size="58,16" id="{UMLID=__dIQgD5cEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="91,198">
+      <children xsi:type="editmodel:MethodEditModel" name="Word" size="55,16" id="{UMLID=__edtQD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#Word()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getsingular" size="73,16" id="{UMLID=__eGg4D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#getsingular()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setsingular" size="73,16" id="{UMLID=__dbLcD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#setsingular(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getcategory" size="75,16" id="{UMLID=__eAaQD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#getcategory()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setcategory" size="75,16" id="{UMLID=__d6ToD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#setcategory(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addcategory" size="77,16" id="{UMLID=__eMngD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#addcategory(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removecategory" size="91,16" id="{UMLID=__dh5ID5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#removecategory(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" size="62,16" id="{UMLID=__dzl8D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#toString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="paintComponent" size="91,16" id="{UMLID=__dn_wD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#paintComponent(Ljava.awt.Graphics;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toGraphich" size="73,16" id="{UMLID=__eTVMD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#toGraphich()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTable" size="64,16" id="{UMLID=__eVKYD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Word#getTable()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.11/@sourceConnections.0" size="2,1" autoLocated="true" id="{UMLID=__cpIUD5cEd-Hlc8yp_w5vQ}" source="//@children.8" target="//@children.9" targetEnd="//@children.8/@sourceConnections.0/@children.1" sourceEnd="//@children.8/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="32,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,27" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:InterfaceRealizationEditModel" size="2,1" autoLocated="true" id="{UMLID=__czgYD5cEd-Hlc8yp_w5vQ}" source="//@children.8" target="//@children.14" targetEnd="//@children.8/@sourceConnections.1/@children.1" sourceEnd="//@children.8/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,10" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="57,36"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.8/@sourceConnections.0" name="DictionaryObject" location="147,136" size="120,27" timstampe="3748" stereotype="" id="{UMLID=__ccUAD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject}" shortShow="true" runTimeClassModel="getsection(),setnotes(Ljava.lang.String;),linkIdToString(),toGraphich(),setlinkid(Ljava.lang.String;Ljava.lang.String;),getlinkid(),getaudio(),removesection(Ljava.lang.String;),getid(),toString(),id,getaudiobyte(),addlinkid(Ljava.lang.String;Ljava.lang.Integer;),serialVersionUID,addsection(Ljava.lang.String;),getlinkid(Ljava.lang.String;),setsection(Ljava.lang.String;),jFrame,getTable(),audio,c,log,section,setid(Ljava.lang.Integer;),linkId,DictionaryObject(),jpnl,setaudio([B),notes,getnotes(),equals(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;),removelinkid(Ljava.lang.String;Ljava.lang.Integer;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="87,162">
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=__4joQD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" size="35,16" id="{UMLID=__4IKcD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linkId" size="53,21" id="{UMLID=__4NC8D5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=__4syMD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="notes" size="47,16" id="{UMLID=__4n5sD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="section" size="53,16" id="{UMLID=__40uAD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="audio" size="47,16" id="{UMLID=__4TJkD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="jFrame" size="54,16" id="{UMLID=__4xDoD5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="jpnl" size="40,16" id="{UMLID=__4f94D5cEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="c" size="33,16" id="{UMLID=__4bscD5cEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="93,396">
+      <children xsi:type="editmodel:MethodEditModel" name="DictionaryObject" size="93,16" id="{UMLID=__7SMID5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#DictionaryObject()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getid" size="52,16" id="{UMLID=__7UoYD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getid()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setid" size="52,16" id="{UMLID=__6808D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#setid(Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getlinkid" size="64,16" id="{UMLID=__5bK8D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getlinkid(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getlinkid" size="64,16" id="{UMLID=__6ZbUD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getlinkid()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setlinkid" size="64,16" id="{UMLID=__6C2AD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#setlinkid(Ljava.lang.String;Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addlinkid" size="66,16" id="{UMLID=__5rpoD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#addlinkid(Ljava.lang.String;Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removelinkid" size="80,16" id="{UMLID=__6mPoD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#removelinkid(Ljava.lang.String;Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getnotes" size="64,16" id="{UMLID=__5ljAD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getnotes()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setnotes" size="64,16" id="{UMLID=__5UdQD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#setnotes(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getaudio" size="64,16" id="{UMLID=__58vYD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getaudio()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getaudiobyte" size="78,16" id="{UMLID=__7F-4D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getaudiobyte()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setaudio" size="64,16" id="{UMLID=__52BsD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#setaudio([B)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getsection" size="70,16" id="{UMLID=__6wAoD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getsection()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setsection" size="70,16" id="{UMLID=__7MFgT5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#setsection(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addsection" size="72,16" id="{UMLID=__5OWoD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#addsection(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removesection" size="86,16" id="{UMLID=__6TUsD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#removesection(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTable" size="64,16" id="{UMLID=__62uUD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#getTable()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toGraphich" size="73,16" id="{UMLID=__47bsD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#toGraphich()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" size="58,16" id="{UMLID=__49Q4D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#equals(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" size="62,16" id="{UMLID=__6NOED5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#toString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="linkIdToString" size="82,16" id="{UMLID=__6gJAD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/DictionaryObject#linkIdToString()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:InterfaceRealizationEditModel" size="2,1" autoLocated="true" id="{UMLID=__3gfYT5cEd-Hlc8yp_w5vQ}" source="//@children.9" target="//@children.13" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="59,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="63,36"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ArabWord" location="102,299" size="86,27" timstampe="85" stereotype="" id="{UMLID=__cewQT5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWord}" shortShow="true" runTimeClassModel="getTable(),setplural(Ljava.lang.String;),toGraphich(),ArabWord(),serialVersionUID,plural,log,getplural(),toString()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="87,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="plural" size="47,16" id="{UMLID=_Aa9KsD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_AbA1ED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_Aa4SMD5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="73,108">
+      <children xsi:type="editmodel:MethodEditModel" name="ArabWord" size="70,16" id="{UMLID=_AbFGgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWord#ArabWord()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setplural" size="65,16" id="{UMLID=_AbNpYD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWord#setplural(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getplural" size="65,16" id="{UMLID=_AbTwAD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWord#getplural()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" size="62,16" id="{UMLID=_AbcS4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWord#toString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toGraphich" size="73,16" id="{UMLID=_AbZ2oD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWord#toGraphich()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTable" size="64,16" id="{UMLID=_AbHiwD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabWord#getTable()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" size="2,1" autoLocated="true" id="{UMLID=_AaposD5dEd-Hlc8yp_w5vQ}" source="//@children.10" target="//@children.8" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="43,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="32,27"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.12/@sourceConnections.0" name="Verb" location="237,222" size="61,27" timstampe="93" stereotype="" id="{UMLID=_COC48D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Verb}" shortShow="true" runTimeClassModel="getinfinitive(),getTable(),toGraphich(),infinitive,serialVersionUID,setinfinitive(Ljava.lang.String;),log,Verb(),toString()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="87,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_COj2UD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_COoHwD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="infinitive" size="57,16" id="{UMLID=_COfk4D5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="74,108">
+      <children xsi:type="editmodel:MethodEditModel" name="Verb" size="52,16" id="{UMLID=_COsZMD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Verb#Verb()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getinfinitive" size="74,16" id="{UMLID=_COuOYD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Verb#getinfinitive()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setinfinitive" size="74,16" id="{UMLID=_CO0VAD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Verb#setinfinitive(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" size="62,16" id="{UMLID=_CO9e8D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Verb#toString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toGraphich" size="73,16" id="{UMLID=_CPDlkD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Verb#toGraphich()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTable" size="64,16" id="{UMLID=_CPGB0D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/Verb#getTable()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" size="2,1" autoLocated="true" id="{UMLID=_COHKYD5dEd-Hlc8yp_w5vQ}" source="//@children.11" target="//@children.8/@sourceConnections.0" targetEnd="//@children.11/@sourceConnections.0/@children.1" sourceEnd="//@children.11/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="30,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="53,27"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:InterfaceRealizationEditModel" size="2,1" autoLocated="true" id="{UMLID=_COSwkT5dEd-Hlc8yp_w5vQ}" source="//@children.11" target="//@children.7" targetEnd="//@children.11/@sourceConnections.1/@children.1" sourceEnd="//@children.11/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="61,10" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="10,36"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ArabVerb" location="226,299" size="83,27" timstampe="199" stereotype="" id="{UMLID=_ChZSwD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb}" shortShow="true" runTimeClassModel="getTable(),paradigm,toGraphich(),pastToString(),getparadigm(),past,log,toString(),setparadigm(Ljava.lang.String;),ArabVerb(),setpast(Ljava.lang.String;),presentToString(),getpast(),serialVersionUID">
+    <children xsi:type="editmodel:CompartmentEditModel" size="87,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" size="87,16" id="{UMLID=_Ch5pED5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="past" size="43,16" id="{UMLID=_Ch96gD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="paradigm" size="60,16" id="{UMLID=_Ch1XoD5dEd-Hlc8yp_w5vQ}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" size="39,16" id="{UMLID=_CiCL8D5dEd-Hlc8yp_w5vQ}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="89,180">
+      <children xsi:type="editmodel:MethodEditModel" name="ArabVerb" size="67,16" id="{UMLID=_CiLV4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#ArabVerb()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getpast" size="60,16" id="{UMLID=_Cioo4D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#getpast()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getparadigm" size="78,16" id="{UMLID=_CiiiQD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#getparadigm()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setpast" size="60,16" id="{UMLID=_CicboD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#setpast(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setparadigm" size="78,16" id="{UMLID=_CiNLED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#setparadigm(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pastToString" size="78,16" id="{UMLID=_CiHEcD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#pastToString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="presentToString" size="89,16" id="{UMLID=_CiZ_YD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#presentToString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" size="62,16" id="{UMLID=_CiuvgD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#toString()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toGraphich" size="73,16" id="{UMLID=_CiI5oD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#toGraphich()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTable" size="64,16" id="{UMLID=_CiT4wD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/ArabVerb#getTable()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" size="2,1" autoLocated="true" id="{UMLID=_Chc9ID5dEd-Hlc8yp_w5vQ}" source="//@children.12" target="//@children.11" targetEnd="//@children.12/@sourceConnections.0/@children.1" sourceEnd="//@children.12/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="41,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="30,27"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.9/@sourceConnections.0" name="SearchableObject" location="143,50" size="127,36" timstampe="291" id="{UMLID=__3eqMD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject}" shortShow="true" runTimeClassModel="getTable(),toGraphich(),setlinkid(Ljava.lang.String;Ljava.lang.String;),getlinkid(),removesection(Ljava.lang.String;),getid(),setid(Ljava.lang.Integer;),addlinkid(Ljava.lang.String;Ljava.lang.Integer;),addsection(Ljava.lang.String;),getlinkid(Ljava.lang.String;),setsection(Ljava.lang.String;),equals(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;),removelinkid(Ljava.lang.String;Ljava.lang.Integer;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="86,234">
+      <children xsi:type="editmodel:MethodEditModel" name="getid" size="52,16" id="{UMLID=_CIGB8D5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#getid()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setid" size="52,16" id="{UMLID=_CHzHAD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#setid(Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getlinkid" size="64,16" id="{UMLID=_CHIYoD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#getlinkid(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getlinkid" size="64,16" id="{UMLID=_CH5NoD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#getlinkid()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setlinkid" size="64,16" id="{UMLID=_CHgMED5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#setlinkid(Ljava.lang.String;Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addlinkid" size="66,16" id="{UMLID=_CIlxMD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#addlinkid(Ljava.lang.String;Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removelinkid" size="80,16" id="{UMLID=_CIMIkD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#removelinkid(Ljava.lang.String;Ljava.lang.Integer;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setsection" size="70,16" id="{UMLID=_CHT-0T5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#setsection(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addsection" size="72,16" id="{UMLID=_CHaFcD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#addsection(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removesection" size="86,16" id="{UMLID=_CHtAYD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#removesection(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTable" size="64,16" id="{UMLID=_CH_7UD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#getTable()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toGraphich" size="73,16" id="{UMLID=_CHqkID5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#toGraphich()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" size="58,16" id="{UMLID=_CIWgoD5dEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/SearchableObject#equals(Lnet.verza.jdict.model.SearchableObject;Ljava.lang.String;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.8/@sourceConnections.1" name="IWord" location="50,136" size="67,36" timstampe="24" id="{UMLID=__YCVID5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord}" shortShow="true" runTimeClassModel="getsection(),setnotes(Ljava.lang.String;),setaudio([B),getaudio(),setsingular(Ljava.lang.String;),getnotes(),setsection(Ljava.lang.String;),toString(),getsingular()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="73,162">
+      <children xsi:type="editmodel:MethodEditModel" name="getsingular" size="73,16" id="{UMLID=__YYTYD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#getsingular()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setsingular" size="73,16" id="{UMLID=__YlHsD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#setsingular(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getnotes" size="64,16" id="{UMLID=__ZAlgD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#getnotes()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setnotes" size="64,16" id="{UMLID=__YOiYD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#setnotes(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getaudio" size="64,16" id="{UMLID=__Y6e4D5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#getaudio()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setaudio" size="64,16" id="{UMLID=__YeaAD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#setaudio([B)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getsection" size="70,16" id="{UMLID=__ZGsID5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#getsection()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setsection" size="70,16" id="{UMLID=__YuRoD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#setsection(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" size="62,16" id="{UMLID=__Y0YQD5cEd-Hlc8yp_w5vQ,JavaID=net.verza.jdict.model/IWord#toString()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showInterfaceStereotype="true" showMethods="true" showAttributes="true" showLiterlas="true" showInnerEntity="true"/>
+</editmodel:ClassDiagramEditModel>
