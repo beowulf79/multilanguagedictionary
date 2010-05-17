@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.5.0"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/commons-configuration-1.5.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/commons-logging-api.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/forms-1.0.7.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jgoodies-uif-lite.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jl0.4.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jl1.0.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jlgui2.3.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jogg-0.0.5.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jorbis-0.0.12.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jspeex0.9.3.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/jxl.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/mp3spi1.9.1.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/vorbisspi1.0.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/sviluppo/workspace/jdict/lib/je_23112009.jar"/>
+	<classpathentry kind="lib" path="/Volumes/dati/Applications/eclipse/plugins/org.junit4_4.3.1/junit.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
