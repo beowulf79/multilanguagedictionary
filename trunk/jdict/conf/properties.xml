@@ -2,7 +2,8 @@
 
 <loader>
 
-	<network_timeout>5</network_timeout>
+	<!-- timeout in milliseconds (ex. 60000 is 60 seconds) ; 0 is interpreted as infinite timeout -->
+	<network_timeout>30000</network_timeout>
 	<howjsay_audio_loader_url>http://www.howjsay.com/mp3/</howjsay_audio_loader_url>
 	<howjsay_audio_loader_savetodisk>true</howjsay_audio_loader_savetodisk>
 	<howjsay_audio_loader_overwrite>false</howjsay_audio_loader_overwrite>
