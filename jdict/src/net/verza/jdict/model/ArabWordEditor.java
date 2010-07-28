@@ -316,6 +316,8 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	c.gridx = 0;
 	c.gridy = y;
 	JLabel audioLoadLabel = new JLabel("load audio?");
+	if ((word.getaudio() != null) && (word.audio.length == 0))
+	    audioLoadLabel = new JLabel("(RE)load audio?");
 	audioLoadLabel.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	panel.add(audioLoadLabel, c);
@@ -506,9 +508,9 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
 	if ((pluralText.getText() == null) || ("".equals(pluralText.getText()))) {
 	    log.error("plural field is null or empty");
-	    throw new DatabaseException("plural cannot be empty");
-	}
-	word.setplural(pluralText.getText());
+	    JOptionPane.showMessageDialog(null, "Plural empty ");
+	} else
+	    word.setplural(pluralText.getText());
 
 	if (loadAudio.isSelected() || audio != null)
 	    log.debug("setting audio inside object");
