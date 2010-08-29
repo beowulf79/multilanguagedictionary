@@ -76,7 +76,7 @@ public class italianverb2englishverb extends QuizAbstract {
 	    }
 
 	    quizResult = new QuizResult();
-	    quizResult.setQuizType(Configuration.ITALIAN2EGYPTIAN);
+	    quizResult.setQuizType(Configuration.ITALIAN2ENGLISH);
 	    quizResult.setWordID(key.getid().toString());
 	    // The Question String is composed by the Singular plus the notes if
 	    // present

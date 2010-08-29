@@ -74,7 +74,7 @@ public class audio2arabicword extends QuizAbstract {
 	    }
 
 	    quizResult = new QuizResult();
-	    quizResult.setQuizType(Configuration.ITALIAN2ARABIC);
+	    quizResult.setQuizType(Configuration.AUDIO2ARABIC);
 	    quizResult.setWordID(key.getid().toString());
 	    // The Question String is composed by the audio object
 	    quizResult.setQuestion(key.getaudio());

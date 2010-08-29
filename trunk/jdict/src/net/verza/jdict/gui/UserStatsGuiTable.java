@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import net.verza.jdict.quiz.QuizResult;
 
@@ -32,7 +33,7 @@ public class UserStatsGuiTable extends JPanel {
     private static String headers[] = { "Question", "Counter", "Quiz Type",
 	    "Result" };
 
-    // public TableRowSorter<DefaultTableModel> sorter;
+    public TableRowSorter<DefaultTableModel> sorter;
 
     /*
      * il primo parametro corrisponde ai dati processati da QuisStats
@@ -61,9 +62,9 @@ public class UserStatsGuiTable extends JPanel {
 	table.getColumnModel().getColumn(1).setPreferredWidth(80);
 	table.getColumnModel().getColumn(2).setPreferredWidth(150);
 	table.getColumnModel().getColumn(3).setPreferredWidth(80);
-	// table.setAutoCreateRowSorter(true);
-	// sorter = new TableRowSorter<DefaultTableModel>(dm);
-	// table.setRowSorter(sorter);
+	table.setAutoCreateRowSorter(true);
+	sorter = new TableRowSorter<DefaultTableModel>(dm);
+	table.setRowSorter(sorter);
 	scroll = new JScrollPane(table);
 
     }
