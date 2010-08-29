@@ -77,7 +77,7 @@ public class italianword2englishword extends QuizAbstract {
 		continue;
 	    }
 	    quizResult = new QuizResult();
-	    quizResult.setQuizType("Italian->English");
+	    quizResult.setQuizType(Configuration.ITALIAN2ENGLISH);
 	    quizResult.setWordID(key.getid().toString());
 	    // The Question String is composed by the Singular plus the notes if
 	    // present

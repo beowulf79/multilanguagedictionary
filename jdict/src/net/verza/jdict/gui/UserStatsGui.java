@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import net.verza.jdict.dictionary.Dictionary;
 import net.verza.jdict.dictionary.Factory;
@@ -262,12 +263,13 @@ public class UserStatsGui implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent evt) {
-	/*
-	 * if ((evt.getActionCommand().equals("typechanged")) ||
-	 * (evt.getActionCommand().equals("resultchanged"))) newFilter();
-	 */
-	JOptionPane.showMessageDialog(frame,
-		"Sorting is only enabled on Java 6");
+
+	if ((evt.getActionCommand().equals("typechanged"))
+		|| (evt.getActionCommand().equals("resultchanged")))
+	    newFilter();
+
+	// JOptionPane.showMessageDialog(frame,
+	// "Sorting is only enabled on Java 6");
     }
 
     /**
@@ -275,28 +277,30 @@ public class UserStatsGui implements ActionListener {
      * box.
      */
     public void newFilter() {
-	/*
-	 * javax.swing.RowFilter<DefaultTableModel, Object> rf = null;
-	 * javax.swing.RowFilter<DefaultTableModel, Object> rf1 = null;
-	 * javax.swing.RowFilter<DefaultTableModel, Object> rf2 = null;
-	 * javax.swing.RowFilter<DefaultTableModel, Object> rf3 = null; // If
-	 * current expression doesn't parse, don't update. try {
-	 * 
-	 * rf1 = javax.swing.RowFilter.regexFilter(textFilter.getText(), 0); rf2 =
-	 * javax.swing.RowFilter.regexFilter((String) typeComboFilter
-	 * .getSelectedItem(), 2); rf3 =
-	 * javax.swing.RowFilter.regexFilter((String) resultComboFilter
-	 * .getSelectedItem(), 3);
-	 * 
-	 * java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel,
-	 * Object>> filters = new java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel,
-	 * Object>>( 2);
-	 * 
-	 * filters.add(rf1); filters.add(rf2); filters.add(rf3); rf =
-	 * javax.swing.RowFilter.andFilter(filters); } catch
-	 * (java.util.regex.PatternSyntaxException e) { return; }
-	 * table.sorter.setRowFilter(rf);
-	 */
+
+	javax.swing.RowFilter<DefaultTableModel, Object> rf = null;
+	javax.swing.RowFilter<DefaultTableModel, Object> rf1 = null;
+	javax.swing.RowFilter<DefaultTableModel, Object> rf2 = null;
+	javax.swing.RowFilter<DefaultTableModel, Object> rf3 = null;
+	// If current expression doesn't parse, don't update. try {
+
+	rf1 = javax.swing.RowFilter.regexFilter(textFilter.getText(), 0);
+	rf2 = javax.swing.RowFilter.regexFilter((String) typeComboFilter
+		.getSelectedItem(), 2);
+	rf3 = javax.swing.RowFilter.regexFilter((String) resultComboFilter
+		.getSelectedItem(), 3);
+
+	java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>> filters = new java.util.ArrayList<javax.swing.RowFilter<DefaultTableModel, Object>>(
+		2);
+	//	  
+	filters.add(rf1);
+	filters.add(rf2);
+	filters.add(rf3);
+	rf = javax.swing.RowFilter.andFilter(filters);
+	// } catch
+	// (java.util.regex.PatternSyntaxException e) { return; }
+	table.sorter.setRowFilter(rf);
+
     }
 
 }

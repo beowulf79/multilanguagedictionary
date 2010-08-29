@@ -77,7 +77,7 @@ public class englishword2arabicword extends QuizAbstract {
 	    }
 
 	    quizResult = new QuizResult();
-	    quizResult.setQuizType(Configuration.ENGLISH2ITALIAN);
+	    quizResult.setQuizType(Configuration.ENGLISH2ARABIC);
 	    quizResult.setWordID(key.getid().toString());
 	    // The Question String is composed by the Singular plus the notes if
 	    // present
