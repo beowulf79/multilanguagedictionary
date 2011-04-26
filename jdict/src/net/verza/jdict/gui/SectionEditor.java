@@ -1,7 +1,5 @@
 package net.verza.jdict.gui;
 
-package net.verza.jdict.gui;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -37,9 +35,6 @@ import com.sleepycat.je.DatabaseException;
 public class SectionEditor {
 
 }
-
-
-
 
 /**
  * @author ChristianVerdelli

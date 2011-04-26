@@ -59,6 +59,8 @@ public class WordEditor extends SearchableObjectEditor implements
     private static final String REMOVE_WORDS_COMMAND = "remove words";
     private static final String LOAD_WORDS_COMMAND = "load audio";
     private static final String LINKID_SEPARATOR = ": ";
+    private static final int TEXT_AREA_ROWS = 5;
+    private static final int TEXT_AREA_COLUMNS = 30;
     private static Logger log;
 
     protected LanguageConfigurationClassDescriptor config;
@@ -74,7 +76,7 @@ public class WordEditor extends SearchableObjectEditor implements
     protected GridBagConstraints c;
     protected JButton connectWordsButton;
     protected JTextField singularText, searchText, searchResult;
-    protected JTextArea notesArea;
+    protected JTextArea notesArea, exampleArea;
     protected JList sectionList, categoryList, linkIdList;
     private DefaultListModel sectionListModel, categoryListModel,
 	    linkIdListModel;
@@ -281,6 +283,24 @@ public class WordEditor extends SearchableObjectEditor implements
 	removeCategoryButton.addActionListener(this);
 	panel.add(removeCategoryButton, c);
 
+	// EXAMPLE
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel exampleTextLabel = new JLabel("example");
+	exampleTextLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(exampleTextLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	exampleArea = (("".equals(word.getexample())) || (word.getexample() == null)) ? new JTextArea(
+		TEXT_AREA_ROWS, TEXT_AREA_COLUMNS)
+		: new JTextArea(word.getexample());
+	exampleArea.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(exampleArea, c);
+
+	// NOTES
 	c.gridx = 0;
 	c.gridy = y;
 	JLabel notesTextLabel = new JLabel("notes");
@@ -291,7 +311,7 @@ public class WordEditor extends SearchableObjectEditor implements
 	c.gridx = 1;
 	c.gridy = y++;
 	notesArea = (("".equals(word.getnotes())) || (word.getnotes() == null)) ? new JTextArea(
-		5, 20)
+		TEXT_AREA_ROWS, TEXT_AREA_COLUMNS)
 		: new JTextArea(word.getnotes());
 	notesArea.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
@@ -495,6 +515,9 @@ public class WordEditor extends SearchableObjectEditor implements
 	if ((notesArea.getText() != null) || (notesArea.getText() != ""))
 	    word.setnotes(notesArea.getText());
 
+	if ((exampleArea.getText() != null) || (exampleArea.getText() != ""))
+	    word.setexample(exampleArea.getText());
+
 	// linkedId, section and category gets search at each jcombo change and
 	// not here
 	connectedWords();
@@ -511,6 +534,7 @@ public class WordEditor extends SearchableObjectEditor implements
 	    dit.write(SleepyFactory.getInstance().getDatabase(
 		    config.getLanguageNickname() + config.getType()), word);
 	}
+
     }
 
     /**

@@ -27,7 +27,9 @@ public class ArabVerb extends Verb implements Serializable {
     private String past;
     private String paradigm;
     private String imperative;
-    private String pronounce;
+    private String diacritics;
+    private String transliteration;
+    private byte[] audio_past;
     private static Logger log;
 
     // private ArabVerbPast pastObject;
@@ -140,6 +142,53 @@ public class ArabVerb extends Verb implements Serializable {
 	jFrame.pack();
 	jFrame.setVisible(true);
 
+	// Display Audio Stream Size
+	c.gridx = 0;
+	c.gridy = 7;
+	JLabel audioSizeJLabel = new JLabel("Audio Plural Stream Size");
+	audioSizeJLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	jpnl.add(audioSizeJLabel, c);
+	c.gridx = 1;
+	JTextField jtxf2 = new JTextField("0 bytes");
+	if (this.getaudiopast() != null) {
+	    byte stream[] = (byte[]) this.getaudiopast();
+	    jtxf2.setText(new Integer(stream.length).toString() + " bytes");
+	}
+	jtxf2.setEditable(false);
+	jtxf2.setColumns(10);
+	jpnl.add(jtxf2, c);
+
+	// Display Diacritics
+	c.gridx = 0;
+	c.gridy = 8;
+	JLabel jlbl2 = new JLabel("Diacritics");
+	jlbl2.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	jpnl.add(jlbl2, c);
+	c.gridx = 1;
+	JTextField jtxf3 = new JTextField(this.getdiacritics());
+	jtxf3.setColumns(10);
+	jtxf3.setEditable(false);
+	jpnl.add(jtxf3, c);
+
+	// Display Transliteration
+	c.gridx = 0;
+	c.gridy = 9;
+	JLabel jlbl3 = new JLabel("Transliteration");
+	jlbl3.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	jpnl.add(jlbl3, c);
+	c.gridx = 1;
+	JTextField jtxf4 = new JTextField(this.gettransliteration());
+	jtxf4.setColumns(10);
+	jtxf4.setEditable(false);
+	jpnl.add(jtxf4, c);
+
+	jFrame.getContentPane().add(jpnl);
+	jFrame.pack();
+	jFrame.setVisible(true);
+
     }
 
     public JTable getTable() {
@@ -177,14 +226,47 @@ public class ArabVerb extends Verb implements Serializable {
 	this.imperative = imperative;
     }
 
-    public String getpronounce() {
-	log.trace("called function getpronounce");
-	return pronounce;
+    public String gettransliteration() {
+	log.trace("called function gettransliteration");
+	return transliteration;
     }
 
-    public void setpronounce(String pronounce) {
-	log.trace("called function setpronounce with arg " + pronounce);
-	this.pronounce = pronounce;
+    public void settransliteration(String _transliteration) {
+	log.trace("called function settransliteration with arg "
+		+ _transliteration);
+	this.transliteration = _transliteration;
+    }
+
+    public String getdiacritics() {
+	log.trace("called method getdiacristics");
+	return diacritics;
+    }
+
+    public void setdiacritics(String _diacritics) {
+	log.trace("called method setdiacristics with args " + _diacritics);
+	this.diacritics = _diacritics;
+    }
+
+    public Object getaudiopast() {
+	// http://www.bughost.com/defecttracker/DefectEditForm.asp?DefectID=7&ListType=9&Page=1
+	log.info("called method getaudiopast, returning stream of size "
+		+ this.audio_past.length);
+	return audio_past;
+    }
+
+    public byte[] getaudiobytepast() {
+	log.trace("called method getaudiobytepast, returning stream of size "
+		+ this.audio_past.length);
+	return this.audio_past;
+    }
+
+    public void setaudiopast(byte[] newvalue) {
+	log.trace("called method setaudiopast with value " + newvalue);
+	if (newvalue == null) {
+	    log.error("setting setaudiopast with a null byte array");
+	    return;
+	}
+	this.audio_past = newvalue;
     }
 
 }

@@ -78,7 +78,7 @@ public class arabicverb2italianverb extends QuizAbstract {
 	    }
 
 	    quizResult = new QuizResult();
-	    quizResult.setQuizType("ARABIC2ENGLISH");
+	    quizResult.setQuizType("ARABIC2ITALIAN");
 	    quizResult.setWordID(key.getid().toString());
 	    // The Question String is composed by the Singular plus the comment
 	    // if present
