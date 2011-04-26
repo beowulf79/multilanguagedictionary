@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import net.verza.jdict.exceptions.DataNotFoundException;
@@ -54,6 +55,7 @@ public class CreatorController extends JPanel implements ActionListener {
     private static CreatorController singleton = null;
     private JFrame frame;
     private JPanel panel;
+    private JScrollPane scroll;
     private SearchableObjectEditor searchableObjectCreator;
     private JComboBox languageSelector;
     private GridBagConstraints c;
@@ -211,9 +213,11 @@ public class CreatorController extends JPanel implements ActionListener {
 
 		// remove previous Searchable Object from panel if next button
 		// hasn't been pressed
-		if (searchableObjectCreator != null)
+		if (searchableObjectCreator != null) {
 		    panel.remove(searchableObjectCreator);
-
+		    scroll.remove(panel);
+		    frame.getContentPane().remove(scroll);
+		}
 		// add new word on the panel
 		c.anchor = GridBagConstraints.EAST;
 		c.gridx = 0;
@@ -237,9 +241,12 @@ public class CreatorController extends JPanel implements ActionListener {
 				GUIPreferences.borderColor, 3), language));
 
 		c.gridwidth = 2;
+
 		panel.add(searchableObjectCreator, c);
+		scroll = new JScrollPane(panel);
 		next.setVisible(true);
 		finish.setVisible(true);
+		frame.getContentPane().add(scroll);
 		frame.pack();
 		frame.validate();
 	    }

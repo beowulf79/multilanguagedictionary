@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import net.verza.jdict.dictionary.Dictionary;
@@ -55,6 +56,7 @@ public class EditorController extends JPanel implements ActionListener {
     private static EditorController singleton = null;
     private JFrame frame;
     private JPanel panel;
+    private JScrollPane scroll;
     private GridBagConstraints c;
     private JButton next, finish;
 
@@ -194,7 +196,9 @@ public class EditorController extends JPanel implements ActionListener {
 	frame.addWindowListener(new MainFrameCloser(this));
 	frame.setSize(500, 170);
 	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	frame.getContentPane().add(panel);
+	// frame.getContentPane().add(panel);
+	scroll = new JScrollPane(panel);
+	frame.getContentPane().add(scroll);
 	frame.setBackground(GUIPreferences.backgroundColor);
 	frame.setResizable(true);
 	frame.setLocationRelativeTo(null);
@@ -336,6 +340,7 @@ public class EditorController extends JPanel implements ActionListener {
 		// send write command and remove previous word from the panel
 		searchableObjectEditor.write();
 		panel.remove(searchableObjectEditor);
+		scroll.remove(panel);
 		loadNextSearchableObject();
 		frame.pack();
 		frame.validate();

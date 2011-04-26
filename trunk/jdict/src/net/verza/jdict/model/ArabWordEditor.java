@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -59,6 +60,8 @@ public class ArabWordEditor extends SearchableObjectEditor implements
     private static final String REMOVE_WORDS_COMMAND = "remove words";
     private static final String LOAD_WORDS_COMMAND = "load audio";
     private static final String LINKID_SEPARATOR = ": ";
+    private static final int TEXT_AREA_ROWS = 5;
+    private static final int TEXT_AREA_COLUMNS = 30;
     private static Logger log;
 
     private LanguageConfigurationClassDescriptor config;
@@ -68,18 +71,20 @@ public class ArabWordEditor extends SearchableObjectEditor implements
     private Dictionary dit;
     private String mainObjectLanguage;
     private IAudioFileLoader audioLoader;
-    private byte[] audio;
+    private byte[] audio, audio_plural;
 
     private JPanel panel;
     private GridBagConstraints c;
     private JButton connectWordsButton;
-    private JTextField singularText, pluralText, searchText, searchResult;
-    private JTextArea notesArea;
+    private JTextField singularText, pluralText, diacriticsText,
+	    transliterationText, searchText, searchResult;
+    private JTextArea notesArea, exampleArea;
     private JList sectionList, categoryList, linkIdList;
     private DefaultListModel sectionListModel, categoryListModel,
 	    linkIdListModel;
     private JComboBox sectionCombo, categoryCombo, languageSelectorCombo;
     private JCheckBox loadAudio;
+    private JScrollPane jScrollPane;
 
     public ArabWordEditor(String language) throws SecurityException,
 	    IllegalArgumentException, ClassNotFoundException,
@@ -203,6 +208,40 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	panel.add(pluralText, c);
 
+	// Diacritics
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel diacriticsLabel = new JLabel("diacritics");
+	diacriticsLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(diacriticsLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	diacriticsText = (("".equals(word.getdiacritics())) || (word
+		.getdiacritics() == null)) ? new JTextField(20)
+		: new JTextField(word.getdiacritics());
+	diacriticsText.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(diacriticsText, c);
+
+	// transliterationText
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel transliterationLabel = new JLabel("transliteration");
+	transliterationLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(transliterationLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	transliterationText = (("".equals(word.gettransliteration())) || (word
+		.gettransliteration() == null)) ? new JTextField(20)
+		: new JTextField(word.gettransliteration());
+	transliterationText.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(transliterationText, c);
+
 	c.gridx = 0;
 	c.gridy = y;
 	JLabel sectionLabel = new JLabel("section");
@@ -297,6 +336,24 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	removeCategoryButton.addActionListener(this);
 	panel.add(removeCategoryButton, c);
 
+	// EXAMPLE
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel exampleTextLabel = new JLabel("example");
+	exampleTextLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(exampleTextLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	exampleArea = (("".equals(word.getexample())) || (word.getexample() == null)) ? new JTextArea(
+		TEXT_AREA_ROWS, TEXT_AREA_COLUMNS)
+		: new JTextArea(word.getexample());
+	exampleArea.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(exampleArea, c);
+
+	// NOTES
 	c.gridx = 0;
 	c.gridy = y;
 	JLabel notesTextLabel = new JLabel("notes");
@@ -307,7 +364,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	c.gridx = 1;
 	c.gridy = y++;
 	notesArea = (("".equals(word.getnotes())) || (word.getnotes() == null)) ? new JTextArea(
-		5, 20)
+		TEXT_AREA_ROWS, TEXT_AREA_COLUMNS)
 		: new JTextArea(word.getnotes());
 	notesArea.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
@@ -409,7 +466,6 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	connectWordsButton.setEnabled(true);
 	connectWordsButton.addActionListener(this);
 	panel.add(connectWordsButton, c);
-
     }
 
     private void buildSectionList() throws UnsupportedEncodingException,
@@ -512,12 +568,27 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	} else
 	    word.setplural(pluralText.getText());
 
-	if (loadAudio.isSelected() || audio != null)
+	if (loadAudio.isSelected() || audio != null || audio_plural != null) {
 	    log.debug("setting audio inside object");
-	word.setaudio(audio);
+	    if (audio != null)
+		word.setaudio(audio);
+	    if (audio_plural != null)
+		word.setaudioplural(audio_plural);
+	}
 
 	if ((notesArea.getText() != null) || (notesArea.getText() != ""))
 	    word.setnotes(notesArea.getText());
+
+	if ((exampleArea.getText() != null) || (exampleArea.getText() != ""))
+	    word.setexample(exampleArea.getText());
+
+	if ((transliterationText.getText() != null)
+		|| (transliterationText.getText() != ""))
+	    word.settransliteration(transliterationText.getText());
+
+	if ((diacriticsText.getText() != null)
+		|| (diacriticsText.getText() != ""))
+	    word.setdiacritics(diacriticsText.getText());
 
 	// linkedId, section and category gets search at each jcombo change and
 	// not here
@@ -781,27 +852,50 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 		if (loadAudio.isSelected()) {
 		    log.debug("enabling audio load");
 		    if ("".equals(singularText.getText())
-			    || singularText == null) {
-			JOptionPane
-				.showMessageDialog(null, "singular empty!! ");
+			    && "".equals(pluralText.getText())
+			    && (singularText == null) && (pluralText == null)) {
+			JOptionPane.showMessageDialog(null,
+				"singular/plural empty!! ");
 			loadAudio.setSelected(false);
 			return;
 		    }
 		    initializeAudioLoader();
+		    // Load audio for singular
+		    boolean audiofound = false;
+		    log.debug("retrieving audio for singular");
 		    audio = (getAudio(singularText.getText()));
 		    if (audio == null) {
-			log.error("audio not found!");
+			log.error("audio for singular not found!");
 			JOptionPane.showMessageDialog(null,
-				"audio not found!! ");
-			loadAudio.setSelected(false);
-		    } else
+				"audio for singular not found!! ");
+
+		    } else {
+			audiofound = true;
 			log
 				.info("got audio of size " + audio.length
 					+ " bytes");
+		    }
+		    // Load Audio for plural
+		    boolean audiopluralfound = false;
+		    log.debug("retrieving audio for plual");
+		    audio_plural = (getAudio(pluralText.getText()));
+		    if (audio_plural == null) {
+			log.error("audio for plural not found!");
+			JOptionPane.showMessageDialog(null,
+				"audio for plural not found!! ");
+
+		    } else {
+			audiopluralfound = true;
+			log.info("got audio plural of size "
+				+ audio_plural.length + " bytes");
+		    }
+		    if ((!audiofound) && (!audiopluralfound))
+			loadAudio.setSelected(false);
 
 		} else {
 		    log.debug("disabling audio load");
 		    audio = null;
+		    audio_plural = null;
 		}
 
 	    } else if (evt.getActionCommand().equals(SEARCH_BUTTON_COMMAND)) {
@@ -890,5 +984,4 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	}
 
     }
-
 }

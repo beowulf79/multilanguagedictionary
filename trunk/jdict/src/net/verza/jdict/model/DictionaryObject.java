@@ -35,6 +35,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
     private static Logger log;
     // private Integer[] sinonymous_id;
     // private Integer[] contrarious_id;
+    protected String example;
     protected String notes;
     protected Set<String> section;
 
@@ -49,6 +50,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	log = Logger.getLogger("jdict");
 	log.trace("class " + this.getClass().getName() + " initialized");
 	linkId = new HashMap<String, Integer[]>();
+	example = new String();
 	notes = new String();
 	section = new HashSet<String>();
 	audio = new byte[0];
@@ -189,6 +191,16 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	return notes;
     }
 
+    public String getexample() {
+	log.trace("called method getexample");
+	return example;
+    }
+
+    public void setexample(String _example) {
+	log.trace("called method setexample with args " + _example);
+	this.example = _example;
+    }
+
     public void setnotes(String newvalue) {
 	if (newvalue == null)
 	    throw new NullPointerException("setting notes with a null string");
@@ -210,7 +222,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
     }
 
     public void setaudio(byte[] newvalue) {
-	log.trace("called method setaudio with value " + newvalue);
+	log.trace("called method setaudio with byte array " + newvalue);
 	if (newvalue == null) {
 	    log.error("setting audio with a null string");
 	    return;

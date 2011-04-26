@@ -57,6 +57,8 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
     private static final String REMOVE_WORDS_COMMAND = "remove words";
     private static final String LOAD_WORDS_COMMAND = "load audio";
     private static final String LINKID_SEPARATOR = ": ";
+    private static final int TEXT_AREA_ROWS = 5;
+    private static final int TEXT_AREA_COLUMNS = 30;
     private static Logger log;
 
     protected LanguageConfigurationClassDescriptor config;
@@ -66,14 +68,14 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
     protected Dictionary dit;
     protected String mainObjectLanguage;
     protected IAudioFileLoader audioLoader;
-    protected byte[] audio;
+    protected byte[] audio, audio_past;
 
     protected JPanel panel;
     protected GridBagConstraints c;
     protected JButton connectWordsButton;
     protected JTextField presentText, pastText, imperativeText, pronounceText,
-	    searchText, searchResult;
-    protected JTextArea notesArea;
+	    searchText, searchResult, diacriticsText, transliterationText;
+    protected JTextArea notesArea, exampleArea;
     protected JList sectionList, categoryList, linkIdList;
     private DefaultListModel sectionListModel, linkIdListModel;
     protected JComboBox sectionCombo, categoryCombo, languageSelectorCombo;
@@ -219,21 +221,39 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	panel.add(imperativeText, c);
 
+	// Diacritics
 	c.gridx = 0;
 	c.gridy = y;
-	JLabel pronounceLabel = new JLabel("pronounce");
-	pronounceLabel.setBorder(BorderFactory.createLineBorder(
+	JLabel diacriticsLabel = new JLabel("diacritics");
+	diacriticsLabel.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(pronounceLabel, c);
+	panel.add(diacriticsLabel, c);
 
 	c.gridx = 1;
 	c.gridy = y++;
-	pronounceText = (("".equals(verb.getpronounce())) || (verb
-		.getpronounce() == null)) ? new JTextField(20)
-		: new JTextField(verb.getpronounce());
-	pronounceText.setBorder(BorderFactory.createLineBorder(
+	diacriticsText = (("".equals(verb.getdiacritics())) || (verb
+		.getdiacritics() == null)) ? new JTextField(20)
+		: new JTextField(verb.getdiacritics());
+	diacriticsText.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
-	panel.add(pronounceText, c);
+	panel.add(diacriticsText, c);
+
+	// transliterationText
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel transliterationLabel = new JLabel("transliteration");
+	transliterationLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(transliterationLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	transliterationText = (("".equals(verb.gettransliteration())) || (verb
+		.gettransliteration() == null)) ? new JTextField(20)
+		: new JTextField(verb.gettransliteration());
+	transliterationText.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(transliterationText, c);
 
 	c.gridx = 0;
 	c.gridy = y;
@@ -280,6 +300,24 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 	removeSectionButton.addActionListener(this);
 	panel.add(removeSectionButton, c);
 
+	// EXAMPLE
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel exampleTextLabel = new JLabel("example");
+	exampleTextLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(exampleTextLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	exampleArea = (("".equals(verb.getexample())) || (verb.getexample() == null)) ? new JTextArea(
+		TEXT_AREA_ROWS, TEXT_AREA_COLUMNS)
+		: new JTextArea(verb.getexample());
+	exampleArea.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(exampleArea, c);
+
+	// NOTES
 	c.gridx = 0;
 	c.gridy = y;
 	JLabel notesTextLabel = new JLabel("notes");
@@ -290,7 +328,7 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 	c.gridx = 1;
 	c.gridy = y++;
 	notesArea = (("".equals(verb.getnotes())) || (verb.getnotes() == null)) ? new JTextArea(
-		5, 20)
+		TEXT_AREA_ROWS, TEXT_AREA_COLUMNS)
 		: new JTextArea(verb.getnotes());
 	notesArea.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
@@ -476,12 +514,24 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 		|| !("".equals(imperativeText.getText())))
 	    verb.setimperative(imperativeText.getText());
 
-	if (!(pronounceText.getText() == null)
-		|| !("".equals(pronounceText.getText())))
-	    verb.setpronounce(pronounceText.getText());
+	if ((exampleArea.getText() != null) || (exampleArea.getText() != ""))
+	    verb.setexample(exampleArea.getText());
 
-	if (loadAudio.isSelected() || audio != null)
-	    verb.setaudio(audio);
+	if ((transliterationText.getText() != null)
+		|| (transliterationText.getText() != ""))
+	    verb.settransliteration(transliterationText.getText());
+
+	if ((diacriticsText.getText() != null)
+		|| (diacriticsText.getText() != ""))
+	    verb.setdiacritics(diacriticsText.getText());
+
+	if (loadAudio.isSelected() || audio != null || audio_past != null) {
+	    log.debug("setting audio inside object");
+	    if (audio != null)
+		verb.setaudio(audio);
+	    if (audio_past != null)
+		verb.setaudiopast(audio_past);
+	}
 
 	if ((notesArea.getText() != null) || (notesArea.getText() != ""))
 	    verb.setnotes(notesArea.getText());
@@ -712,27 +762,49 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 		log.debug("loading audio");
 		if (loadAudio.isSelected()) {
 		    log.debug("enabling audio load");
-		    if ("".equals(presentText.getText()) || presentText == null) {
-			JOptionPane
-				.showMessageDialog(null, "singular empty!! ");
+		    if ("".equals(presentText.getText())
+			    && "".equals(pastText.getText())
+			    && (presentText == null) && (pastText == null)) {
+			JOptionPane.showMessageDialog(null,
+				"present/past empty!! ");
 			loadAudio.setSelected(false);
 			return;
 		    }
 		    initializeAudioLoader();
+		    // Load audio for present
+		    boolean audiofound = false;
+		    log.debug("retrieving audio for present");
 		    audio = (getAudio(presentText.getText()));
 		    if (audio == null) {
-			log.error("audio not found!");
+			log.error("audio for present not found!");
 			JOptionPane.showMessageDialog(null,
-				"audio not found!! ");
-			loadAudio.setSelected(false);
-		    } else
+				"audio for present not found!! ");
+		    } else {
+			audiofound = true;
 			log
 				.info("got audio of size " + audio.length
 					+ " bytes");
+		    }
+		    // Load Audio for past
+		    boolean audiopastfound = false;
+		    log.debug("retrieving audio for past");
+		    audio_past = (getAudio(pastText.getText()));
+		    if (audio_past == null) {
+			log.error("audio for past not found!");
+			JOptionPane.showMessageDialog(null,
+				"audio for past not found!! ");
+		    } else {
+			audiopastfound = true;
+			log.info("got audio past of size " + audio_past.length
+				+ " bytes");
+		    }
+		    if ((!audiofound) && (!audiopastfound))
+			loadAudio.setSelected(false);
 
 		} else {
 		    log.debug("disabling audio load");
 		    audio = null;
+		    audio_past = null;
 		}
 
 	    } else if (evt.getActionCommand().equals(SEARCH_BUTTON_COMMAND)) {
