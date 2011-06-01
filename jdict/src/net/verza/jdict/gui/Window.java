@@ -51,6 +51,8 @@ public class Window extends JFrame implements ActionListener {
     private static final String DATA_IMPORT = "Import Data";
     private static final String NEW_WORD = "Insert new Word";
     private static final String MODIFY_WORD = "Modify existing Word";
+    private static final String ADD_SECTION = "Add Section";
+    private static final String MODIFY_SECTION = "Modify Section";
 
     public static final int FRAME_WIDTH = 400;
     public static final int FRAME_HEIGHT = 420;
@@ -139,6 +141,14 @@ public class Window extends JFrame implements ActionListener {
 	JMenuItem mModifyWord = new JMenuItem(MODIFY_WORD);
 	mFile.add(mModifyWord);
 	mModifyWord.addActionListener(this);
+
+	JMenuItem mAddSection = new JMenuItem(ADD_SECTION);
+	mFile.add(mAddSection);
+	mAddSection.addActionListener(this);
+
+	JMenuItem mModifySection = new JMenuItem(MODIFY_SECTION);
+	mFile.add(mModifySection);
+	mModifySection.addActionListener(this);
 
 	JMenu mUserProfileMenu = new JMenu("User");
 	JMenuItem mUserProfileCreate = new JMenuItem(CREATE_USERPROFILE);
@@ -262,6 +272,10 @@ public class Window extends JFrame implements ActionListener {
 	    CreatorController.getInstance();
 	} else if (command.equals(MODIFY_WORD)) {
 	    ModifySearchableObject.getInstance();
+	} else if (command.equals(ADD_SECTION)) {
+	    SectionCreateGui.getInstance();
+	} else if (command.equals(MODIFY_SECTION)) {
+	    SectionEditorGui.getInstance();
 	}
 
     }

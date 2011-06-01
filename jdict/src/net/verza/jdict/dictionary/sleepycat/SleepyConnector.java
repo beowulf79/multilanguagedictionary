@@ -86,11 +86,13 @@ public final class SleepyConnector implements Dictionary {
 	category_database = new SleepyCategoryDatabase();
 	categoryReader = new SleepyCategoryDatabaseReader(category_database);
 	categoryLoader = new SleepyCategoryDatabaseLoader(category_database);
+	categoryWriter = new SleepyCategoryDatabaseWriter(category_database);
 
 	// Initialize Section DB Handler
 	section_database = new SleepySectionDatabase();
 	sectionReader = new SleepySectionDatabaseReader(section_database);
 	sectionLoader = new SleepySectionDatabaseLoader(section_database);
+	sectionWriter = new SleepySectionDatabaseWriter(section_database);
 
 	// Initialize UserProfile class
 	this.user = new UserProfile();
@@ -444,6 +446,18 @@ public final class SleepyConnector implements Dictionary {
 	categoryWriter.writeData(key, data);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.verza.jdict.dictionary.sleepycat.AAA#writeCategoryDatabase(java.lang.String,
+     *      java.lang.String)
+     */
+    public void writeCategoryDatabase(String key) throws DatabaseException,
+	    UnsupportedEncodingException {
+
+	categoryWriter.writeData(key);
+    }
+
     // ////////////////////////////////////////////////////////////////////////////////////////
     // ///////////////////////////////////////////////////////////////////////////////////////
     // SECTION DATABASE
@@ -521,6 +535,18 @@ public final class SleepyConnector implements Dictionary {
 	    throws DatabaseException, UnsupportedEncodingException {
 
 	sectionWriter.writeData(key, data);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.verza.jdict.dictionary.sleepycat.AAA#writeSectionDatabase(java.lang.String,
+     *      java.lang.String)
+     */
+    public void writeSectionDatabase(String key) throws DatabaseException,
+	    UnsupportedEncodingException {
+
+	sectionWriter.writeData(key);
     }
 
     // ////////////////////////////////////////////////////////////////////////////////////////

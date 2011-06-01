@@ -139,6 +139,9 @@ public interface Dictionary {
     public abstract void writeCategoryDatabase(String key, String data)
 	    throws DatabaseException, UnsupportedEncodingException;
 
+    public abstract void writeCategoryDatabase(String key)
+	    throws DatabaseException, UnsupportedEncodingException;
+
     // ////////////////////////////////////////////////////////////////////////////////////////
     // ///////////////////////////////////////////////////////////////////////////////////////
     // SECTION DATABASE
@@ -158,6 +161,9 @@ public interface Dictionary {
     public abstract void flushSectionDatabase() throws DatabaseException;
 
     public abstract void writeSectionDatabase(String key, String data)
+	    throws DatabaseException, UnsupportedEncodingException;
+
+    public abstract void writeSectionDatabase(String key)
 	    throws DatabaseException, UnsupportedEncodingException;
 
     // ////////////////////////////////////////////////////////////////////////////////////////
