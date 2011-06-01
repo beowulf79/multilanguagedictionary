@@ -113,7 +113,6 @@ public class SleepySectionDatabaseReader {
 	}
 	this.cursorEntriesCounter = count;
 	log.info("section database size is: " + count);
-
     }
 
     public String[] getKey() {

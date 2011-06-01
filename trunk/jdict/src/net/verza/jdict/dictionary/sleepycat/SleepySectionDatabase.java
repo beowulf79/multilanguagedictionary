@@ -6,6 +6,7 @@ package net.verza.jdict.dictionary.sleepycat;
  */
 
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 
 import net.verza.jdict.dictionary.sleepycat.indexes.SleepySectionDatabaseIndexKeyCreator;
 
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
+import com.sleepycat.je.DatabaseEntry;
 import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.SecondaryConfig;
 import com.sleepycat.je.SecondaryDatabase;
@@ -99,6 +101,21 @@ public class SleepySectionDatabase {
 	env.getEnvironment(SECTION_SECONDARY_TABLE).truncateDatabase(null,
 		SECTION_SECONDARY_TABLE, false);
 
+    }
+
+    public String getFreeId() throws DatabaseException,
+	    UnsupportedEncodingException {
+	log.trace("called function getFreeId");
+
+	// entries are not sorted so we can't just get the last entry
+	// but since it is not possible to delete entries, we return the size of
+	// the
+	// database + 1
+	DatabaseEntry key = new DatabaseEntry();
+	DatabaseEntry data = new DatabaseEntry();
+	log.debug("first available id is " + databaseSection.count() + 1);
+	int toInt = (int) databaseSection.count() + 1;
+	return Integer.toString(toInt);
     }
 
 }

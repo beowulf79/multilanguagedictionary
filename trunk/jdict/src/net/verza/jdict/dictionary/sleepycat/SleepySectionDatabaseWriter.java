@@ -39,8 +39,17 @@ public class SleepySectionDatabaseWriter {
 		    + " Value " + section_String);
 	    return -1;
 	}
-
+	database.getSectionDatabase().getEnvironment().sync();
 	return 0;
+    }
+
+    public int writeData(String section_String)
+	    throws UnsupportedEncodingException, DatabaseException {
+	// get the first available id from db
+	String id = database.getFreeId().toString();
+
+	return writeData(id, section_String);
+
     }
 
 }
