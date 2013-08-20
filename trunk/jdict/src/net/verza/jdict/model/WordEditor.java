@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -39,6 +40,7 @@ import net.verza.jdict.exceptions.LanguagesConfigurationException;
 import net.verza.jdict.exceptions.LinkIDException;
 import net.verza.jdict.gui.GUIPreferences;
 import net.verza.jdict.properties.LanguageConfigurationClassDescriptor;
+import net.verza.jdict.properties.LanguageFieldConfigurationClassDescritor;
 import net.verza.jdict.properties.LanguagesConfiguration;
 
 import org.apache.log4j.Logger;
@@ -510,7 +512,7 @@ public class WordEditor extends SearchableObjectEditor implements
 
 	if (loadAudio.isSelected() || audio != null)
 	    log.debug("setting audio inside object");
-	word.setaudio(audio);
+	word.setaudiosingular(audio);
 
 	if ((notesArea.getText() != null) || (notesArea.getText() != ""))
 	    word.setnotes(notesArea.getText());
@@ -593,15 +595,18 @@ public class WordEditor extends SearchableObjectEditor implements
 
     }
 
-    private void initializeAudioLoader() throws ClassNotFoundException,
+    private void initializeAudioLoader(String _attrnickname) throws ClassNotFoundException,
 	    SecurityException, NoSuchMethodException, IllegalArgumentException,
 	    InstantiationException, IllegalAccessException,
 	    InvocationTargetException {
-	String audio_method = "set" + config.getAudioAttribute();
-	String audio_directory = config.getAudioPath();
-
-	log.debug(" method to use to set audio " + audio_method
-		+ "; audio directory where load audio from " + audio_directory);
+	
+//    String audio_method = "set" + config.getAudioAttribute();
+//	String audio_directory = config.getAudioPath();
+    	String audio_method = null;
+    	String audio_directory = null;
+	    String audioLoaderClassName = null;
+	/*log.debug(" method to use to set audio " + audio_method
+		+ "; audio directory where load audio from " + audio_directory);*/
 
 	try {
 
@@ -609,16 +614,36 @@ public class WordEditor extends SearchableObjectEditor implements
 	    Class<?>[] constructorParams;
 	    Constructor<?> IConstructor;
 
-	    String audioLoaderClassName = config.getAudioLoaderClass();
+	    /*String audioLoaderClassName = config.getAudioLoaderClass();
 	    log.debug("using " + audioLoaderClassName
-		    + " as audio Loader Class");
+		    + " as audio Loader Class");*/
+	    
+	    List<LanguageFieldConfigurationClassDescritor> lista = config.getFields();
+		for (Iterator<LanguageFieldConfigurationClassDescritor> it = lista
+				.iterator(); it.hasNext();) {
 
+			LanguageFieldConfigurationClassDescritor tmp = (LanguageFieldConfigurationClassDescritor) it
+					.next();
+			//System.out.println("--  fields " + tmp.toString());
+			if(_attrnickname.equals(tmp.getAttributeName())) {
+				audio_method = tmp.getAudioMethod();
+				audio_directory = tmp.getAudioDirectory();
+				audioLoaderClassName = tmp.getAudioLoaderClass();
+				log.debug("audio_method "+audio_method + 
+						" audio_directory "+ audio_directory+
+						" audioLoaderClassName " +audioLoaderClassName);
+			break;
+			}			
+		}
+		
 	    audioLoaderClass = Class.forName(audioLoaderClassName);
 	    // get an instance
-	    constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+	    //constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+	    constructorParams = new Class[] { java.lang.String.class };
 	    IConstructor = audioLoaderClass.getConstructor(constructorParams);
 
-	    audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	    //audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	    audioLoader = (IAudioFileLoader) IConstructor.newInstance(audio_directory);
 	} catch (InvocationTargetException e) {
 	    JOptionPane
 		    .showMessageDialog(
@@ -787,7 +812,7 @@ public class WordEditor extends SearchableObjectEditor implements
 			loadAudio.setSelected(false);
 			return;
 		    }
-		    initializeAudioLoader();
+		    initializeAudioLoader("singular");
 		    audio = (getAudio(singularText.getText()));
 		    if (audio == null) {
 			log.error("audio not found!");

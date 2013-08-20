@@ -49,6 +49,7 @@ public class Window extends JFrame implements ActionListener {
     private static final String RESET_USERPROFILE_STATS = "Reset User Profile Statistics";
     private static final String SHOW_USERPROFILE_STATISTICS = "Show User Quiz Statistics";
     private static final String DATA_IMPORT = "Import Data";
+    private static final String DATA_DUMP = "Dump Data";
     private static final String NEW_WORD = "Insert new Word";
     private static final String MODIFY_WORD = "Modify existing Word";
     private static final String ADD_SECTION = "Add Section";
@@ -134,6 +135,10 @@ public class Window extends JFrame implements ActionListener {
 	mFile.add(mImport);
 	mImport.addActionListener(this);
 
+	JMenuItem mDump = new JMenuItem(DATA_DUMP);
+	mFile.add(mDump);
+	mDump.addActionListener(this);
+	
 	JMenuItem mNewWord = new JMenuItem(NEW_WORD);
 	mFile.add(mNewWord);
 	mNewWord.addActionListener(this);
@@ -268,6 +273,8 @@ public class Window extends JFrame implements ActionListener {
 	    UserStatsGui.getInstance();
 	} else if (command.equals(DATA_IMPORT)) {
 	    DataLoaderGui.getInstance();
+	} else if (command.equals(DATA_DUMP)) {
+	    DataDumpGui.getInstance();
 	} else if (command.equals(NEW_WORD)) {
 	    CreatorController.getInstance();
 	} else if (command.equals(MODIFY_WORD)) {

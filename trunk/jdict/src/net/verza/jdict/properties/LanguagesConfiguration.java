@@ -14,132 +14,132 @@ import org.apache.log4j.Logger;
 
 public class LanguagesConfiguration {
 
-    private static Logger log;
-    private static HashMap<String, LanguageConfigurationClassDescriptor> languageConfigurationBlock;
+	private static Logger log;
+	private static HashMap<String, LanguageConfigurationClassDescriptor> languageConfigurationBlock;
 
-    public LanguagesConfiguration() {
+	public LanguagesConfiguration() {
 
-	log = Logger.getLogger("jdict");
-	log.trace("called class " + this.getClass().getName());
+		log = Logger.getLogger("jdict");
+		log.trace("called class " + this.getClass().getName());
 
-	languageConfigurationBlock = new HashMap<String, LanguageConfigurationClassDescriptor>();
+		languageConfigurationBlock = new HashMap<String, LanguageConfigurationClassDescriptor>();
 
-	this.discoverLanguages();
+		this.discoverLanguages();
 
-    }
-
-    private void discoverLanguages() {
-
-	log.trace("called function discoverLanguages");
-	int counter = 0;
-
-	List<SubnodeConfiguration> prop = PropertiesLoader
-		.getHierarchicalProperty("language");
-
-	for (Iterator<SubnodeConfiguration> it = prop.iterator(); it.hasNext();) {
-
-	    HierarchicalConfiguration sub = (HierarchicalConfiguration) it
-		    .next();
-
-	    String nickname = sub.getString("nickname");
-	    String type = sub.getString("type");
-
-	    LanguageConfigurationClassDescriptor langDesc = new LanguageConfigurationClassDescriptor();
-	    langDesc.setLanguageNickname(sub.getString("nickname"));
-	    langDesc.setType(sub.getString("type"));
-	    langDesc.setClassQualifiedName(sub.getString("class"));
-	    langDesc.setIsEnabled(sub.getBoolean("enabled"));
-	    langDesc.setEditorClass(sub.getString("editor_class"));
-	    langDesc.setAudioLoaderClass(sub.getString("audio_loader_class"));
-	    langDesc.setIsAudioEnabled(sub.getBoolean("audio", false));
-	    langDesc.setAudioAttribute(sub.getString("audio_attribute"));
-	    langDesc.setAudioPath(sub.getString("audio_directory"));
-	    langDesc.setExcelSheet(sub.getString("excel_sheet"));
-	    langDesc.setQuizAttribute(sub.getString("quiz_attribute"));
-	    langDesc.setTranslations(sub.getStringArray("translations")); // returns
-	    // the
-	    // comma
-	    // separated
-	    // elements
-	    // as
-	    // string
-	    // array
-	    langDesc.setFields(discoverFields(counter));
-
-	    languageConfigurationBlock.put(nickname + type, langDesc);
-
-	    log.debug("put into language config map language&type " + nickname
-		    + "" + type + " with Config Object  " + sub.toString());
-	    // languageMainConfigNodeMap.put(nickname, sub);
-	    // languageFieldsConfigNodeMap.put(nickname, discoverFields(counter)
-	    // );
-
-	    counter++;
 	}
-	log.trace("number of languages found in property file: " + counter);
 
-    }
+	private void discoverLanguages() {
 
-    private List<SubnodeConfiguration> discoverFields(int _languageBookmark) {
-	log.trace("called function discoverLabels");
+		log.trace("called function discoverLanguages");
+		int counter = 0;
 
-	List<SubnodeConfiguration> prop = PropertiesLoader
-		.getHierarchicalProperty("language(" + _languageBookmark
-			+ ").fields.label");
+		List<SubnodeConfiguration> prop = PropertiesLoader
+				.getHierarchicalProperty("language");
 
-	log.debug("put into Fields Node config map Config Object size "
-		+ prop.size());
-	return prop;
+		for (Iterator<SubnodeConfiguration> it = prop.iterator(); it.hasNext();) {
 
-    }
+			HierarchicalConfiguration sub = (HierarchicalConfiguration) it
+					.next();
 
-    public static LanguageConfigurationClassDescriptor getLanguageMainConfigNode(
-	    String _language) throws LanguagesConfigurationException {
-	log.trace("called function getLanguageMainConfigNode with argument "
-		+ _language);
-	if (!languageConfigurationBlock.containsKey(_language))
-	    throw new LanguagesConfigurationException(
-		    "configuration for the language " + _language
-			    + " not found");
-	return languageConfigurationBlock.get(_language);
-    }
+			String nickname = sub.getString("nickname");
+			String type = sub.getString("type");
 
-    public static Set<String> getAvalaibleLanguages() {
+			LanguageConfigurationClassDescriptor langDesc = new LanguageConfigurationClassDescriptor();
+			langDesc.setLanguageNickname(sub.getString("nickname"));
+			langDesc.setType(sub.getString("type"));
+			langDesc.setClassQualifiedName(sub.getString("class"));
+			langDesc.setIsEnabled(sub.getBoolean("enabled"));
+			langDesc.setEditorClass(sub.getString("editor_class"));
+			langDesc.setAudioLoaderClass(sub.getString("audio_loader_class"));
+			langDesc.setIsAudioEnabled(sub.getBoolean("audio", false));
+			langDesc.setAudioAttribute(sub.getString("audio_attribute"));
+			langDesc.setAudioPath(sub.getString("audio_directory"));
+			langDesc.setExcelSheet(sub.getString("excel_sheet"));
+			langDesc.setQuizAttribute(sub.getString("quiz_attribute"));
+			langDesc.setTranslations(sub.getStringArray("translations")); // returns
+			// the
+			// comma
+			// separated
+			// elements
+			// as
+			// string
+			// array
+			langDesc.setFields(discoverFields(counter));
 
-	return languageConfigurationBlock.keySet();
-    }
+			languageConfigurationBlock.put(nickname + type, langDesc);
 
-    public static Set<String> getEnabledLanguages() {
-	log.trace("called function getEnabledLanguages()");
-	Set<String> tmp = new HashSet();
-	for (Iterator<String> it = languageConfigurationBlock.keySet()
-		.iterator(); it.hasNext();) {
-	    String key = it.next();
-	    LanguageConfigurationClassDescriptor lang = (languageConfigurationBlock
-		    .get(key));
-	    if (lang.isEnabled()) {
-		log.trace(key + " enabled, adding to languages enabled map ");
-		tmp.add(key);
-	    }
+			log.debug("put into language config map language&type " + nickname
+					+ "" + type + " with Config Object  " + sub.toString());
+			// languageMainConfigNodeMap.put(nickname, sub);
+			// languageFieldsConfigNodeMap.put(nickname, discoverFields(counter)
+			// );
+
+			counter++;
+		}
+		log.trace("number of languages found in property file: " + counter);
+
 	}
-	return tmp;
-    }
 
-    public static List<SubnodeConfiguration> getFieldsConfigNode(
-	    String _language) throws LanguagesConfigurationException {
-	log.trace("called function getFieldsConfigNode with argument "
-		+ _language);
-	if (!languageConfigurationBlock.containsKey(_language))
-	    throw new LanguagesConfigurationException(
-		    "configuration for the language " + _language
-			    + " not found");
-	return getFieldsConfigNode(_language);
+	private List<SubnodeConfiguration> discoverFields(int _languageBookmark) {
+		log.trace("called function discoverLabels");
 
-    }
+		List<SubnodeConfiguration> prop = PropertiesLoader
+				.getHierarchicalProperty("language(" + _languageBookmark
+						+ ").fields.label");
 
-    public static HashMap<String, LanguageConfigurationClassDescriptor> getLanguageConfigurationBlock() {
-	log.trace("called function getLanguageConfigurationBlock");
-	return languageConfigurationBlock;
-    }
+		log.debug("put into Fields Node config map Config Object size "
+				+ prop.size());
+		return prop;
+
+	}
+
+	public static LanguageConfigurationClassDescriptor getLanguageMainConfigNode(
+			String _language) throws LanguagesConfigurationException {
+		log.trace("called function getLanguageMainConfigNode with argument "
+				+ _language);
+		if (!languageConfigurationBlock.containsKey(_language))
+			throw new LanguagesConfigurationException(
+					"configuration for the language " + _language
+							+ " not found");
+		return languageConfigurationBlock.get(_language);
+	}
+
+	public static Set<String> getAvalaibleLanguages() {
+
+		return languageConfigurationBlock.keySet();
+	}
+
+	public static Set<String> getEnabledLanguages() {
+		log.trace("called function getEnabledLanguages()");
+		Set<String> tmp = new HashSet();
+		for (Iterator<String> it = languageConfigurationBlock.keySet()
+				.iterator(); it.hasNext();) {
+			String key = it.next();
+			LanguageConfigurationClassDescriptor lang = (languageConfigurationBlock
+					.get(key));
+			if (lang.isEnabled()) {
+				log.trace(key + " enabled, adding to languages enabled map ");
+				tmp.add(key);
+			}
+		}
+		return tmp;
+	}
+
+	public static List<SubnodeConfiguration> getFieldsConfigNode(
+			String _language) throws LanguagesConfigurationException {
+		log.trace("called function getFieldsConfigNode with argument "
+				+ _language);
+		if (!languageConfigurationBlock.containsKey(_language))
+			throw new LanguagesConfigurationException(
+					"configuration for the language " + _language
+							+ " not found");
+		return getFieldsConfigNode(_language);
+
+	}
+
+	public static HashMap<String, LanguageConfigurationClassDescriptor> getLanguageConfigurationBlock() {
+		log.trace("called function getLanguageConfigurationBlock");
+		return languageConfigurationBlock;
+	}
 
 }

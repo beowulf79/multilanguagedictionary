@@ -99,7 +99,8 @@ public class ForvoAudioLoader implements IAudioFileLoader {
      * @throws MalformedURLException
      * @throws IOException
      */
-    public ForvoAudioLoader(LanguageConfigurationClassDescriptor sub)
+    //public ForvoAudioLoader(LanguageConfigurationClassDescriptor sub)
+    public ForvoAudioLoader(String _audio_folder)
 	    throws MalformedURLException, IOException {
 
 	log = Logger.getLogger("jdict");
@@ -111,11 +112,12 @@ public class ForvoAudioLoader implements IAudioFileLoader {
 	log.info("download url set to " + url.toString());
 	save2disk = PropertiesLoader.getBoolean(SAVE2DISK_XML_MARKUP);
 	overWrite = PropertiesLoader.getBoolean(OVERWRITE_XML_MARKUP);
-	setAudioFilesPath(sub.audioPath);
+	//setAudioFilesPath(sub.audioPath);
+	setAudioFilesPath(_audio_folder);
 	testConnection();
 	login();
 
-	localLoader = new LocalFileSystemAudioFileLoader(sub);
+	localLoader = new LocalFileSystemAudioFileLoader(_audio_folder);
 
     }
 
@@ -313,13 +315,14 @@ public class ForvoAudioLoader implements IAudioFileLoader {
 
 	String REGEX = "(/download/mp3/"
 		+ (URLEncoder.encode(word, "UTF-8")).replace("+", "%20")
-		+ "/ar/\\w+/)";
+		+ "/ar/\\w+)";
 	log.debug("regex is: " + REGEX);
 	Pattern PATTERN = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
 	Boolean found = false;
 	while ((inputLine = html.readLine()) != null) {
 	    // run the regular expression on each line until we find
 	    // what we need
+		log.trace("html inputLine is "+inputLine);
 	    Matcher matcher = PATTERN.matcher(inputLine);
 	    if (matcher.find()) {
 		log.debug("found matching line :" + inputLine);

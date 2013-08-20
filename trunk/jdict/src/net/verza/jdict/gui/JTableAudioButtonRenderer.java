@@ -14,9 +14,11 @@ public class JTableAudioButtonRenderer extends JButton implements
 	TableCellRenderer {
 
     private static final long serialVersionUID = 1L;
-
-    public JTableAudioButtonRenderer(String b) {
+    private String word;
+    
+    public JTableAudioButtonRenderer(String _word) {
 	setOpaque(true);
+	word = _word;
     }
 
     public Component getTableCellRendererComponent(JTable table, Object value,
@@ -32,10 +34,10 @@ public class JTableAudioButtonRenderer extends JButton implements
 	// if audio null set Play audio button disable
 	byte[] audio = (byte[]) value;
 	if (audio.length == 0) {
-	    setText("-----");
+	    setText(word);
 	    setEnabled(false);
 	} else
-	    setText("Play Audio");
+	    setText(word);
 
 	return this;
     }

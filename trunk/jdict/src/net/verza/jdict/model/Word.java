@@ -28,6 +28,7 @@ public class Word extends DictionaryObject implements Serializable, IWord {
     static final long serialVersionUID = 8834844282811448538L;
     private static Logger log;
     protected String singular;
+    protected byte[] audiosingular;
     protected Set<String> category;
 
     public Word() {
@@ -36,6 +37,7 @@ public class Word extends DictionaryObject implements Serializable, IWord {
 	log.trace("class " + this.getClass().getName() + " initialized");
 	singular = new String();
 	category = new HashSet<String>();
+	audiosingular = new byte[0];
     }
 
     public String getsingular() {
@@ -49,6 +51,28 @@ public class Word extends DictionaryObject implements Serializable, IWord {
 	this.singular = newvalue;
     }
 
+    public Object getaudiosingular() {
+    	// http://www.bughost.com/defecttracker/DefectEditForm.asp?DefectID=7&ListType=9&Page=1
+    	log.info("called method getaudio, returning stream of size "
+    		+ this.audiosingular.length);
+    	return audiosingular;
+        }
+
+        public byte[] getaudiosingularbyte() {
+    	log.trace("called method getaudio, returning stream of size "
+    		+ this.audiosingular.length);
+    	return this.audiosingular;
+        }
+
+        public void setaudiosingular(byte[] newvalue) {
+    	log.trace("called method setaudio with byte array " + newvalue);
+    	if (newvalue == null) {
+    	    log.error("setting audio with a null string");
+    	    return;
+    	}
+    	this.audiosingular = newvalue;
+        }
+    
     public Set<String> getcategory() {
 	// http://www.bughost.com/defecttracker/DefectEditForm.asp?DefectID=7&ListType=9&Page=1
 	// log.trace("called method getcategory");
@@ -145,7 +169,7 @@ public class Word extends DictionaryObject implements Serializable, IWord {
 	String headers[] = { "Obj", "Sing", "Audio" };
 	dataValues[0][0] = this;
 	dataValues[0][1] = this.getsingular();
-	dataValues[0][2] = this.getaudio();
+	dataValues[0][2] = this.getaudiosingular();
 	DefaultTableModel dm = new DefaultTableModel();
 	dm.setDataVector(dataValues, headers);
 	JTable table = new JTable(dm);

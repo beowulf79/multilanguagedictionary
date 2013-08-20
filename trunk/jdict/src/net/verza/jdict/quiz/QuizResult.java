@@ -17,6 +17,7 @@ public class QuizResult implements Serializable {
     private String wordId;
     private Object question;
     private String notes;
+    private String examples;
     private String quizExitCode;
     private String quizType;
     private String userAnswer;
@@ -217,6 +218,14 @@ public class QuizResult implements Serializable {
 	this.notes = comment;
     }
 
+    public String getExamples() {
+    	return examples;
+    }
+
+    public void setExamples(String examples) {
+    	this.examples = examples;
+    }
+    
     public int hashCode() {
 	Integer hashcode = new Integer(this.getCorrectAnswer().hashCode())
 		- new Integer(this.getQuizExitCode().hashCode());

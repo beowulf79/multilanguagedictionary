@@ -22,7 +22,6 @@ import com.sleepycat.je.SecondaryDatabase;
 public class SleepySectionDatabase {
 
     // Primary Database
-
     private static final String SECTION_TABLE_STORE = "sectionTable";
     private static final String SECTION_SECONDARY_TABLE = "section_string";
     private SleepyEnvironment env;
@@ -98,9 +97,14 @@ public class SleepySectionDatabase {
 
     public void flushDatabase() throws DatabaseException {
 	log.info("flushing section database");
-	env.getEnvironment(SECTION_SECONDARY_TABLE).truncateDatabase(null,
-		SECTION_SECONDARY_TABLE, false);
 
+	long deletedSecondaryTableRecord = env.getEnvironment(SECTION_SECONDARY_TABLE).truncateDatabase(null,
+			SECTION_SECONDARY_TABLE, true);
+	log.info("deleted "+deletedSecondaryTableRecord+" records from section database");
+		
+	long deletedPrimaryTableRecord = env.getEnvironment(SECTION_TABLE_STORE).truncateDatabase(null,
+			SECTION_TABLE_STORE, true);
+	log.info("deleted "+deletedPrimaryTableRecord+" records from section database");
     }
 
     public String getFreeId() throws DatabaseException,

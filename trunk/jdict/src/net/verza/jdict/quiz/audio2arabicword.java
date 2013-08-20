@@ -68,7 +68,7 @@ public class audio2arabicword extends QuizAbstract {
 	    log.debug("key vector size inside loop " + localKeyArray.size());
 
 	    ArabWord key = localKeyArray.get(number);
-	    if (key.getaudiobyte().length == 0) {
+	    if (key.getaudiosingularbyte().length == 0) {
 		log.error("audio for the word not present, skip to next word ");
 		continue;
 	    }
@@ -77,7 +77,7 @@ public class audio2arabicword extends QuizAbstract {
 	    quizResult.setQuizType(Configuration.AUDIO2ARABIC);
 	    quizResult.setWordID(key.getid().toString());
 	    // The Question String is composed by the audio object
-	    quizResult.setQuestion(key.getaudio());
+	    quizResult.setQuestion(key.getaudiosingular());
 	    quizResult.setNotes(key.getnotes());
 	    // The correct Answer is the singular/plural of the word asked
 	    String answer = key.getsingular() + " / " + key.getplural();

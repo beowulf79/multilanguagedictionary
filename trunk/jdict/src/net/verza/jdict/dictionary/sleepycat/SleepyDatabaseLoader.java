@@ -200,7 +200,7 @@ public final class SleepyDatabaseLoader {
 
 	    log.debug(" method: " + attribute_method + " label: " + label
 		    + " is Primary Key: " + isPrimaryKey
-		    + " atttribute has audio: " + hasAudio + " is linkID: "
+		    + " atttribute has audio: " + hasAudio + " audio set method " + tmp.getAudioMethod() +" is linkID: "
 		    + isLinkid);
 
 	    // Linkid is a Map attribute where the keys are the available
@@ -227,25 +227,29 @@ public final class SleepyDatabaseLoader {
 	    }
 
 	    if (hasAudio) {
-		String audio_method = "set" + sub.getAudioAttribute();
-		String audio_directory = sub.getAudioPath();
-
+		//String audio_method = "set" + sub.getAudioAttribute();
+		String audio_method = tmp.getAudioMethod();
+		//String audio_directory = sub.getAudioPath();
+		String audio_directory = tmp.getAudioDirectory();
+		
 		log.debug(" method to use to set audio " + audio_method
 			+ "; audio directory where load audio from "
 			+ audio_directory);
 
 		audioMethod2Call = IClass.getMethod(audio_method, byte[].class);
 
-		String audioLoaderClass = sub.getAudioLoaderClass();
+		//String audioLoaderClass = sub.getAudioLoaderClass();
+		String audioLoaderClass = tmp.getAudioLoaderClass();
 		log.debug("using " + audioLoaderClass
 			+ " as audio Loader Class");
 		Class<?> AClass = Class.forName(audioLoaderClass);
-		ClassConstructorTypes = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+		//ClassConstructorTypes = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+		ClassConstructorTypes = new Class[] { java.lang.String.class };
 		try {
 		    IConstructor = AClass.getConstructor(ClassConstructorTypes);
-		    audioLoader = (IAudioFileLoader) IConstructor
-			    .newInstance(sub);
-
+		    //audioLoader = (IAudioFileLoader) IConstructor.newInstance(sub);
+		    audioLoader = (IAudioFileLoader) IConstructor.newInstance(audio_directory);
+		    
 		    methodTypes = new Class[] { java.lang.String.class };
 		    Method2Call = IClass.getMethod(attribute_method,
 			    methodTypes);

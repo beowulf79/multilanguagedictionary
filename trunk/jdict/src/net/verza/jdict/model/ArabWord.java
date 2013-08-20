@@ -169,21 +169,35 @@ public class ArabWord extends Word {
 	// super.getTable();
 	Object dataValues[][];
 	dataValues = new Object[1][4];
-	String headers[] = { "Obj", "Sing", "Plur", "Audio" };
+	//String headers[] = { "Obj", "Sing", "Plur", "Audio" };
+	String headers[] = { "Obj", "Singular", "Plural"};
 	dataValues[0][0] = this;
-	dataValues[0][1] = this.getsingular();
-	dataValues[0][2] = this.getplural();
-	dataValues[0][3] = this.getaudio();
+//	dataValues[0][1] = this.getsingular();
+	dataValues[0][1] = this.getaudiosingular();
+//	dataValues[0][2] = this.getplural();
+	dataValues[0][2] = this.getaudioplural();
+	//dataValues[0][3] = this.getaudio();
+	
 	DefaultTableModel dm = new DefaultTableModel();
 	dm.setDataVector(dataValues, headers);
 	JTable table = new JTable(dm);
 	table.getColumn("Obj").setCellRenderer(new JTableButtonRenderer("Obj"));
 	table.getColumn("Obj").setCellEditor(
 		new JTableWordButtonEditor(new JCheckBox()));
-	table.getColumn("Audio").setCellRenderer(
-		new JTableAudioButtonRenderer("Play Audio"));
+	
+	table.getColumn("Singular").setCellRenderer(
+			new JTableAudioButtonRenderer(this.getsingular()));
+	table.getColumn("Singular").setCellEditor(
+			new JTableAudioButtonEditor(new JCheckBox()));
+	table.getColumn("Plural").setCellRenderer(
+			new JTableAudioButtonRenderer(this.getplural()));
+	table.getColumn("Plural").setCellEditor(
+			new JTableAudioButtonEditor(new JCheckBox()));
+	
+	/*table.getColumn("Audio").setCellRenderer(
+		new JTableAudioButtonRenderer(this.getsingular()));
 	table.getColumn("Audio").setCellEditor(
-		new JTableAudioButtonEditor(new JCheckBox()));
+		new JTableAudioButtonEditor(new JCheckBox()));*/
 	return table;
 
     }

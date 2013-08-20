@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -39,6 +40,7 @@ import net.verza.jdict.exceptions.LanguagesConfigurationException;
 import net.verza.jdict.exceptions.LinkIDException;
 import net.verza.jdict.gui.GUIPreferences;
 import net.verza.jdict.properties.LanguageConfigurationClassDescriptor;
+import net.verza.jdict.properties.LanguageFieldConfigurationClassDescritor;
 import net.verza.jdict.properties.LanguagesConfiguration;
 
 import org.apache.log4j.Logger;
@@ -74,7 +76,7 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
     protected GridBagConstraints c;
     protected JButton connectWordsButton;
     protected JTextField presentText, pastText, imperativeText, pronounceText,
-	    searchText, searchResult, diacriticsText, transliterationText;
+	    searchText, searchResult, diacriticsText, transliterationText,masdarText;
     protected JTextArea notesArea, exampleArea;
     protected JList sectionList, categoryList, linkIdList;
     private DefaultListModel sectionListModel, linkIdListModel;
@@ -255,6 +257,25 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
 	panel.add(transliterationText, c);
 
+	
+	// masdar
+	c.gridx = 0;
+	c.gridy = y;
+	JLabel masdarLabel = new JLabel("masdar");
+	masdarLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(masdarLabel, c);
+
+	c.gridx = 1;
+	c.gridy = y++;
+	masdarText = (("".equals(verb.getmasdar())) || (verb
+		.getmasdar() == null)) ? new JTextField(20)
+		: new JTextField(verb.getmasdar());
+		masdarText.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	panel.add(masdarText, c);
+	
+	
 	c.gridx = 0;
 	c.gridy = y;
 	JLabel sectionLabel = new JLabel("section");
@@ -525,10 +546,15 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 		|| (diacriticsText.getText() != ""))
 	    verb.setdiacritics(diacriticsText.getText());
 
+	if ((masdarText.getText() != null)
+		|| (masdarText.getText() != ""))
+		verb.setmasdar(masdarText.getText());
+	
+	
 	if (loadAudio.isSelected() || audio != null || audio_past != null) {
 	    log.debug("setting audio inside object");
 	    if (audio != null)
-		verb.setaudio(audio);
+		verb.setaudioinfinitive(audio);
 	    if (audio_past != null)
 		verb.setaudiopast(audio_past);
 	}
@@ -610,7 +636,7 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 
     }
 
-    private void initializeAudioLoader() throws ClassNotFoundException,
+    private void initializeAudioLoader(String _attrnickname) throws ClassNotFoundException,
 	    SecurityException, NoSuchMethodException, IllegalArgumentException,
 	    InstantiationException, IllegalAccessException,
 	    InvocationTargetException {
@@ -626,16 +652,46 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 	    Class<?>[] constructorParams;
 	    Constructor<?> IConstructor;
 
-	    String audioLoaderClassName = config.getAudioLoaderClass();
+	    
+	    /*String audioLoaderClassName = config.getAudioLoaderClass();
+	    log.debug("using " + audioLoaderClassName
+		    + " as audio Loader Class");*/
+	    String audioLoaderClassName = null;
+	    
+	    /// prova
+	    List<LanguageFieldConfigurationClassDescritor> lista = config.getFields();
+		for (Iterator<LanguageFieldConfigurationClassDescritor> it = lista
+				.iterator(); it.hasNext();) {
+
+			LanguageFieldConfigurationClassDescritor tmp = (LanguageFieldConfigurationClassDescritor) it
+					.next();
+			//System.out.println("--  fields " + tmp.toString());
+			if(_attrnickname.equals(tmp.getAttributeName())) {
+				audio_method = tmp.getAudioMethod();
+				audio_directory = tmp.getAudioDirectory();
+				audioLoaderClassName = tmp.getAudioLoaderClass();
+				log.debug("audio_method "+audio_method + 
+						" audio_directory "+ audio_directory+
+						" audioLoaderClassName " +audioLoaderClassName);
+			break;
+			}			
+		}
+		/// prova
+	    
+
 	    log.debug("using " + audioLoaderClassName
 		    + " as audio Loader Class");
+	    
 
 	    audioLoaderClass = Class.forName(audioLoaderClassName);
 	    // get an instance
-	    constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+	    //constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+	    constructorParams = new Class[] { java.lang.String.class };
 	    IConstructor = audioLoaderClass.getConstructor(constructorParams);
+	    
 
-	    audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	    //audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	    audioLoader = (IAudioFileLoader) IConstructor.newInstance(audio_directory);
 	} catch (InvocationTargetException e) {
 	    JOptionPane
 		    .showMessageDialog(
@@ -770,7 +826,7 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 			loadAudio.setSelected(false);
 			return;
 		    }
-		    initializeAudioLoader();
+		    initializeAudioLoader("infinitive");
 		    // Load audio for present
 		    boolean audiofound = false;
 		    log.debug("retrieving audio for present");
@@ -786,6 +842,7 @@ public class ArabVerbEditor extends SearchableObjectEditor implements
 					+ " bytes");
 		    }
 		    // Load Audio for past
+		    initializeAudioLoader("past");
 		    boolean audiopastfound = false;
 		    log.debug("retrieving audio for past");
 		    audio_past = (getAudio(pastText.getText()));

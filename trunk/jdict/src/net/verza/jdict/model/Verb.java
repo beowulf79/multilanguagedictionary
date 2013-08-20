@@ -23,7 +23,8 @@ public class Verb extends DictionaryObject implements Serializable, IVerb {
     static final long serialVersionUID = 8834844282811448538L;
     private static Logger log;
     protected String infinitive;
-
+    protected byte[] audioinfinitive;
+    
     public Verb() {
 
 	super();
@@ -33,7 +34,7 @@ public class Verb extends DictionaryObject implements Serializable, IVerb {
 	notes = new String();
 	section = new HashSet<String>();
 
-	audio = new byte[0];
+	audioinfinitive = new byte[0];
 
     }
 
@@ -48,6 +49,29 @@ public class Verb extends DictionaryObject implements Serializable, IVerb {
 	this.infinitive = newvalue;
     }
 
+    public Object getaudioinfinitive() {
+    	// http://www.bughost.com/defecttracker/DefectEditForm.asp?DefectID=7&ListType=9&Page=1
+    	log.info("called method getaudioinfinitive, returning stream of size "
+    		+ this.audioinfinitive.length);
+    	return audioinfinitive;
+        }
+
+        public byte[] getaudioinfinitivebyte() {
+    	log.trace("called method getaudioinfinitivebyte, returning stream of size "
+    		+ this.audioinfinitive.length);
+    	return this.audioinfinitive;
+        }
+
+        public void setaudioinfinitive(byte[] newvalue) {
+    	log.trace("called method setaudioinfinitive with byte array " + newvalue);
+    	if (newvalue == null) {
+    	    log.error("setting audio infinitive with a null string");
+    	    return;
+    	}
+    	this.audioinfinitive = newvalue;
+        }
+        
+    
     public String toString() {
 
 	return super.toString() + "  - infinitive: " + infinitive;
@@ -84,7 +108,7 @@ public class Verb extends DictionaryObject implements Serializable, IVerb {
 	String headers[] = { "Obj", "Sing", "Audio" };
 	dataValues[0][0] = this;
 	dataValues[0][1] = this.getinfinitive();
-	dataValues[0][2] = this.getaudio();
+	dataValues[0][2] = this.getaudioinfinitive();
 
 	DefaultTableModel dm = new DefaultTableModel();
 	dm.setDataVector(dataValues, headers);

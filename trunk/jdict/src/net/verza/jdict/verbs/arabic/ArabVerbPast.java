@@ -78,11 +78,11 @@ public class ArabVerbPast implements ArabVerbFormInterface {
 		    + token[common_Side_Counter]);
 	    // these vowels do not want short vowels
 	    log.trace("root_counter size " + root_counter);
-	    if ((shortVowelsArray[root_counter + 1] == 'ا')
-		    || (shortVowelsArray[root_counter + 1] == 'آ')
-		    || (shortVowelsArray[root_counter + 1] == 'ى')
-		    || (shortVowelsArray[root_counter + 1] == 'ي')
-		    || (shortVowelsArray[root_counter + 1] == 'و')) {
+	    if ((shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')) {
 		log.trace("found vowels that does not require short vowels");
 		continue;
 	    }

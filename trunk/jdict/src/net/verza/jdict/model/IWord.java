@@ -13,9 +13,9 @@ public interface IWord {
 
     public abstract void setnotes(String newvalue) throws NullPointerException;
 
-    public abstract Object getaudio();
+    public abstract Object getaudiosingular();
 
-    public abstract void setaudio(byte[] newvalue) throws NullPointerException;
+    public abstract void setaudiosingular(byte[] newvalue) throws NullPointerException;
 
     public abstract Set<String> getsection();
 

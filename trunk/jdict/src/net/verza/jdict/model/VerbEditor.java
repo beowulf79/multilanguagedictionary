@@ -407,6 +407,10 @@ public class VerbEditor extends SearchableObjectEditor implements
 	    Integer ids[] = entry.getValue();
 	    for (Integer item : ids) {
 		log.debug("searching language " + language + " and id " + item);
+		if(item == null)  {
+		    log.error("null Id, reading next id");
+			    continue;
+			}
 		Verb obj = (Verb) dit.read(language, item.toString());
 		if (obj == null) {
 		    log.error("broken link with language " + language
@@ -442,7 +446,7 @@ public class VerbEditor extends SearchableObjectEditor implements
 	verb.setinfinitive(infinitiveText.getText());
 
 	if (loadAudio.isSelected() || audio != null)
-	    verb.setaudio(audio);
+	    verb.setaudioinfinitive(audio);
 
 	if ((notesArea.getText() != null) || (notesArea.getText() != ""))
 	    verb.setnotes(notesArea.getText());

@@ -25,9 +25,9 @@ public interface IVerb {
 
     public abstract void setnotes(String newvalue) throws NullPointerException;
 
-    public abstract Object getaudio();
+    public abstract Object getaudioinfinitive();
 
-    public abstract void setaudio(byte[] newvalue) throws NullPointerException;
+    public abstract void setaudioinfinitive(byte[] newvalue) throws NullPointerException;
 
     public abstract Set<String> getsection();
 

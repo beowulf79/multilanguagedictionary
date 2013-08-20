@@ -91,11 +91,11 @@ public class ArabVerbPresent implements ArabVerbFormInterface {
 	    log.trace("token " + (common_Side_Counter) + "-  "
 		    + token[common_Side_Counter]);
 	    // these vowels do not want short vowels
-	    if ((shortVowelsArray[root_counter + 1] == 'ا')
-		    || (shortVowelsArray[root_counter + 1] == 'آ')
-		    || (shortVowelsArray[root_counter + 1] == 'ى')
-		    || (shortVowelsArray[root_counter + 1] == 'ي')
-		    || (shortVowelsArray[root_counter + 1] == 'و')) {
+	    if ((shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')
+		    || (shortVowelsArray[root_counter + 1] == 'A')) {
 		log.trace("found vowels that does not require short vowels");
 		continue;
 	    }
