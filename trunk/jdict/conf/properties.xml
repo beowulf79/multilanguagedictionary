@@ -13,6 +13,7 @@
 	<forvo_audio_loader_login_password>JuveBravo1</forvo_audio_loader_login_password>
 	<forvo_audio_loader_savetodisk>true</forvo_audio_loader_savetodisk>
 	<forvo_audio_loader_overwrite>false</forvo_audio_loader_overwrite>
+	<font_excel_default>Arial</font_excel_default>
 	
 	<category>
 			<sheet_name>Categories</sheet_name>
@@ -29,13 +30,13 @@
 	<maxnumber>1500</maxnumber>
 	<database_settings>
 		<default>
-			<environmentPath>data/default</environmentPath>
+			<environmentPath>data-prod/default</environmentPath>
 		</default>
 		<users>
-			<environmentPath>data/users</environmentPath>
+			<environmentPath>data-prod/users</environmentPath>
 		</users>
 		<class_catalog>
-			<environmentPath>data/class_catalog</environmentPath>
+			<environmentPath>data-prod/class_catalog</environmentPath>
 		</class_catalog>
 	</database_settings>
 	
@@ -52,9 +53,9 @@
 		<audio>yes</audio>
 		<nickname>arabic</nickname>
 		<type>word</type>
-		<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
+		<!--<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
-		<audio_directory>audio/arabic_words/</audio_directory>
+		<audio_directory>audio/arabic_words/</audio_directory>-->
 		<excel_sheet>arabic words</excel_sheet>
 		<class>net.verza.jdict.model.ArabWord</class>
 		<translations>italian,english,egyptian</translations>
@@ -62,37 +63,58 @@
 				 <label>
 						<class_attribute>linkid</class_attribute>
 						<label_name>english</label_name>
+						<column_position_excel_dump>2</column_position_excel_dump>
 				</label>
 				<label>
 						<class_attribute>linkid</class_attribute>
 						<label_name>italian</label_name>
+						<column_position_excel_dump>1</column_position_excel_dump>
 				</label>
                 <label>
 						<class_attribute>linkid</class_attribute>
 						<label_name>egyptian</label_name>
+						<column_position_excel_dump>3</column_position_excel_dump>
 				</label>
 				<label>		
 						<class_attribute>id</class_attribute>
 						<label_name>ID</label_name>
 						<key_type>primary</key_type>
+						<column_position_excel_dump>0</column_position_excel_dump>
 				</label>
 				<label>
 						<class_attribute>singular</class_attribute>
 						<label_name>ARABIC SINGULAR</label_name>
 						<key_type>subindex</key_type>
 						<audio_enabled>true</audio_enabled>
+						<audio_method>setaudiosingular</audio_method>
+						<audio_directory>audio/arabic_words/</audio_directory>
+						<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
 						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator</index_class_creator>
+						<column_position_excel_dump>4</column_position_excel_dump>
+						<font_excel_dump>Geeza Pro</font_excel_dump>
 				</label>
 				<label>
 						<class_attribute>plural</class_attribute>
 						<label_name>ARABIC PLURAL</label_name>
 						<key_type>subindex</key_type>
-						<audio_enabled>false</audio_enabled>
+						<audio_enabled>true</audio_enabled>
+						<audio_method>setaudioplural</audio_method>
+						<audio_directory>audio/arabic_words/</audio_directory>
+						<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
 						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator</index_class_creator>
+						<column_position_excel_dump>5</column_position_excel_dump>
+						<font_excel_dump>Geeza Pro</font_excel_dump>
+				</label>
+				<label>
+						<class_attribute>diacritics</class_attribute>
+						<label_name>DIACRITICS</label_name>
+						<column_position_excel_dump>6</column_position_excel_dump>
+						<font_excel_dump>Geeza Pro</font_excel_dump>
 				</label>
 				<label>
 						<class_attribute>notes</class_attribute>
 						<label_name>NOTES</label_name>
+						<column_position_excel_dump>7</column_position_excel_dump>
 				</label>
 				<label>
 						<class_attribute>section</class_attribute>
@@ -100,6 +122,7 @@
 						<key_type>subindex</key_type>
 						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator</index_class_creator>
 						<multivalue>true</multivalue>
+						<column_position_excel_dump>8</column_position_excel_dump>
 				</label>
 				<label>
 						<class_attribute>category</class_attribute>
@@ -107,6 +130,12 @@
 						<key_type>subindex</key_type>
 						<index_class_creator>net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator</index_class_creator>
 						<multivalue>true</multivalue>
+						<column_position_excel_dump>9</column_position_excel_dump>
+				</label>
+				<label>
+						<class_attribute>example</class_attribute>
+						<label_name>EXAMPLE</label_name>
+						<column_position_excel_dump>10</column_position_excel_dump>
 				</label>
 		</fields>
 		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
@@ -120,11 +149,11 @@
 		<audio>yes</audio>
 		<nickname>egyptian</nickname>
 		<type>word</type>
-		<audio_loader_class>
+		<!--<audio_loader_class>
 			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
 		</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
-		<audio_directory>audio/egyptian_words/</audio_directory>
+		<audio_directory>audio/egyptian_words/</audio_directory>-->
 		<excel_sheet>egyptian words</excel_sheet>
 		<class>net.verza.jdict.model.ArabWord</class>
 		<translations>italian,arabic,english</translations>
@@ -132,41 +161,66 @@
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>english</label_name>
+				<column_position_excel_dump>3</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>arabic</label_name>
+				<column_position_excel_dump>2</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>italian</label_name>
+				<column_position_excel_dump>1</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>id</class_attribute>
 				<label_name>ID</label_name>
 				<key_type>primary</key_type>
+				<column_position_excel_dump>0</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>singular</class_attribute>
 				<label_name>EGYPTIAN SINGULAR</label_name>
 				<key_type>subindex</key_type>
 				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudiosingular</audio_method>
+				<audio_directory>audio/egyptian_words/</audio_directory>
+				<audio_loader_class>
+						net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+				</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>4</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
 			</label>
 			<label>
 				<class_attribute>plural</class_attribute>
 				<label_name>EGYPTIAN PLURAL</label_name>
 				<key_type>subindex</key_type>
-				<audio_enabled>false</audio_enabled>
+				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudioplural</audio_method>
+				<audio_directory>audio/egyptian_words/</audio_directory>
+				<audio_loader_class>
+						net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+				</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>5</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
+			</label>
+			<label>
+				<class_attribute>diacritics</class_attribute>
+				<label_name>DIACRITICS</label_name>
+				<column_position_excel_dump>6</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
 			</label>
 			<label>
 				<class_attribute>notes</class_attribute>
 				<label_name>NOTES</label_name>
+				<column_position_excel_dump>7</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>section</class_attribute>
@@ -176,6 +230,7 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>9</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>category</class_attribute>
@@ -185,6 +240,12 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>8</column_position_excel_dump>
+			</label>
+			<label>
+					<class_attribute>example</class_attribute>
+					<label_name>EXAMPLE</label_name>
+					<column_position_excel_dump>10</column_position_excel_dump>
 			</label>
 		</fields>
 		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
@@ -199,11 +260,11 @@
 		<audio>yes</audio>
 		<nickname>italian</nickname>
 		<type>word</type>
-		<audio_loader_class>
+		<!--<audio_loader_class>
 			net.verza.jdict.dataloaders.ForvoAudioLoader
 		</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
-		<audio_directory>audio/italian_words/</audio_directory>
+		<audio_directory>audio/italian_words/</audio_directory>-->
 		<excel_sheet>italian words</excel_sheet>
 		<class>net.verza.jdict.model.Word</class>
 		<translations>egyptian,arabic,english</translations>
@@ -211,32 +272,43 @@
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>english</label_name>
+				<column_position_excel_dump>2</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>arabic</label_name>
+				<column_position_excel_dump>1</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>egyptian</label_name>
+				<column_position_excel_dump>3</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>id</class_attribute>
 				<label_name>ID</label_name>
 				<key_type>primary</key_type>
+				<column_position_excel_dump>0</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>singular</class_attribute>
 				<label_name>SINGULAR</label_name>
 				<key_type>subindex</key_type>
 				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudiosingular</audio_method>
+				<audio_directory>audio/italian_words/</audio_directory>
+				<audio_loader_class>
+						net.verza.jdict.dataloaders.ForvoAudioLoader
+				</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>4</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>notes</class_attribute>
 				<label_name>NOTES</label_name>
+				<column_position_excel_dump>5</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>section</class_attribute>
@@ -246,6 +318,7 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>7</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>category</class_attribute>
@@ -255,6 +328,12 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>6</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>example</class_attribute>
+				<label_name>EXAMPLE</label_name>
+				<column_position_excel_dump>8</column_position_excel_dump>
 			</label>
 		</fields>
 		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
@@ -268,17 +347,17 @@
 		<audio>yes</audio>
 		<nickname>english</nickname>
 		<type>word</type>
-		<audio_loader_class>
+		<!--<audio_loader_class>
 			net.verza.jdict.dataloaders.HowJSayAudioLoader
-		</audio_loader_class>
+		</audio_loader_class>-->
 		<howjsay_audio_loader_savetodisk>
 			yes
 		</howjsay_audio_loader_savetodisk>
 		<howjsay_audio_loader_replacefiles>
 			no
 		</howjsay_audio_loader_replacefiles>
-		<audio_attribute>audio</audio_attribute>
-		<audio_directory>audio/english_words/</audio_directory>
+		<!--<audio_attribute>audio</audio_attribute>
+		<audio_directory>audio/english_words/</audio_directory>-->
 		<excel_sheet>english words</excel_sheet>
 		<class>net.verza.jdict.model.Word</class>
 		<translations>arabic,italian,egyptian</translations>
@@ -286,32 +365,43 @@
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>italian</label_name>
+				<column_position_excel_dump>1</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>arabic</label_name>
+				<column_position_excel_dump>2</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>egyptian</label_name>
+				<column_position_excel_dump>3</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>id</class_attribute>
 				<label_name>ID</label_name>
 				<key_type>primary</key_type>
+				<column_position_excel_dump>0</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>singular</class_attribute>
 				<label_name>SINGULAR</label_name>
 				<key_type>subindex</key_type>
 				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudiosingular</audio_method>
+				<audio_directory>audio/english_words/</audio_directory>
+				<audio_loader_class>
+						net.verza.jdict.dataloaders.HowJSayAudioLoader
+				</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>4</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>notes</class_attribute>
 				<label_name>NOTES</label_name>
+				<column_position_excel_dump>5</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>section</class_attribute>
@@ -321,6 +411,7 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>7</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>category</class_attribute>
@@ -330,6 +421,12 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>6</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>example</class_attribute>
+				<label_name>EXAMPLE</label_name>
+				<column_position_excel_dump>8</column_position_excel_dump>
 			</label>
 		</fields>
 		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string.
@@ -344,14 +441,13 @@
 		<enabled>yes</enabled>
 		<editor_class>net.verza.jdict.model.VerbEditor</editor_class>
 		<audio>yes</audio>
-		<type>verb</type>
 		<nickname>italian</nickname>
 		<type>verb</type>
-		<audio_loader_class>
+		<!--<audio_loader_class>
 			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
 		</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
-		<audio_directory>audio/italian_verbs/</audio_directory>
+		<audio_directory>audio/italian_verbs/</audio_directory>-->
 		<excel_sheet>italian verbs</excel_sheet>
 		<class>net.verza.jdict.model.Verb</class>
 		<translations>egyptian,arabic,english</translations>
@@ -370,33 +466,45 @@
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>english</label_name>
+				<column_position_excel_dump>2</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>arabic</label_name>
+				<column_position_excel_dump>1</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>egyptian</label_name>
+				<column_position_excel_dump>3</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>id</class_attribute>
 				<label_name>ID</label_name>
 				<key_type>primary</key_type>
+				<column_position_excel_dump>0</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>infinitive</class_attribute>
 				<label_name>INFINITIVE</label_name>
 				<key_type>subindex</key_type>
 				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudioinfinitive</audio_method>
+				<audio_directory>audio/italian_verbs/</audio_directory>
+				<audio_loader_class>
+						net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
+				</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>4</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>notes</class_attribute>
 				<label_name>NOTES</label_name>
+				<column_position_excel_dump>6</column_position_excel_dump>
 			</label>
+
 			<label>
 				<class_attribute>section</class_attribute>
 				<label_name>SECTION</label_name>
@@ -405,6 +513,12 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>5</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>example</class_attribute>
+				<label_name>EXAMPLE</label_name>
+				<column_position_excel_dump>7</column_position_excel_dump>
 			</label>
 		</fields>
 		<!-- the translations available for the language; the label name of the linkid inside the excel sheet must be the same string. -->
@@ -419,11 +533,11 @@
 		<audio>yes</audio>
 		<nickname>english</nickname>
 		<type>verb</type>
-		<audio_attribute>audio</audio_attribute>
+		<!--<audio_attribute>audio</audio_attribute>
 		<audio_directory>audio/english_verbs/</audio_directory>
 		<audio_loader_class>
 			net.verza.jdict.dataloaders.HowJSayAudioLoader
-		</audio_loader_class>
+		</audio_loader_class>-->
 		<howjsay_audio_loader_savetodisk>
 			yes
 		</howjsay_audio_loader_savetodisk>
@@ -437,28 +551,43 @@
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>italian</label_name>
+				<column_position_excel_dump>1</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>egyptian</label_name>
+				<column_position_excel_dump>2</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>arabic</label_name>
+				<column_position_excel_dump>3</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>id</class_attribute>
 				<label_name>ID</label_name>
 				<key_type>primary</key_type>
+				<column_position_excel_dump>0</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>infinitive</class_attribute>
 				<label_name>INFINITIVE</label_name>
 				<key_type>subindex</key_type>
 				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudioinfinitive</audio_method>
+				<audio_directory>audio/english_verbs/</audio_directory>
+				<audio_loader_class>
+						net.verza.jdict.dataloaders.HowJSayAudioLoader
+				</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>4</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>notes</class_attribute>
 				<label_name>NOTES</label_name>
+				<column_position_excel_dump>6</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>section</class_attribute>
@@ -468,6 +597,12 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>5</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>example</class_attribute>
+				<label_name>EXAMPLE</label_name>
+				<column_position_excel_dump>7</column_position_excel_dump>
 			</label>
 		</fields>
 	</language>
@@ -479,10 +614,10 @@
 		<audio>yes</audio>
 		<nickname>arabic</nickname>
 		<type>verb</type>
-		<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
+		<!--<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
 		<audio_directory>audio/arabic_verbs/
-		</audio_directory>
+		</audio_directory>-->
 		<class>net.verza.jdict.model.ArabVerb</class>
 		<excel_sheet>arabic verbs</excel_sheet>
 		<translations>italian,egyptian</translations>
@@ -490,32 +625,53 @@
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>egyptian</label_name>
+				<column_position_excel_dump>3</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>italian</label_name>
+				<column_position_excel_dump>1</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>english</label_name>
+				<column_position_excel_dump>2</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>id</class_attribute>
 				<label_name>ID</label_name>
 				<key_type>primary</key_type>
+				<column_position_excel_dump>0</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>infinitive</class_attribute>
 				<label_name>ARABIC PRESENT</label_name>
 				<key_type>subindex</key_type>
 				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudioinfinitive</audio_method>
+				<audio_directory>audio/arabic_verbs/</audio_directory>
+				<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>5</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
+			</label>
+			<label>
+				<class_attribute>diacritics</class_attribute>
+				<label_name>DIACRITICS</label_name>
+				<column_position_excel_dump>6</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
 			</label>
 			<label>
 				<class_attribute>notes</class_attribute>
 				<label_name>NOTES</label_name>
+				<column_position_excel_dump>9</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>paradigm</class_attribute>
 				<label_name>PARADIGM</label_name>
+				<column_position_excel_dump>12</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>section</class_attribute>
@@ -525,22 +681,43 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>8</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>past</class_attribute>
 				<label_name>ARABIC PAST</label_name>
 				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudiopast</audio_method>
+				<audio_directory>audio/arabic_verbs/</audio_directory>
+				<audio_loader_class>net.verza.jdict.dataloaders.ForvoAudioLoader</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
-			</label>
-						<label>
-				<class_attribute>imperative</class_attribute>
-				<label_name>ARABIC IMPERATIVE</label_name>
+				<column_position_excel_dump>4</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
 			</label>
 			<label>
-				<class_attribute>pronounce</class_attribute>
+				<class_attribute>imperative</class_attribute>
+				<label_name>ARABIC IMPERATIVE</label_name>
+				<column_position_excel_dump>10</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
+			</label>
+			<label>
+				<class_attribute>transliteration</class_attribute>
 				<label_name>ARABIC PRONOUNCE</label_name>
+				<column_position_excel_dump>7</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>masdar</class_attribute>
+				<label_name>MASDAR</label_name>
+				<column_position_excel_dump>11</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
+			</label>
+			<label>
+				<class_attribute>example</class_attribute>
+				<label_name>EXAMPLE</label_name>
+				<column_position_excel_dump>13</column_position_excel_dump>
 			</label>
 		</fields>
 	</language>
@@ -552,11 +729,11 @@
 		<audio>yes</audio>
 		<nickname>egyptian</nickname>
 		<type>verb</type>
-		<audio_loader_class>
+		<!--<audio_loader_class>
 			net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader
 		</audio_loader_class>
 		<audio_attribute>audio</audio_attribute>
-		<audio_directory>audio/egyptian_verbs/</audio_directory>
+		<audio_directory>audio/egyptian_verbs/</audio_directory>-->
 		<class>net.verza.jdict.model.ArabVerb</class>
 		<excel_sheet>egyptian verbs</excel_sheet>
 		<translations>italian,arabic</translations>
@@ -564,32 +741,53 @@
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>arabic</label_name>
+				<column_position_excel_dump>2</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>linkid</class_attribute>
 				<label_name>italian</label_name>
+				<column_position_excel_dump>1</column_position_excel_dump>
+			</label>
+			<label>
+				<class_attribute>linkid</class_attribute>
+				<label_name>english</label_name>
+				<column_position_excel_dump>3</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>id</class_attribute>
 				<label_name>ID</label_name>
 				<key_type>primary</key_type>
+				<column_position_excel_dump>0</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>infinitive</class_attribute>
 				<label_name>EGYPTIAN PRESENT</label_name>
 				<key_type>subindex</key_type>
 				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudioinfinitive</audio_method>
+				<audio_directory>audio/egyptian_verbs</audio_directory>
+				<audio_loader_class>net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>5</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
+			</label>
+			<label>
+				<class_attribute>diacritics</class_attribute>
+				<label_name>DIACRITICS</label_name>
+				<column_position_excel_dump>6</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
 			</label>
 			<label>
 				<class_attribute>notes</class_attribute>
 				<label_name>NOTES</label_name>
+				<column_position_excel_dump>10</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>paradigm</class_attribute>
 				<label_name>PARADIGM</label_name>
+				<column_position_excel_dump>11</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>section</class_attribute>
@@ -599,28 +797,46 @@
 					net.verza.jdict.dictionary.sleepycat.indexes.SetIndexKeyCreator
 				</index_class_creator>
 				<multivalue>true</multivalue>
+				<column_position_excel_dump>9</column_position_excel_dump>
 			</label>
 			<label>
 				<class_attribute>past</class_attribute>
 				<label_name>EGYPTIAN PAST</label_name>
 				<key_type>subindex</key_type>
+				<audio_enabled>true</audio_enabled>
+				<audio_method>setaudiopast</audio_method>
+				<audio_directory>audio/egyptian_verbs</audio_directory>
+				<audio_loader_class>net.verza.jdict.dataloaders.LocalFileSystemAudioFileLoader</audio_loader_class>
 				<index_class_creator>
 					net.verza.jdict.dictionary.sleepycat.indexes.StringIndexKeyCreator
 				</index_class_creator>
+				<column_position_excel_dump>4</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
 			</label>
 			<label>
 				<class_attribute>imperative</class_attribute>
 				<label_name>EGYPTIAN IMPERATIVE</label_name>
+				<column_position_excel_dump>7</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
 			</label>
 			<label>
-				<class_attribute>pronounce</class_attribute>
+				<class_attribute>transliteration</class_attribute>
 				<label_name>EGYPTIAN PRONOUNCE</label_name>
+				<column_position_excel_dump>8</column_position_excel_dump>
 			</label>
-
+			<label>
+				<class_attribute>masdar</class_attribute>
+				<label_name>MASDAR</label_name>
+				<column_position_excel_dump>12</column_position_excel_dump>
+				<font_excel_dump>Geeza Pro</font_excel_dump>
+			</label>
+			<label>
+				<class_attribute>example</class_attribute>
+				<label_name>EXAMPLE</label_name>
+				<column_position_excel_dump>13</column_position_excel_dump>
+			</label>
 		</fields>
 	</language>
-
-
 
 
 </loader>
