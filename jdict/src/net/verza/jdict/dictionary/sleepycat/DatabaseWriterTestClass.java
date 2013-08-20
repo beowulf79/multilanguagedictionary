@@ -60,7 +60,7 @@ public class DatabaseWriterTestClass {
 		ita_word.setsingular("felice");
 		ita_word.setnotes("stato d'animo");
 		ita_word.setsection("9");
-		ita_word.setaudio("audiotest".getBytes("UTF8"));
+		ita_word.setaudiosingular("audiotest".getBytes("UTF8"));
 		ita_word.setcategory("1#2");
 
 		Word ita_word2 = new Word();
@@ -70,7 +70,7 @@ public class DatabaseWriterTestClass {
 		ita_word2.setsingular("fuoco");
 		ita_word2.setnotes("usato per scaldare");
 		ita_word2.setsection("5#6");
-		ita_word2.setaudio("audiotest".getBytes("UTF8"));
+		ita_word2.setaudiosingular("audiotest".getBytes("UTF8"));
 		ita_word2.setcategory("2#3");
 
 		System.out.println("getting italian word database");
@@ -101,7 +101,7 @@ public class DatabaseWriterTestClass {
 		ita_verb.setinfinitive("volare");
 		ita_verb.setnotes("verbo italiano");
 		ita_verb.setsection("1#2");
-		ita_verb.setaudio("audiotest".getBytes("UTF8"));
+		ita_verb.setaudioinfinitive("audiotest".getBytes("UTF8"));
 
 		Verb ita_verb2 = new Verb();
 
@@ -111,7 +111,7 @@ public class DatabaseWriterTestClass {
 		ita_verb2.setinfinitive("parlare");
 		ita_verb2.setnotes("verbo italiano");
 		ita_verb2.setsection("2#3");
-		ita_verb2.setaudio("audiotest".getBytes("UTF8"));
+		ita_verb2.setaudioinfinitive("audiotest".getBytes("UTF8"));
 
 		System.out.println("getting italian verb database");
 		writer.setDatabase(factory.getDatabase("italianverb"));
@@ -145,7 +145,7 @@ public class DatabaseWriterTestClass {
 		eng_word.setsingular("happy");
 		eng_word.setnotes("english word");
 		eng_word.setsection("1#2");
-		eng_word.setaudio("audiotest".getBytes("UTF8"));
+		eng_word.setaudiosingular("audiotest".getBytes("UTF8"));
 		eng_word.setcategory("2#3");
 
 		Word eng_word2 = new Word();
@@ -155,7 +155,7 @@ public class DatabaseWriterTestClass {
 		eng_word2.setsingular("fire");
 		eng_word2.setnotes("english word");
 		eng_word.setsection("1#2");
-		eng_word2.setaudio("audiotest".getBytes("UTF8"));
+		eng_word2.setaudiosingular("audiotest".getBytes("UTF8"));
 		eng_word2.setcategory("2#3");
 
 		System.out.println("getting italian word database");
@@ -188,7 +188,7 @@ public class DatabaseWriterTestClass {
 		eng_verb.setinfinitive("fly");
 		eng_verb.setnotes("english verb");
 		eng_verb.setsection("1#2");
-		eng_verb.setaudio("audiotest".getBytes("UTF8"));
+		eng_verb.setaudioinfinitive("audiotest".getBytes("UTF8"));
 
 		Verb eng_verb2 = new Verb();
 		eng_verb2.setid(1);
@@ -197,7 +197,7 @@ public class DatabaseWriterTestClass {
 		eng_verb2.setinfinitive("talk");
 		eng_verb2.setnotes("english verb");
 		eng_verb2.setsection("3#4");
-		eng_verb2.setaudio("audiotest".getBytes("UTF8"));
+		eng_verb2.setaudioinfinitive("audiotest".getBytes("UTF8"));
 
 		System.out.println("opening english verb database");
 		writer.setDatabase(factory.getDatabase("englishverb"));
@@ -229,7 +229,7 @@ public class DatabaseWriterTestClass {
 		ara_word.setsingular("");
 		ara_word.setnotes("arabic word");
 		ara_word.setsection("1#2");
-		ara_word.setaudio("audiotest".getBytes("UTF8"));
+		ara_word.setaudiosingular("audiotest".getBytes("UTF8"));
 		ara_word.setcategory("2#3");
 
 		Word ara_word2 = new Word();
@@ -239,7 +239,7 @@ public class DatabaseWriterTestClass {
 		ara_word2.setsingular("fire");
 		ara_word2.setnotes("arabic word");
 		ara_word2.setsection("1#2");
-		ara_word2.setaudio("audiotest".getBytes("UTF8"));
+		ara_word2.setaudiosingular("audiotest".getBytes("UTF8"));
 		ara_word2.setcategory("2#3");
 
 		System.out.println("getting italian word database");
@@ -274,7 +274,7 @@ public class DatabaseWriterTestClass {
 		ara_verb.setlinkid("italian", "0");
 		ara_verb.setnotes("verbo arabo");
 		ara_verb.setsection("1#2");
-		ara_verb.setaudio("audiotest".getBytes("UTF8"));
+		ara_verb.setaudioinfinitive("audiotest".getBytes("UTF8"));
 		// This method is just for the ArabVerb
 		ara_verb.setpast("past");
 
@@ -285,7 +285,7 @@ public class DatabaseWriterTestClass {
 		ara_verb2.setlinkid("italian", "1");
 		ara_verb2.setnotes("verbo arabo");
 		ara_verb2.setsection("1#2");
-		ara_verb2.setaudio("audiotest".getBytes("UTF8"));
+		ara_verb2.setaudioinfinitive("audiotest".getBytes("UTF8"));
 		// This method is just for the ArabVerb
 		ara_verb2.setpast("past");
 

@@ -12,6 +12,7 @@ import net.verza.jdict.exceptions.DataNotFoundException;
 import net.verza.jdict.exceptions.DynamicCursorException;
 import net.verza.jdict.exceptions.KeyNotFoundException;
 import net.verza.jdict.exceptions.QuizLoadException;
+import net.verza.jdict.model.ArabVerb;
 import net.verza.jdict.model.ArabWord;
 import net.verza.jdict.model.SearchableObject;
 import net.verza.jdict.properties.Configuration;
@@ -27,7 +28,7 @@ import com.sleepycat.je.DatabaseException;
 public class audio2arabicverb extends QuizAbstract {
 
     private static Logger log;
-    private Vector<ArabWord> localKeyArray;
+    private Vector<ArabVerb> localKeyArray;
     public String language;
 
     /**
@@ -51,7 +52,7 @@ public class audio2arabicverb extends QuizAbstract {
 	int number = -1, dbsize = 0, counter = 0, max_loop_counter = 0;
 	Random generator = new Random();
 
-	localKeyArray = (Vector<ArabWord>) dit.read(this.language).clone();
+	localKeyArray = (Vector<ArabVerb>) dit.read(this.language).clone();
 	dbsize = localKeyArray.size();
 	// if db size is 0 let's throw an exception key not found
 	if (dbsize == 0)
@@ -66,8 +67,8 @@ public class audio2arabicverb extends QuizAbstract {
 	    number = generator.nextInt(dbsize);
 	    log.debug("random generated index " + number);
 	    log.debug("key vector size inside loop " + localKeyArray.size());
-	    ArabWord key = localKeyArray.get(number);
-	    if (key.getaudiobyte().length == 0) {
+	    ArabVerb key = localKeyArray.get(number);
+	    if (key.getaudioinfinitivebyte().length == 0) {
 		log.error("audio for the word not present, skip to next word ");
 		continue;
 	    }
@@ -77,10 +78,10 @@ public class audio2arabicverb extends QuizAbstract {
 	    quizResult.setWordID(key.getid().toString());
 
 	    // The Question String is composed by the audio object
-	    quizResult.setQuestion(key.getaudio());
+	    quizResult.setQuestion(key.getaudioinfinitive());
 	    quizResult.setNotes(key.getnotes());
 	    // The correct Answer is the singular of the word asked
-	    String answer = key.getsingular() + " / " + key.getplural();
+	    String answer = key.getinfinitive() + " / " + key.getpast();
 
 	    log.info("setting correct answer into stats object as " + answer);
 	    quizResult.setCorrectAnswer(answer);

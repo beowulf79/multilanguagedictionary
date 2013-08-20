@@ -37,6 +37,7 @@ public final class SleepyConnector implements Dictionary {
     // words database
     public SleepyDatabase db;
     private SleepyDatabaseLoader loader;
+    private SleepyDatabaseDumper dumper;
     private SleepyDatabaseReader reader;
     private SleepyDatabaseWriter writer;
 
@@ -76,7 +77,8 @@ public final class SleepyConnector implements Dictionary {
 	writer = new SleepyDatabaseWriter();
 	// writer.setDataBinding(SleepyBinding.getDataBinding());
 	loader = new SleepyDatabaseLoader();
-
+	dumper = new SleepyDatabaseDumper();
+	
 	// Initialize User DB Handler
 	users_database = new SleepyUsersDatabase();
 	userReader = new SleepyUsersDatabaseReader(users_database);
@@ -364,6 +366,12 @@ public final class SleepyConnector implements Dictionary {
 	this.db.flushDatabase();
     }
 
+    
+    public void dumpDatabase(LoaderOptionsStore _obj) throws Exception	{
+    	dumper.setOptionObject(_obj);
+    	dumper.dumpDatabases();
+    }
+    
     // ////////////////////////////////////////////////////////////////////////////////////////
     // CATEGORY DATABASE
     // ////////////////////////////////////////////////////////////////////////////////////////

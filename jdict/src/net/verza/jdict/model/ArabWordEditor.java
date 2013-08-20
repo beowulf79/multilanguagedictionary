@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -40,8 +41,8 @@ import net.verza.jdict.exceptions.LanguagesConfigurationException;
 import net.verza.jdict.exceptions.LinkIDException;
 import net.verza.jdict.gui.GUIPreferences;
 import net.verza.jdict.properties.LanguageConfigurationClassDescriptor;
+import net.verza.jdict.properties.LanguageFieldConfigurationClassDescritor;
 import net.verza.jdict.properties.LanguagesConfiguration;
-
 import org.apache.log4j.Logger;
 
 import com.sleepycat.je.DatabaseException;
@@ -373,7 +374,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	c.gridx = 0;
 	c.gridy = y;
 	JLabel audioLoadLabel = new JLabel("load audio?");
-	if ((word.getaudio() != null) && (word.audio.length == 0))
+	if ((word.getaudiosingular() != null) && (word.audiosingular.length == 0))
 	    audioLoadLabel = new JLabel("(RE)load audio?");
 	audioLoadLabel.setBorder(BorderFactory.createLineBorder(
 		GUIPreferences.borderColor, GUIPreferences.borderThickness));
@@ -571,7 +572,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	if (loadAudio.isSelected() || audio != null || audio_plural != null) {
 	    log.debug("setting audio inside object");
 	    if (audio != null)
-		word.setaudio(audio);
+		word.setaudiosingular(audio);
 	    if (audio_plural != null)
 		word.setaudioplural(audio_plural);
 	}
@@ -664,15 +665,19 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 
     }
 
-    private void initializeAudioLoader() throws ClassNotFoundException,
+    private void initializeAudioLoader(String _attrnickname) throws ClassNotFoundException,
 	    SecurityException, NoSuchMethodException, IllegalArgumentException,
 	    InstantiationException, IllegalAccessException,
 	    InvocationTargetException {
-	String audio_method = "set" + config.getAudioAttribute();
+    log.trace("called method initializeAudioLoader with argument "+_attrnickname);
+    
+    /*String audio_method = "set" + config.getAudioAttribute();
 	String audio_directory = config.getAudioPath();
-
 	log.debug(" method to use to set audio " + audio_method
-		+ "; audio directory where load audio from " + audio_directory);
+		+ "; audio directory where load audio from " + audio_directory);*/
+	
+	String audio_method = null;
+	String audio_directory = null;
 
 	try {
 
@@ -680,16 +685,42 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	    Class<?>[] constructorParams;
 	    Constructor<?> IConstructor;
 
-	    String audioLoaderClassName = config.getAudioLoaderClass();
+	    /*String audioLoaderClassName = config.getAudioLoaderClass();
 	    log.debug("using " + audioLoaderClassName
-		    + " as audio Loader Class");
+		    + " as audio Loader Class");*/
+	    String audioLoaderClassName = null;
+	    
+	    /// prova
+	    List<LanguageFieldConfigurationClassDescritor> lista = config.getFields();
+		for (Iterator<LanguageFieldConfigurationClassDescritor> it = lista
+				.iterator(); it.hasNext();) {
 
+			LanguageFieldConfigurationClassDescritor tmp = (LanguageFieldConfigurationClassDescritor) it
+					.next();
+			//System.out.println("--  fields " + tmp.toString());
+			if(_attrnickname.equals(tmp.getAttributeName())) {
+				audio_method = tmp.getAudioMethod();
+				audio_directory = tmp.getAudioDirectory();
+				audioLoaderClassName = tmp.getAudioLoaderClass();
+				log.debug("audio_method "+audio_method + 
+						" audio_directory "+ audio_directory+
+						" audioLoaderClassName " +audioLoaderClassName);
+			break;
+			}			
+		}
+		/// prova
+		
+		log.debug("using " + audioLoaderClassName
+			    + " as audio Loader Class");
+	   
 	    audioLoaderClass = Class.forName(audioLoaderClassName);
 	    // get an instance
-	    constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+	    //constructorParams = new Class[] { net.verza.jdict.properties.LanguageConfigurationClassDescriptor.class };
+	    constructorParams = new Class[] { java.lang.String.class };
 	    IConstructor = audioLoaderClass.getConstructor(constructorParams);
 
-	    audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	    //audioLoader = (IAudioFileLoader) IConstructor.newInstance(config);
+	    audioLoader = (IAudioFileLoader) IConstructor.newInstance(audio_directory);
 	} catch (InvocationTargetException e) {
 	    JOptionPane
 		    .showMessageDialog(
@@ -710,6 +741,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 	log.trace("called function getAudio with audio " + audio);
 	return (byte[]) audioLoader.get(audio);
     }
+
 
     public void actionPerformed(ActionEvent evt) {
 
@@ -859,7 +891,7 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 			loadAudio.setSelected(false);
 			return;
 		    }
-		    initializeAudioLoader();
+		    initializeAudioLoader("singular");
 		    // Load audio for singular
 		    boolean audiofound = false;
 		    log.debug("retrieving audio for singular");
@@ -875,7 +907,9 @@ public class ArabWordEditor extends SearchableObjectEditor implements
 				.info("got audio of size " + audio.length
 					+ " bytes");
 		    }
+		    
 		    // Load Audio for plural
+		    initializeAudioLoader("plural");
 		    boolean audiopluralfound = false;
 		    log.debug("retrieving audio for plual");
 		    audio_plural = (getAudio(pluralText.getText()));

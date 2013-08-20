@@ -19,22 +19,22 @@ import java.io.BufferedWriter;
  */
 public class ArabVerbShortVowels {
 
-    public static final char[] FATHA = { 'َ' };
-    public static final char[] KASRA = { 'ِ' };
-    public static final char[] DAMMA = { 'ُ' };
-    public static final char[] SOUKUN = { 'ْ' };
-    public static final char[] FATHAIN = { 'ً' };
-    public static final char[] KASRAIN = { 'ٍ' };
-    public static final char[] DAMMAIN = { 'ٌ' };
-    public static final char[] SHADDA = { 'ّ' };
+    public static final char[] FATHA = { 'A' };
+    public static final char[] KASRA = { 'A' };
+    public static final char[] DAMMA = { 'A' };
+    public static final char[] SOUKUN = { 'A' };
+    public static final char[] FATHAIN = { 'A' };
+    public static final char[] KASRAIN = { 'A' };
+    public static final char[] DAMMAIN = { 'A' };
+    public static final char[] SHADDA = { 'A' };
     public static final char[] SHADDAFATHA = { SHADDA[0], FATHA[0] };
     public static final char[] SHADDAKASRA = { SHADDA[0], KASRA[0] };
     public static final char[] SHADDADAMMA = { SHADDA[0], DAMMA[0] };
-    public static final char[] ALIF = { 'ا' };
-    public static final char[] ALIFMADDA = { 'آ' };
-    public static final char[] ALIFMAQSURA = { 'ى' };
-    public static final char[] YA = { 'ي' };
-    public static final char[] WAW = { 'و' };
+    public static final char[] ALIF = { 'A' };
+    public static final char[] ALIFMADDA = { 'A' };
+    public static final char[] ALIFMAQSURA = { 'A' };
+    public static final char[] YA = { 'A' };
+    public static final char[] WAW = { 'A' };
 
     private static Logger log;
 

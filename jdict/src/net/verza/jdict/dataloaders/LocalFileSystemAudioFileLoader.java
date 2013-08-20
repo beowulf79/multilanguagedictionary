@@ -21,13 +21,15 @@ public class LocalFileSystemAudioFileLoader implements IAudioFileLoader {
     private String localAudioFolder;
     private static Logger log;
 
-    public LocalFileSystemAudioFileLoader(
-	    LanguageConfigurationClassDescriptor sub)
-	    throws AudioNotFoundException {
+    //public LocalFileSystemAudioFileLoader(
+	//    LanguageConfigurationClassDescriptor sub)
+    public LocalFileSystemAudioFileLoader(String _audio_folder)
+    	    throws AudioNotFoundException {
 	log = Logger.getLogger("jdict");
 	log.trace("called class " + this.getClass().getName());
 
-	setAudioFilesPath(sub.audioPath);
+	//setAudioFilesPath(sub.audioPath);
+	setAudioFilesPath(_audio_folder);
     }
 
     public void setAudioFilesPath(String folder) throws AudioNotFoundException {

@@ -39,7 +39,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
     protected String notes;
     protected Set<String> section;
 
-    protected byte[] audio;
+    //protected byte[] audio;
 
     JFrame jFrame;
     JPanel jpnl;
@@ -53,7 +53,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	example = new String();
 	notes = new String();
 	section = new HashSet<String>();
-	audio = new byte[0];
+	//audio = new byte[0];
     }
 
     public Integer getid() {
@@ -83,7 +83,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	    return null;
 	}
 	if (!this.getlinkid().containsKey(language))
-	    log.warn("linkedid not present for the language " + language);
+	    log.warn("linkdid not present for the language " + language);
 
 	return linkId.get(language);
     }
@@ -208,7 +208,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	this.notes = newvalue;
     }
 
-    public Object getaudio() {
+   /* public Object getaudio() {
 	// http://www.bughost.com/defecttracker/DefectEditForm.asp?DefectID=7&ListType=9&Page=1
 	log.info("called method getaudio, returning stream of size "
 		+ this.audio.length);
@@ -228,7 +228,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	    return;
 	}
 	this.audio = newvalue;
-    }
+    }*/
 
     public Set<String> getsection() {
 	// http://www.bughost.com/defecttracker/DefectEditForm.asp?DefectID=7&ListType=9&Page=1
@@ -289,7 +289,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	c.gridwidth = 1;
 
 	// Display Audio Stream Size
-	c.gridx = 0;
+	/*c.gridx = 0;
 	c.gridy = 0;
 	JLabel audioSizeJLabel = new JLabel("Audio Stream Size");
 	audioSizeJLabel.setBorder(BorderFactory.createLineBorder(
@@ -297,13 +297,13 @@ public class DictionaryObject implements Serializable, SearchableObject {
 	jpnl.add(audioSizeJLabel, c);
 	c.gridx = 1;
 	JTextField jtxf1 = new JTextField("0 bytes");
-	if (this.getaudio() != null) {
-	    byte stream[] = (byte[]) this.getaudio();
+	if (this.getaudiosingular() != null) {
+	    byte stream[] = (byte[]) this.getaudiosingular();
 	    jtxf1.setText(new Integer(stream.length).toString() + " bytes");
 	}
 	jtxf1.setEditable(false);
 	jtxf1.setColumns(10);
-	jpnl.add(jtxf1, c);
+	jpnl.add(jtxf1, c);*/
 
 	// Display LinkID
 	c.gridx = 0;
@@ -386,7 +386,7 @@ public class DictionaryObject implements Serializable, SearchableObject {
 
 	return " - ID: " + id + " - link ID: " + this.linkId.toString()
 		+ " - note: " + this.notes + " - section: "
-		+ this.section.toString() + " - audio size" + this.audio.length;
+		+ this.section.toString() ;
     }
 
     public String linkIdToString() {

@@ -68,7 +68,7 @@ public class audio2egyptianverb extends QuizAbstract {
 	    log.debug("key vector size inside loop " + localKeyArray.size());
 
 	    ArabVerb key = localKeyArray.get(number);
-	    if (key.getaudiobyte().length == 0) {
+	    if (key.getaudioinfinitivebyte().length == 0) {
 		log.error("audio for the word not present, skip to next word ");
 		continue;
 	    }
@@ -77,7 +77,7 @@ public class audio2egyptianverb extends QuizAbstract {
 	    quizResult.setQuizType(Configuration.AUDIO2EGYPTIAN);
 	    quizResult.setWordID(key.getid().toString());
 	    // The Question String is composed by the audio object
-	    quizResult.setQuestion(key.getaudio());
+	    quizResult.setQuestion(key.getaudioinfinitive());
 	    quizResult.setNotes(key.getnotes());
 	    // The correct Answer is the present,past of the word asked
 	    String answer = key.getinfinitive() + " / " + key.getpast();

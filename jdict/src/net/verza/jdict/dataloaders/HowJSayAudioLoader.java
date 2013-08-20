@@ -42,7 +42,8 @@ public class HowJSayAudioLoader implements IAudioFileLoader {
     private String localAudioFolder;
     private LocalFileSystemAudioFileLoader localLoader;
 
-    public HowJSayAudioLoader(LanguageConfigurationClassDescriptor sub)
+    //public HowJSayAudioLoader(LanguageConfigurationClassDescriptor sub)
+    public HowJSayAudioLoader(String _audior_folder)
 	    throws MalformedURLException, IOException {
 
 	log = Logger.getLogger("jdict");
@@ -54,9 +55,10 @@ public class HowJSayAudioLoader implements IAudioFileLoader {
 	log.info("download url set to " + url.toString());
 	save2disk = PropertiesLoader.getBoolean(SAVE2DISK_XML_MARKUP);
 	overWrite = PropertiesLoader.getBoolean(OVERWRITE_XML_MARKUP);
-	setAudioFilesPath(sub.audioPath);
+	//setAudioFilesPath(sub.audioPath);
+	setAudioFilesPath(_audior_folder);
 	testConnection();
-	localLoader = new LocalFileSystemAudioFileLoader(sub);
+	localLoader = new LocalFileSystemAudioFileLoader(_audior_folder);
 
     }
 
