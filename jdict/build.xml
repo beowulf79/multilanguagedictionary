@@ -59,6 +59,10 @@
 
 	<target name="clean">
 		<delete dir="${classes_dir}"/>
+		<delete dir="${release_dir}"/>
+		<delete file="${jar_file}" />
+		<delete file="${release.tar.file}" />
+		<delete file="${release.gz.file}" />
 	</target>
 
 
