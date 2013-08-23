@@ -82,7 +82,8 @@ public class egyptianverb2italianverb extends QuizAbstract {
 	    quizResult.setQuestion((key.getnotes() == null) ? key
 		    .getinfinitive() : key.getinfinitive());
 	    quizResult.setNotes(key.getnotes());
-
+	    quizResult.setExamples(key.getexample());
+	    
 	    // Save in localDataArray the word connected to this
 	    localDataArray = (Vector<Verb>) dit.read("egyptianverb",
 		    key.getid().toString(), "italianverb").clone();

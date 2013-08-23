@@ -83,7 +83,8 @@ public class arabicword2egyptianword extends QuizAbstract {
 	    quizResult.setQuestion((key.getnotes() == null) ? key.getsingular()
 		    : key.getsingular());
 	    quizResult.setNotes(key.getnotes());
-
+	    quizResult.setExamples(key.getexample());
+	    
 	    // Save in localDataArray the word connected to this
 	    localDataArray = (Vector<ArabWord>) dit.read("arabicword",
 		    key.getid().toString(), "egyptianword").clone();

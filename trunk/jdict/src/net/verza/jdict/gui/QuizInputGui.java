@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -69,7 +70,7 @@ public class QuizInputGui extends JPanel implements ActionListener {
 	frame.setVisible(true);
 	frame.setResizable(false);
 	frame.setLocationRelativeTo(null);
-	frame.setSize(300, 350);
+	frame.setSize(650, 380);
     }
 
     private void initComponents() {
@@ -153,8 +154,24 @@ public class QuizInputGui extends JPanel implements ActionListener {
 	jtxf6.setEnabled(false);
 	jtxf6.setColumns(10);
 	jpnl.add(jtxf6, c);
+	
+	
+	// Example Label
+	c.gridy = ++y;
+	c.gridx = 0;
+	JLabel exampleJLabel = new JLabel("examples");
+	tipJLabel.setBorder(BorderFactory.createLineBorder(
+		GUIPreferences.borderColor, GUIPreferences.borderThickness));
+	jpnl.add(exampleJLabel, c);
+	c.gridx = 1;
+	JTextArea jtxa1 = new JTextArea(this.quiztab.quiz.getExamples(0));
+	jtxa1.setEnabled(false);
+	jtxa1.setRows(2);
+	jtxa1.setColumns(20);
+	jpnl.add(jtxa1, c);
 
-	// answer button label
+	
+	// Answer button label
 	c.fill = GridBagConstraints.NONE;
 	c.gridx = 0;
 	c.gridy = ++y;
