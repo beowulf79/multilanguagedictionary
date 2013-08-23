@@ -85,7 +85,8 @@ public class italianword2englishword extends QuizAbstract {
 		    : key.getsingular());
 
 	    quizResult.setNotes(key.getnotes());
-
+	    quizResult.setExamples(key.getexample());
+	    
 	    // Save in localDataArray the word connected to this
 	    localDataArray = (Vector<Word>) dit.read("italianword",
 		    key.getid().toString(), "englishword").clone();

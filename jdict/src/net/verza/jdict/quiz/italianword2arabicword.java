@@ -83,7 +83,8 @@ public class italianword2arabicword extends QuizAbstract {
 	    quizResult.setQuestion((key.getnotes() == null) ? key.getsingular()
 		    : key.getsingular());
 	    quizResult.setNotes(key.getnotes());
-
+	    quizResult.setExamples(key.getexample());
+	    
 	    // Save in localDataArray the word connected to this
 	    localDataArray = (Vector<ArabWord>) dit.read("italianword",
 		    key.getid().toString(), "arabicword").clone();

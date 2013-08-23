@@ -79,6 +79,8 @@ public class audio2arabicword extends QuizAbstract {
 	    // The Question String is composed by the audio object
 	    quizResult.setQuestion(key.getaudiosingular());
 	    quizResult.setNotes(key.getnotes());
+	    quizResult.setExamples(key.getexample());
+	    
 	    // The correct Answer is the singular/plural of the word asked
 	    String answer = key.getsingular() + " / " + key.getplural();
 

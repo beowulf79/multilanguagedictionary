@@ -85,7 +85,8 @@ public class arabicword2englishword extends QuizAbstract {
 	    quizResult.setQuestion((key.getnotes() == null) ? key.getsingular()
 		    : key.getsingular());
 	    quizResult.setNotes(key.getnotes());
-
+	    quizResult.setExamples(key.getexample());
+	    
 	    // Save in localDataArray the word connected to this
 	    localDataArray = (Vector<Word>) dit.read("arabicword",
 		    key.getid().toString(), "englishword").clone();
